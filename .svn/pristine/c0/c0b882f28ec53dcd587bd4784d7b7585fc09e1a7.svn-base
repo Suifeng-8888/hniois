@@ -1,0 +1,124 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class Chemical extends Page {
+    //id,cname,s_id,s_name,person,c_time,state,unit,cnums,method,sup_id,effect,soil_id
+    private String cname;//化肥名称
+    private String s_id;//种子主键
+    private  String s_name;//作物名称
+    private String person;//施肥人
+    private String c_time;//施肥时间
+    private String state;//化肥状态 0液体 1粉末 2颗粒
+    private String cnums;//化肥数量
+    private String unit;//化肥数量
+    private String method;//施肥方法 0机器 1人工
+    private String sup_id;//化肥供应商id
+    private String effect;//化肥功效
+    private String soil_id;//土地编号
+    private String farm_id;//生产基地ID
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    public String getS_id() {
+        return s_id;
+    }
+
+    public void setS_id(String s_id) {
+        this.s_id = s_id;
+    }
+
+    public String getS_name() {
+        return s_name;
+    }
+
+    public void setS_name(String s_name) {
+        this.s_name = s_name;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public String getC_time() {
+        return c_time;
+    }
+
+    public void setC_time(String c_time) {
+        this.c_time = c_time;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCnums() {
+        return cnums;
+    }
+
+    public void setCnums(String cnums) {
+        this.cnums = cnums;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getSup_id() {
+        return sup_id;
+    }
+
+    public void setSup_id(String sup_id) {
+        this.sup_id = sup_id;
+    }
+
+    public String getEffect() {
+        return effect;
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
+    }
+
+    public String getSoil_id() {
+        return soil_id;
+    }
+
+    public void setSoil_id(String soil_id) {
+        this.soil_id = soil_id;
+    }
+}

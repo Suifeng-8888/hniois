@@ -1,0 +1,124 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class Chemical extends Page {
+    //id,cname,s_id,s_name,person,c_time,state,unit,cnums,method,sup_id,effect,soil_id
+    private String cname;//化肥名称
+    private String s_id;//种子主键
+    private  String s_name;//作物名称
+    private String person;//施肥人
+    private String c_time;//施肥时间
+    private String state;//化肥状态 0液体 1粉末 2颗粒
+    private String cnums;//化肥数量
+    private String method;//施肥方法 0机器 1人工
+    private String ch_batch;//采购批次
+    private String farm_id;//生产基地ID
+    private String cunit;//化肥规格
+    private String c_img;//施肥图片
+    private String c_path;//临时使用
+
+    public String getCh_batch() {
+        return ch_batch;
+    }
+
+    public void setCh_batch(String ch_batch) {
+        this.ch_batch = ch_batch;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    public String getS_id() {
+        return s_id;
+    }
+
+    public void setS_id(String s_id) {
+        this.s_id = s_id;
+    }
+
+    public String getS_name() {
+        return s_name;
+    }
+
+    public void setS_name(String s_name) {
+        this.s_name = s_name;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public String getC_time() {
+        return c_time;
+    }
+
+    public void setC_time(String c_time) {
+        this.c_time = c_time;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCnums() {
+        return cnums;
+    }
+
+    public void setCnums(String cnums) {
+        this.cnums = cnums;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String getCunit() {
+        return cunit;
+    }
+
+    public void setCunit(String cunit) {
+        this.cunit = cunit;
+    }
+
+    public String getC_img() {
+        return c_img;
+    }
+
+    public void setC_img(String c_img) {
+        this.c_img = c_img;
+    }
+
+    public String getC_path() {
+        return c_path;
+    }
+
+    public void setC_path(String c_path) {
+        this.c_path = c_path;
+    }
+}

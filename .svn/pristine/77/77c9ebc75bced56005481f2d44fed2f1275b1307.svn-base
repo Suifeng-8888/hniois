@@ -1,0 +1,1018 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title>查询统计</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="static/count/css/base.css">
+    <link rel="stylesheet" href="static/count/css/firstPage.css">
+    <link rel="stylesheet" href="static/count/css/bootstrap.min.css">
+    <link href="static/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <script src="static/js/jQuery/jquery.min-1.12.1.js"></script>
+    <script src="static/count/echarts.js"></script>
+    <script src="static/count/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="static/count/unslider.min.js"></script>
+    <script src="static/count/jquery.cookie.js"></script>
+    <script src="static/count/main.js"></script>
+
+    <style>
+        #map{width: 96.5%;height:96%;margin: 7px auto;border-radius: 10px}
+        #map .anchorBL{display: none;}
+        @media (max-width: 1280px) {
+            .topLT .progress{
+                margin-top: -10px;
+            }
+        }
+        .cls{
+            position:fixed;width:70px;height:60px;top:0px; right:0px; z-index: 999;
+        }
+        .cls img{
+            width: 100%;
+        }
+        .a_img{
+            cursor: pointer;
+            filter:alpha(Opacity=80);-moz-opacity:0;opacity: 0;
+        }
+        .a_img:hover{
+            cursor: pointer;
+            filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
+        }
+        @media screen and (max-width:1280px){
+            #main4{
+                width: 100%; height:80% !important;
+            }
+        }
+        .col-sm-2,.col-sm-3{
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+         #main4_01{
+             position: absolute;
+         }
+        #main4_02{
+            position: absolute;
+        }
+        #main4_03{
+            position: absolute;
+        }
+        a{
+            color: #ffffff;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        a:hover{
+            color: #d58512 !important;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body id="bigBG" style="overflow: hidden">
+<div class="topBar">
+    <div class="cls">
+        <img src="static/count/imgs/close.png" class="a_img"
+             onclick="javascript:window.opener=null;window.open('','_self');window.close();"/>
+    </div>
+    <h5 style="font-size: 32px;">农产品质量安全监管追溯查询统计</h5>
+    <p>数据更新时间：<span id="updateTime">2018-08-10 10:20:22</span>
+        <a href="/login_count"><i class="fa fa-refresh" style="font-size: 16px; color:#ffffff; margin-left: 15px;"></i></a>
+    </p>
+</div>
+<script type="text/javascript">
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    var time2 = new Date().format("yyyy-MM-dd hh:mm:ss");
+    $("#updateTime").html(time2);
+</script>
+<div class="topLT">
+    <h5 id="iptablesCount">21536<br/><span>已解决事件</span></h5>
+
+    <div class="progress" style="width: 100%;background: none;margin-left: 20px;float: left;">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0"
+             aria-valuemax="100" style="width: 50%;background: #4ac5fe">
+            <span class="sr-only" style="color: white">100% Complete</span>
+        </div>
+        <span style="color: #4ac5fe;float: left;font-size: 18px;font-weight: 600;margin-left: 15px;"
+              id="deviceCount">5</span>
+    </div>
+    <p class="desc">待办事件</p>
+
+    <div class="progress" style="width: 100%;background: none;margin-left: 20px;float: left;">
+        <div id="001" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0"
+             aria-valuemax="100" style="width: 10%;background: #ff764a">
+            <span class="sr-only" style="color: white">100% Complete</span>
+        </div>
+        <span style="color:#ff764a;float: left;font-size: 18px;font-weight: 600;margin-left: 15px;"
+              id="dangerDevice">0</span>
+    </div>
+    <p class="desc">今日已解决事件</p>
+
+    <!--<div class="progress" style="width: 100%;background: none;margin-left: 20px;float: left;">-->
+        <!--<div id="002" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="10" aria-valuemin="0"-->
+             <!--aria-valuemax="100" style="width: 50%;background: #dc8fff;border-radius:0">-->
+            <!--<span class="sr-only" style="color: white">100% Complete</span>-->
+        <!--</div>-->
+        <!--<span style="color:#dc8fff;float: left;font-size: 18px;font-weight: 600;margin-left: 15px;"-->
+              <!--id="sDevice">0</span>-->
+    <!--</div>-->
+    <!--<p class="desc">关机状态(台)</p>-->
+</div>
+<div class="mainLT">
+    <h5>各地市出现故障事件排行Top10 <a href="#">更多></a></h5>
+    <div id="main1" style="width: 100%;height:100%;"></div>
+
+    <script type="text/javascript">
+        var myChart1 = echarts.init(document.getElementById('main1'));
+        var option1;
+
+        option1 = {
+            color: ['#fc6e5a'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+
+                left: '4%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: ['许昌', '郑州', '洛阳', '开封', '平顶山', '周口', '商丘']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: [120, 200, 150, 80, 70, 110, 130],
+                type: 'bar'
+            }],
+            textStyle: {
+                fontSize: 100,
+                color: '#fff'
+            },
+
+        };
+        myChart1.setOption(option1);
+
+
+    </script>
+
+</div>
+<div class="bottomLT">
+    <h5>网络设备预警日志<a href="#">更多></a></h5>
+    <div class="hd">
+        <div class="col-sm-"><p class="col-sm-4" style="text-align:left;">设备名称</p>
+            <p class="col-sm-5">IP</p>
+            <p class="col-sm-3">访问时间</p></div>
+    </div>
+    <div class="lfBox">
+        <ul class="test6">
+            <li><div class="col-sm-"> <p class="col-sm-4" style="text-align: left;">H1226000010</p><p class="col-sm-5">114.55.1.210</p><p class="col-sm-3">8.23 10:20:22</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-4" style="text-align: left;">H1226000010</p><p class="col-sm-5">114.55.1.210</p><p class="col-sm-3">8.23 10:20:22</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-4" style="text-align: left;">H1226000010</p><p class="col-sm-5">114.55.1.210</p><p class="col-sm-3">8.23 10:20:22</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-4" style="text-align: left;">H1226000010</p><p class="col-sm-5">114.55.1.210</p><p class="col-sm-3">8.23 10:20:22</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-4" style="text-align: left;">H1226000010</p><p class="col-sm-5">114.55.1.210</p><p class="col-sm-3">8.23 10:20:22</p></div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="map-ctn">
+    <div id="map"></div>
+    <!--<canvas id="canvas"></canvas>-->
+    <!--<div id="time"></div>-->
+
+    <!--<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
+    <script type="text/javascript" src="static/count/mapv.js"></script>
+
+    <script type="text/javascript">
+        // 百度地图API功能
+        var map = new BMap.Map("map", {
+            enableMapClick: false
+        });    // 创建Map实例
+        map.centerAndZoom(new BMap.Point(113.666486,34.753203), 8);  // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+        map.addControl(new BMap.NavigationControl());//开启放大缩小按钮
+        // 地图自定义样式
+        map.setMapStyle({
+            styleJson: [{
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#044161"
+                }
+            }, {
+                "featureType": "land",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#091934"
+                }
+            }, {
+                "featureType": "boundary",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#064f85"
+                }
+            }, {
+                "featureType": "railway",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "highway",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#004981"
+                }
+            }, {
+                "featureType": "highway",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#005b96",
+                    "lightness": 1
+                }
+            }, {
+                "featureType": "highway",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "on"
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#004981",
+                    "lightness": -39
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#00508b"
+                }
+            }, {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "green",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#056197",
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "subway",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "manmade",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "local",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "boundary",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#029fd4"
+                }
+            }, {
+                "featureType": "building",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#1a5787"
+                }
+            }, {
+                "featureType": "label",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "poi",
+                "elementType": "labels.text.fill",
+                "stylers": {
+                    "color": "#ffffff"
+                }
+            }, {
+                "featureType": "poi",
+                "elementType": "labels.text.stroke",
+                "stylers": {
+                    "color": "#1e1c1c"
+                }
+            }, {
+                "featureType": "administrative",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "on"
+                }
+            }, {
+                "featureType": "road",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }]
+        });
+
+
+    </script>
+
+</div>
+<div class="topRT">
+    <h5>设备分布</h5>
+    <div id="main3" style="width: 100%;height:100%;margin: -10px auto;text-align: center"></div>
+    <script>
+        var myChart3 = echarts.init(document.getElementById('main3'));
+        var result = {
+            "code":1,
+            "msg":"操作成功",
+            "errorMsg":null,
+            "content":[
+                {"device_address":"许昌","totalcount":9},
+                {"device_address":"郑州","totalcount":6},
+                {"device_address":"洛阳","totalcount":3},
+                {"device_address":"开封","totalcount":2},
+                {"device_address":"平顶山","totalcount":2},
+                {"device_address":"其他","totalcount":17}]
+        };
+        var data = new Array();
+        for (var i = 0; i < result.content.length; i++) {
+            data.push({value: result.content[i].totalcount, name: result.content[i].device_address})
+        }
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "台 "
+            },
+            color: [
+                '#61a0a8', '#d48265', '#bda29a', '#6e7074', '#749f83', '#91c7ae',
+            ],
+            legend: {
+                left: 'center',
+                top: '1',
+                itemWidth: 18,
+                itemHeight: 15,
+                itemGap: 5,
+                data: [
+                    {name: '次数', icon: 'rect'},
+                    {name: '次数',},
+                    {name: '次数',},
+                    {name: '次数',},
+                    {name: '次数',},
+                    {name: '次数',}
+                ],
+                left: '0%',
+                right: '4%',
+                textStyle: {
+                    fontSize: 12,
+                    color: 'white'
+                }
+            },
+            formatter: function (name) {
+                return (name.length > 3 ? (name.slice(0, 3) + "..") : name);
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'pie',
+                    radius: ['20%', '60%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        '200', '452', '520', '411', '100', '411'
+
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+
+        };
+
+        option.legend.data = data;
+        option.series[0].data = data;
+        myChart3.setOption(option);
+    </script>
+
+</div>
+<div class="mainRT">
+    <h5>各个地市解决事件效率Top5 <a href="#">更多></a></h5>
+    <div id="main2" style="width: 100%;height:100%;"></div>
+    <script type="text/javascript">
+        var myChart2 = echarts.init(document.getElementById('main2'));
+        var c = 0;
+        var d = 45;
+        var xAxisData = new Array();
+        var seriesData = new Array();
+        var result = {
+            "code":1,
+            "msg":"操作成功",
+            "errorMsg":null,
+            "content":[
+                {"device_name":"许昌","totalcount":110},
+                {"device_name":"郑州","totalcount":95},
+                {"device_name":"洛阳","totalcount":86},
+                {"device_name":"开封","totalcount":40},
+                {"device_name":"平顶山","totalcount":30}]
+        };
+        for (var i = 0; i < result.content.length; i++) {
+            xAxisData.push(result.content[i].device_name);
+            seriesData.push(result.content[i].totalcount);
+        };
+        option2 = {
+            color: ['#30a8ff'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '4%',
+                right: '4%',
+                bottom: '4%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: xAxisData,
+                    axisLabel: {
+                        interval: 0
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',
+                            width: '1'
+                        }
+                    },
+                }
+
+            ],
+            yAxis: [
+                {
+                    name: '次',
+                    nameTextStyle: {
+                        fontSize: 13
+                    },
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',
+                            width: '1'
+                        }
+                    },
+                }
+            ],
+            series: [
+                {
+                    name: '防护次数',
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: seriesData
+                }
+            ],
+            textStyle: {
+                fontSize: 100,
+                color: '#fff'
+            },
+            dataZoom: [
+                {
+                    type: 'slider',
+                    show: false,
+                    xAxisIndex: [0],
+                    textStyle: {
+                        fontSize: 10,
+                    },
+                },
+                {
+                    type: 'inside',
+                    xAxisIndex: [0],
+                },
+            ],
+        };
+        myChart2.setOption(option2);
+
+    </script>
+</div>
+<div class="bottomRT">
+    <h5>机房环境预警日志<a href="#">更多></a></h5>
+    <div class="hd">
+        <div class="col-sm-">
+            <p class="col-sm-2" style="width: 16%;">城市</p>
+            <p class="col-sm-5" style="text-align: center; width: 40%;">机房IP</p>
+            <p class="col-sm-5" style="width: 22%;">日志</p></div>
+    </div>
+    <div class="rbBox">
+        <ul class="test4">
+            <li><div class="col-sm-"> <p class="col-sm-2" style="width: 20%;">许昌</p><p class="col-sm-5" style="text-align: center; width: 40%;">114.55.1.210</p><p class="col-sm-5" style="width: 40%;">高温预警</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-2" style="width: 20%;">许昌</p><p class="col-sm-5" style="text-align: center; width: 40%;">114.55.1.210</p><p class="col-sm-5" style="width: 40%;">高温预警</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-2" style="width: 20%;">郑州</p><p class="col-sm-5" style="text-align: center; width: 40%;">121.76.3.16</p><p class="col-sm-5" style="width: 40%;">断电故障</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-2" style="width: 20%;">平顶山</p><p class="col-sm-5" style="text-align: center; width: 40%;">123.56.245.211</p><p class="col-sm-5" style="width: 40%;">网络故障</p></div>
+            </li>
+            <li><div class="col-sm-"> <p class="col-sm-2" style="width: 20%;">开封</p><p class="col-sm-5" style="text-align: center; width: 40%;">117.23.106.122</p><p class="col-sm-5" style="width: 40%;">网络故障</p></div>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<div class="main-bottom">
+    <h5 id="h5s">网络攻击走势图</h5>
+
+    <div id="main4_01" style="width: 100%;height:90%;display:block"></div>
+    <div id="main4_02" style="width: 100%;height:90%;display:none"></div>
+    <div id="main4_03" style="width: 100%;height:90%;display:none"></div>
+
+</div>
+    <script>
+        var xAxisData;
+        var seriesData;
+        //本周每天的防护情况
+        var main4_01= echarts.init(document.getElementById('main4_01'));
+        var result = {
+            "code":1,
+            "msg":"操作成功",
+            "errorMsg":null,
+            "content":[
+                [{"dd":"2018-08-17","d":0}],
+                [{"dd":"2018-08-18","d":3}],
+                [{"dd":"2018-08-19","d":1}],
+                [{"dd":"2018-08-20","d":11}],
+                [{"dd":"2018-08-21","d":0}],
+                [{"dd":"2018-08-22","d":2}],
+                [{"dd":"2018-08-23","d":6}]
+                ,"2018-08-17","2018-08-18","2018-08-19","2018-08-20","2018-08-21","2018-08-22","2018-08-23"
+            ]
+        };
+        seriesData = new Array();
+        var qianqitian;
+        var qianliutian;
+        var qianwutian;
+        var qiansitian;
+        var qiansantian;
+        var yesterday;
+        var today;
+        if (ajaxdatacheck(result)) {
+            var content = result.content;
+            for(var i=0;i<content.length;i++){
+                var map =content[i];
+                if(map instanceof Array && map.length == 0){
+                    seriesData.push(0);
+                }else {
+                    for (var k in map) {  //通过定义一个局部变量k遍历获取到了map中所有的key值
+                        var docList = map[k]; //获取到了key所对应的value的值！
+                        seriesData.push(docList.d);
+                    }
+                }
+            }
+            //获取每一天日期
+            qianqitian = result.content[7]
+            qianliutian = result.content[8]
+            qianwutian = result.content[9]
+            qiansitian = result.content[10]
+            qiansantian = result.content[11]
+            yesterday = result.content[12]
+            today = result.content[13]
+        }
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                left: '3%',
+                right: '7%',
+                bottom: '10%',
+                top: '15%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: [qianqitian,qianliutian,qianwutian,qiansitian,qiansantian,yesterday,today],/*['前七天', '前六天', '前五天', '前四天', '前三天', '昨天', '今天'],*//*xAxisData,*/
+                axisLine: {
+                    lineStyle: {
+                        type: 'solid',
+                        color: '#fff',
+                        width: '1'
+                    }
+                }
+            },
+            yAxis: [{
+                type: 'value',
+                name: '单位（次）',
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#FFFFFF'
+                    }
+                },
+                axisLabel: {
+                    margin: 10,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                }
+            }],
+            series: [
+                {
+                    name: '次数',
+                    type: 'line',
+                    stack: '总量',
+                    smooth: true,
+                    showSymbol: false,
+                    symbol: 'circle',
+                    symbolSize: 6,
+
+                    data: seriesData,
+                }
+            ]
+        };
+        main4_01.setOption(option);
+    </script>
+<script>
+    //24小时防护情况
+    var  main4_02= echarts.init(document.getElementById('main4_02'));
+
+    $.ajax({
+        url: bathpath + "/index/test7",
+        type: "post",
+        contentType: "application/json",
+        success: function (result) {
+            var todayData = new Array();
+
+            if (ajaxdatacheck(result)) {
+                todayData = result.content[0]
+            }
+            var option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: [ '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'],
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',
+                            width: '1'
+                        }
+                    }
+                },
+                yAxis: [{
+                    type: 'value',
+                    name: '单位（次）',
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#FFFFFF'
+                        }
+                    },
+                    axisLabel: {
+                        margin: 10,
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: '次数',
+                        type: 'line',
+                        stack: '总量',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+
+                        data: todayData,
+                    }
+                ]
+            };
+            main4_02.setOption(option);
+        }
+        });
+</script>
+<script>
+
+    //本周每天的防护情况对比
+    var  main4_03= echarts.init(document.getElementById('main4_03'));
+
+    $.ajax({
+        url: bathpath + "/index/test7",
+        type: "post",
+        contentType: "application/json",
+        success: function (result) {
+            var todayData = new Array();
+            var yesterdayData = new Array();
+            var qiansantianData = new Array();
+            var qiansitianData = new Array();
+            var qianwutianData = new Array();
+            var qianliutianData = new Array();
+            var qianqitianData = new Array();
+            var qianqitian;
+            var qianliutian;
+            var qianwutian;
+            var qiansitian;
+            var qiansantian;
+            var yesterday;
+            var today;
+            if (ajaxdatacheck(result)) {
+                todayData = result.content[0]
+                yesterdayData = result.content[1]
+                qiansantianData = result.content[2]
+                qiansitianData = result.content[3]
+                qianwutianData = result.content[4]
+                qianliutianData = result.content[5]
+                qianqitianData = result.content[6]
+                //获取每一天日期
+                qianqitian = result.content[7]
+                qianliutian = result.content[8]
+                qianwutian = result.content[9]
+                qiansitian = result.content[10]
+                qiansantian = result.content[11]
+                yesterday = result.content[12]
+                today = result.content[13]
+            }
+
+            var option = {
+                tooltip: {
+                    trigger: 'axis',
+                },
+                legend: {
+                    itemWidth: 10,
+                    itemHeight: 8,
+                    itemGap: 5,
+                    left: '15%',
+                    right: '0%',
+                    data: [qianqitian,qianliutian,qianwutian,qiansitian,qiansantian,yesterday,today],
+                    textStyle: {
+                        fontSize: 10,
+                        color: '#F1F1F3'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    top: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: [ '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '00:00'],
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',
+                            width: '1'
+                        }
+                    }
+                },
+                yAxis: [{
+                    type: 'value',
+                    name: '单位（次）',
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#FFFFFF'
+                        }
+                    },
+                    axisLabel: {
+                        margin: 10,
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: qianqitian,
+                        type: 'line',
+                        stack: '总量',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: qianqitianData,
+                    },
+                    {
+                        name: qianliutian,
+                        type: 'line',
+                        stack: '总量1',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: qianliutianData,
+                    },
+                    {
+                        name: qianwutian,
+                        type: 'line',
+                        stack: '总量2',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: qianwutianData,
+                    },
+                    {
+                        name: qiansitian,
+                        type: 'line',
+                        stack: '总量3',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: qiansitianData,
+                    },
+                    {
+                        name: qiansantian,
+                        type: 'line',
+                        stack: '总量4',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: qiansantianData,
+                    },
+                    {
+                        name: yesterday,
+                        type: 'line',
+                        stack: '总量5',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: yesterdayData,
+                    },
+                    {
+                        name: today,
+                        type: 'line',
+                        stack: '总量6',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        data: todayData,
+                    }
+                ]
+            };
+            main4_03.setOption(option);
+        }
+    })
+</script>
+<script>
+    window.onresize = function () {
+        $('#main1').width('100%');
+        $('#main2').width('100%');
+        $('#main3').width('100%');
+        $('#main4_01').width('100%');
+        $('#main4_02').width('100%');
+        $('#main4_03').width('100%');
+        // $('#main5').width('100%');
+
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+        main4_01.resize();
+        main4_02.resize();
+        main4_03.resize();
+        // myChart5.resize();
+
+    };
+</script>
+
+<script>
+    var h5s=document.getElementById("h5s");
+    console.log(h5s)
+    var as=h5s.getElementsByTagName("a")
+    console.log(as);
+    var a1=document.getElementById("a1");
+    var a2=document.getElementById("a2");
+    var a3=document.getElementById("a3");
+    var char1=document.getElementById("main4_01");
+    var char2=document.getElementById("main4_02");
+    var char3=document.getElementById("main4_03");
+    console.log(a1,a2,a3)
+    a1.onclick=function() {
+        char1.style.display="block";
+        char2.style.display="none";
+        char3.style.display="none";
+        a1.style.color='#d58512';
+        a2.style.color='';
+        a3.style.color='';
+        main4_01.resize();
+    };
+    a2.onclick=function() {
+        char1.style.display="none";
+        char2.style.display="block";
+        char3.style.display="none";
+        a1.style.color='';
+        a2.style.color='#d58512';
+        a3.style.color='';
+        main4_02.resize();
+    };
+    a3.onclick=function() {
+        char1.style.display="none";
+        char2.style.display="none";
+        char3.style.display="block";
+        a1.style.color='';
+        a2.style.color='';
+        a3.style.color='#d58512';
+        main4_03.resize();
+    };
+</script>
+</body>
+</html>

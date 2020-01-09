@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="PDSManager:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="HNIOIS.war">
+      <element id="artifact" artifact-name="PDSManager:war exploded" />
+    </root>
+  </artifact>
+</component>

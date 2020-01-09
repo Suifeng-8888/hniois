@@ -1,0 +1,141 @@
+package com.hniois.web.trace;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.trace.entity.Im_Porduct;
+import com.hniois.trace.service.ImportManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping("/webService/zsImport")
+public class ImportActionWeb extends BaseController {
+
+    @Resource(name = "importService")
+    private ImportManage importService;
+
+
+    /**
+     * 查找对象
+     *
+     * @param e
+     * @return
+     */
+    @RequestMapping("/find")
+    public String find(Im_Porduct e)throws Exception{
+
+        JSONObject json = getMsg();
+        if(StringUtils.isNotEmpty(e.getIm_id())){
+            Im_Porduct im_porduct=importService.find(e);
+            JSONObject js = JSONObject.fromObject(im_porduct);
+            return js.toString();
+        }else{
+            setMsg(json,"error","无此对象");
+            return json.toString();
+        }
+    }
+
+    /**
+     * 查询list
+     * @param e
+     * @return
+     */
+    @RequestMapping("/findList")
+    public String findlist(Im_Porduct e) throws Exception{
+        List<Im_Porduct> list=null;
+        if(StringUtils.isNotEmpty(e.getIm_id())){
+            list = importService.findList(e);
+        }else{
+            list = importService.findList(new Im_Porduct());
+        }
+        JSONArray js = JSONArray.fromObject(list);
+        return js.toString();
+    }
+
+    /**
+     * 查询count
+     * @param e 进货信息
+     * @return json
+     * */
+    @RequestMapping(value="/findCount")
+    public String findCount(Im_Porduct e) throws Exception {
+        Integer count = importService.findCount(e);
+        return String.valueOf(count);
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    public String add(Im_Porduct e)throws  Exception{
+        JSONObject obj=getMsg();
+        //先判断数据库是否已经存在当前对象
+        Im_Porduct im_porduct=new Im_Porduct();
+        im_porduct.setIm_id(e.getIm_id());
+        if(importService.findCount(im_porduct)>0){
+            setMsg(obj,"error","当前对象已存在");
+        }else{
+            importService.save(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    public String update(Im_Porduct e)throws Exception{
+        JSONObject obj=getMsg();
+        if(importService.findCount(e)>0){
+            importService.update(e);
+        }else{
+            setMsg(obj,"error","编辑失败");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    public String delete(Im_Porduct e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getIm_id()!=null) {
+            importService.delete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    public String deletes(Im_Porduct e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            importService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+
+}

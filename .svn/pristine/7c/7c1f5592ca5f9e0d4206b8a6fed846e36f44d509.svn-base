@@ -1,0 +1,46 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * 二维码扫描记录对象
+ */
+public class Scan extends Page {
+    //scan_id,scan_name,scan_time,site
+    private String scan_id;//序号ID
+    private String scan_name;//扫描产品名
+    private String scan_time;//扫描时间
+    private String site;//扫描位置
+
+    public String getScan_id() {
+        return scan_id;
+    }
+
+    public void setScan_id(String scan_id) {
+        this.scan_id = scan_id;
+    }
+
+    public String getScan_name() {
+        return scan_name;
+    }
+
+    public void setScan_name(String scan_name) {
+        this.scan_name = scan_name;
+    }
+
+    public String getScan_time() {
+        return scan_time;
+    }
+
+    public void setScan_time(String scan_time) {
+        this.scan_time = scan_time;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+}

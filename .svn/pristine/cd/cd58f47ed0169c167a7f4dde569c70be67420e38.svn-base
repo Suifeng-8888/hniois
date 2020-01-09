@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BreedMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Breed"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_breed(
+		<if test="breed_id!='' and breed_id!=null">breed_id</if>
+		<if test="breed_name!='' and breed_name!=null">,breed_name</if>
+		<if test="breed_ways!='' and breed_ways!=null">,breed_ways</if>
+		<if test="growSitu!='' and growSitu!=null">,growSitu</if>
+		<if test="breeder!='' and breeder!=null">,breeder</if>
+		<if test="feed_num!='' and feed_num!=null">,feed_num</if>
+		<if test="feed_id!='' and feed_id!=null">,feed_id</if>
+		<if test="feed_name!='' and feed_name!=null">,feed_name</if>
+		<if test="begin_time!='' and begin_time!=null">,begin_time</if>
+		<if test="end_time!='' and end_time!=null">,end_time</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		<if test="farm_name!='' and farm_name!=null">,farm_name</if>
+		<if test="breed_img!='' and breed_img!=null">,breed_img</if>
+		<if test="test!='' and test!=null">,test</if>
+		<if test="type!='' and type!=null">,type</if>
+		)
+		VALUES (
+		<if test="breed_id!='' and breed_id!=null">#{breed_id}</if>
+		<if test="breed_name!='' and breed_name!=null">,#{breed_name}</if>
+		<if test="breed_ways!='' and breed_ways!=null">,#{breed_ways}</if>
+		<if test="growSitu!='' and growSitu!=null">,#{growSitu}</if>
+		<if test="breeder!='' and breeder!=null">,#{breeder}</if>
+		<if test="feed_num!='' and feed_num!=null">,#{feed_num}</if>
+		<if test="feed_id!='' and feed_id!=null">,#{feed_id}</if>
+		<if test="feed_name!='' and feed_name!=null">,#{feed_name}</if>
+		<if test="begin_time!='' and begin_time!=null">,#{begin_time}</if>
+		<if test="end_time!='' and end_time!=null">,#{end_time}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		<if test="farm_name!='' and farm_name!=null">,#{farm_name}</if>
+		<if test="breed_img!='' and breed_img!=null">,#{breed_img}</if>
+		<if test="test!='' and test!=null">,#{test}</if>
+		<if test="type!='' and type!=null">,#{type}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Breed">
+		insert into r_breed
+		(breed_id,breed_name,breed_ways,growSitu,breeder,feed_num,feed_id,feed_name,begin_time,end_time,farm_id,farm_name,breed_img,test,type)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.breed_id},
+			#{e.breed_name},
+			#{e.breed_ways},
+			#{e.growSitu},
+			#{e.breeder},
+			#{e.feed_num},
+			#{e.feed_id},
+			#{e.feed_name},
+			#{e.begin_time},
+			#{e.end_time},
+			#{e.farm_id},
+			#{e.farm_name},
+			#{e.breed_img},
+			#{e.test},
+			#{e.type}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Breed">
+		update r_breed
+		<set>
+			<if test="breed_name !=null and breed_name !=''">breed_name=#{breed_name},</if>
+			<if test="breed_ways !=null and breed_ways !=''">breed_ways=#{breed_ways},</if>
+			<if test="growSitu !=null and growSitu !=''">growSitu=#{growSitu},</if>
+			<if test="breeder !=null and breeder !=''">breeder=#{breeder},</if>
+			<if test="feed_num !=null and feed_num !=''">feed_num=#{feed_num},</if>
+			<if test="feed_id !=null and feed_id !=''">feed_id=#{feed_id},</if>
+			<if test="feed_name !=null and feed_name !=''">feed_name=#{feed_name},</if>
+			<if test="begin_time !=null and begin_time !=''">begin_time=#{begin_time},</if>
+			<if test="end_time !=null and end_time !=''">end_time=#{end_time},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="farm_name !=null and farm_name !=''">farm_name=#{farm_name},</if>
+			<if test="breed_img !=null and breed_img !=''">breed_img=#{breed_img},</if>
+			<if test="test !=null and test !=''">test=#{test},</if>
+			<if test="type !=null and type !=''">type=#{type},</if>
+
+		</set>
+		where breed_id=#{breed_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Breed">
+		update r_breed
+		<set>
+			<if test="breed_name !=null and breed_name !=''">breed_name=#{breed_name},</if>
+			<if test="breed_ways !=null and breed_ways !=''">breed_ways=#{breed_ways},</if>
+			<if test="growSitu !=null and growSitu !=''">growSitu=#{growSitu},</if>
+			<if test="breeder !=null and breeder !=''">breeder=#{breeder},</if>
+			<if test="feed_num !=null and feed_num !=''">feed_num=#{feed_num},</if>
+			<if test="feed_id !=null and feed_id !=''">feed_id=#{feed_id},</if>
+			<if test="feed_name !=null and feed_name !=''">feed_name=#{feed_name},</if>
+			<if test="begin_time !=null and begin_time !=''">begin_time=#{begin_time},</if>
+			<if test="end_time !=null and end_time !=''">end_time=#{end_time},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="farm_name !=null and farm_name !=''">farm_name=#{farm_name},</if>
+			<if test="breed_img !=null and breed_img !=''">breed_img=#{breed_img},</if>
+			<if test="test !=null and test !=''">test=#{test},</if>
+			<if test="type !=null and type !=''">type=#{type},</if>
+		</set>
+		where breed_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Breed">
+		delete from r_breed where 1=1
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_breed
+		where breed_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Breed" resultType="com.hniois.monitor.entity.Breed">
+		select *
+		from r_breed
+		where 1=1
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="breed_name !=null and breed_name !=''">and breed_name=#{breed_name}</if>
+		<if test="breed_ways !=null and breed_ways !=''">and breed_ways=#{breed_ways}</if>
+		<if test="growSitu !=null and growSitu !=''">and growSitu=#{growSitu}</if>
+		<if test="breeder !=null and breeder !=''">and breeder=#{breeder}</if>
+		<if test="feed_num !=null and feed_num !=''">and feed_num=#{feed_num}</if>
+		<if test="feed_id !=null and feed_id !=''">and feed_id=#{feed_id}</if>
+		<if test="feed_name !=null and feed_name !=''">and feed_name=#{feed_name}</if>
+		<if test="begin_time !=null and begin_time !=''">and begin_time=#{begin_time}</if>
+		<if test="end_time !=null and end_time !=''">and end_time=#{end_time}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+		<if test="breed_img !=null and breed_img !=''">and breed_img=#{breed_img}</if>
+		<if test="test !=null and test !=''">and test=#{test}</if>
+		<if test="type !=null and type !=''">and type=#{type}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Breed" resultType="com.hniois.monitor.entity.Breed">
+		select *
+		from r_breed
+		where 1=1
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="breed_name !=null and breed_name !=''">and breed_name=#{breed_name}</if>
+		<if test="breed_ways !=null and breed_ways !=''">and breed_ways=#{breed_ways}</if>
+		<if test="growSitu !=null and growSitu !=''">and growSitu=#{growSitu}</if>
+		<if test="breeder !=null and breeder !=''">and breeder=#{breeder}</if>
+		<if test="feed_num !=null and feed_num !=''">and feed_num=#{feed_num}</if>
+		<if test="feed_id !=null and feed_id !=''">and feed_id=#{feed_id}</if>
+		<if test="feed_name !=null and feed_name !=''">and feed_name=#{feed_name}</if>
+		<if test="begin_time !=null and begin_time !=''">and begin_time=#{begin_time}</if>
+		<if test="end_time !=null and end_time !=''">and end_time=#{end_time}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+		<if test="breed_img !=null and breed_img !=''">and breed_img=#{breed_img}</if>
+		<if test="test !=null and test !=''">and test=#{test}</if>
+		<if test="type !=null and type !=''">and type=#{type}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Breed" resultType="java.lang.Integer">
+		select count(*)
+		from r_breed t
+		where 1=1
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="breed_name !=null and breed_name !=''">and t.breed_name=#{breed_name}</if>
+		<if test="breed_ways !=null and breed_ways !=''">and t.breed_ways=#{breed_ways}</if>
+		<if test="growSitu !=null and growSitu !=''">and t.growSitu=#{growSitu}</if>
+		<if test="breeder !=null and breeder !=''">and t.breeder=#{breeder}</if>
+		<if test="feed_num !=null and feed_num !=''">and t.feed_num=#{feed_num}</if>
+		<if test="feed_id !=null and feed_id !=''">and t.feed_id=#{feed_id}</if>
+		<if test="feed_name !=null and feed_name !=''">and t.feed_name=#{feed_name}</if>
+		<if test="begin_time !=null and begin_time !=''">and t.begin_time=#{begin_time}</if>
+		<if test="end_time !=null and end_time !=''">and t.end_time=#{end_time}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+		<if test="breed_img !=null and breed_img !=''">and t.breed_img=#{breed_img}</if>
+		<if test="test !=null and test !=''">and t.test=#{test}</if>
+		<if test="type !=null and type !=''">and t.type=#{type}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Breed" resultType="com.hniois.monitor.entity.Breed">
+		select *
+		from r_breed
+		where 1=1
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="breed_name !=null and breed_name !=''">and breed_name=#{breed_name}</if>
+		<if test="breed_ways !=null and breed_ways !=''">and breed_ways=#{breed_ways}</if>
+		<if test="growSitu !=null and growSitu !=''">and growSitu=#{growSitu}</if>
+		<if test="breeder !=null and breeder !=''">and breeder=#{breeder}</if>
+		<if test="feed_num !=null and feed_num !=''">and feed_num=#{feed_num}</if>
+		<if test="feed_id !=null and feed_id !=''">and feed_id=#{feed_id}</if>
+		<if test="feed_name !=null and feed_name !=''">and feed_name=#{feed_name}</if>
+		<if test="begin_time !=null and begin_time !=''">and begin_time=#{begin_time}</if>
+		<if test="end_time !=null and end_time !=''">and end_time=#{end_time}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+		<if test="breed_img !=null and breed_img !=''">and breed_img=#{breed_img}</if>
+		<if test="test !=null and test !=''">and test=#{test}</if>
+		<if test="type !=null and type !=''">and type=#{type}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Breed" resultType="java.lang.Integer">
+		select count(*)
+		from r_breed t
+		where 1=1
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="breed_name !=null and breed_name !=''">and t.breed_name=#{breed_name}</if>
+		<if test="breed_ways !=null and breed_ways !=''">and t.breed_ways=#{breed_ways}</if>
+		<if test="growSitu !=null and growSitu !=''">and t.growSitu=#{growSitu}</if>
+		<if test="breeder !=null and breeder !=''">and t.breeder=#{breeder}</if>
+		<if test="feed_num !=null and feed_num !=''">and t.feed_num=#{feed_num}</if>
+		<if test="feed_id !=null and feed_id !=''">and t.feed_id=#{feed_id}</if>
+		<if test="feed_name !=null and feed_name !=''">and t.feed_name=#{feed_name}</if>
+		<if test="begin_time !=null and begin_time !=''">and t.begin_time=#{begin_time}</if>
+		<if test="end_time !=null and end_time !=''">and t.end_time=#{end_time}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+		<if test="breed_img !=null and breed_img !=''">and t.breed_img=#{breed_img}</if>
+		<if test="test !=null and test !=''">and t.test=#{test}</if>
+		<if test="type !=null and type !=''">and t.type=#{type}</if>
+	</select>
+</mapper>

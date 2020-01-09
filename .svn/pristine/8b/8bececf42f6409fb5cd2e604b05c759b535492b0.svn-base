@@ -1,0 +1,128 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * 检测报告对象
+ */
+public class Report extends Page {
+    //report_id,report_name,product_name,product_batch,result,clerker,ck_time,operator,create_time
+    private String report_id;//报告编号
+    private String report_name;//报告名称
+    private String product_name;//产品名称
+    private String product_batch;//产品批次
+    private String result;//检测结果 0合格 1不合格
+    private String clerker;//检测员
+    private String ck_time;//检测时间
+    private String operator;//录入人
+    private String create_time;//录入时间
+    private String base_name;//生产基地名
+    private String report_img;//检测报告图片
+    private String farm_id;//生产基地编号
+    //扩展字段
+    private String report_path;//图片路径
+
+    public String getBase_name() {
+        return base_name;
+    }
+
+    public void setBase_name(String base_name) {
+        this.base_name = base_name;
+    }
+
+    public String getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(String report_id) {
+        this.report_id = report_id;
+    }
+
+    public String getReport_name() {
+        return report_name;
+    }
+
+    public void setReport_name(String report_name) {
+        this.report_name = report_name;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public String getProduct_batch() {
+        return product_batch;
+    }
+
+    public void setProduct_batch(String product_batch) {
+        this.product_batch = product_batch;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getClerker() {
+        return clerker;
+    }
+
+    public void setClerker(String clerker) {
+        this.clerker = clerker;
+    }
+
+    public String getCk_time() {
+        return ck_time;
+    }
+
+    public void setCk_time(String ck_time) {
+        this.ck_time = ck_time;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public String getReport_img() {
+        return report_img;
+    }
+
+    public void setReport_img(String report_img) {
+        this.report_img = report_img;
+    }
+
+    public String getReport_path() {
+        return report_path;
+    }
+
+    public void setReport_path(String report_path) {
+        this.report_path = report_path;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+}

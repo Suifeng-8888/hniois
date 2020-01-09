@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CerficateMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Certificate"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_certificate(
+		<if test="mid!='' and mid!=null">mid</if>
+		<if test="mkName!='' and mid!=null">,mkName</if>
+		<if test="company!='' and company!=null">,company</if>
+		<if test="m_img!='' and m_img!=null">,m_img</if>
+		<if test="m_time!='' and m_time!=null">,m_time</if>
+		<if test="m_person!='' and m_person!=null">,m_person</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (
+		<if test="mid!='' and mid!=null">#{mid}</if>
+		<if test="mkName!='' and mkName!=null">,#{mkName}</if>
+		<if test="company!='' and company!=null">,#{company}</if>
+		<if test="m_img!='' and m_img!=null">,#{m_img}</if>
+		<if test="m_time!='' and m_time!=null">,#{m_time}</if>
+		<if test="m_person!='' and m_person!=null">,#{m_person}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Certificate">
+		insert into r_certificate
+		(mid,mkName,company,m_img,m_time,m_person,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.mid},
+			#{e.mkName},
+			#{e.company},
+			#{e.m_img},
+			#{e.m_time},
+			#{e.m_person},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Certificate">
+		update r_certificate
+		<set>
+			<if test="mkName !=null and mkName !=''">mkName=#{mkName},</if>
+			<if test="company !=null and company !=''">company=#{company},</if>
+			<if test="m_img !=null and m_img !=''">m_img=#{m_img},</if>
+			<if test="m_path !=null and m_path !=''">
+				`m_img`= REPLACE(`m_img`,CONCAT(#{m_path},','),''),
+			</if>
+			<if test="m_time !=null and m_time !=''">m_time=#{m_time},</if>
+			<if test="m_person !=null and m_person !=''">m_person=#{m_person},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where mid=#{mid}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Certificate">
+		update r_certificate
+		<set>
+			<if test="mkName !=null and mkName !=''">mkName=#{mkName},</if>
+			<if test="company !=null and company !=''">company=#{company},</if>
+			<if test="m_img !=null and m_img !=''">m_img=#{m_img},</if>
+			<if test="m_time !=null and m_time !=''">m_time=#{m_time},</if>
+			<if test="m_person !=null and m_person !=''">m_person=#{m_person},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where mid in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Certificate">
+		delete from r_certificate where 1=1
+		<if test="mid !=null and mid !=''">and mid=#{mid}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_certificate
+		where mid in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Certificate" resultType="com.hniois.monitor.entity.Certificate">
+		select *
+		from r_certificate
+		where 1=1
+		<if test="mid !=null and mid !=''">and mid=#{mid}</if>
+		<if test="mkName !=null and mkName !=''">and mkName=#{mkName}</if>
+		<if test="company !=null and company !=''">and company=#{company}</if>
+		<if test="m_img !=null and m_img !=''">and m_img=#{m_img}</if>
+		<if test="m_time !=null and m_time !=''">and m_time=#{m_time}</if>
+		<if test="m_person !=null and m_person !=''">and m_person=#{m_person}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Certificate" resultType="com.hniois.monitor.entity.Certificate">
+		select *
+		from r_certificate
+		where 1=1
+		<if test="mid !=null and mid !=''">and mid=#{mid}</if>
+		<if test="mkName !=null and mkName !=''">and mkName=#{mkName}</if>
+		<if test="company !=null and company !=''">and company=#{company}</if>
+		<if test="m_img !=null and m_img !=''">and m_img=#{m_img}</if>
+		<if test="m_time !=null and m_time !=''">and m_time=#{m_time}</if>
+		<if test="m_person !=null and m_person !=''">and m_person=#{m_person}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Certificate" resultType="java.lang.Integer">
+		select count(*)
+		from r_certificate t
+		where 1=1
+		<if test="mid !=null and mid !=''">and t.mid=#{mid}</if>
+		<if test="mkName !=null and mkName !=''">and t.mkName=#{mkName}</if>
+		<if test="company !=null and company !=''">and t.company=#{company}</if>
+		<if test="m_img !=null and m_img !=''">and t.m_img=#{m_img}</if>
+		<if test="m_time !=null and m_time !=''">and t.m_time=#{m_time}</if>
+		<if test="m_person !=null and m_person !=''">and t.m_person=#{m_person}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Certificate" resultType="com.hniois.monitor.entity.Certificate">
+		select *
+		from r_certificate
+		where 1=1
+		<if test="mid !=null and mid !=''">and mid=#{mid}</if>
+		<if test="mkName !=null and mkName !=''">and mkName=#{mkName}</if>
+		<if test="company !=null and company !=''">and company=#{company}</if>
+		<if test="m_img !=null and m_img !=''">and m_img=#{m_img}</if>
+		<if test="m_time !=null and m_time !=''">and m_time=#{m_time}</if>
+		<if test="m_person !=null and m_person !=''">and m_person=#{m_person}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Certificate" resultType="java.lang.Integer">
+		select count(*)
+		from r_certificate t
+		where 1=1
+		<if test="mid !=null and mid !=''">and t.mid=#{mid}</if>
+		<if test="mkName !=null and mkName !=''">and t.mkName=#{mkName}</if>
+		<if test="company !=null and company !=''">and t.company=#{company}</if>
+		<if test="m_img !=null and m_img !=''">and t.m_img=#{m_img}</if>
+		<if test="m_time !=null and m_time !=''">and t.m_time=#{m_time}</if>
+		<if test="m_person !=null and m_person !=''">and t.m_person=#{m_person}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+</mapper>

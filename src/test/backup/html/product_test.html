@@ -1,0 +1,232 @@
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>金明源农产品溯源公共信息服务平台</title>
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <link href="../js/plugs/paging/paging.css" rel="stylesheet">
+  <link href="../css/main.css" rel="stylesheet">
+  <link href="../css/content.css" rel="stylesheet">
+  <link href="../js/layui/css/layui.css" rel="stylesheet">
+
+  <style type="text/css">
+    .lists-mod .no-cursor{cursor:default;}
+    .lists-mod .no-cursor:hover{border-color: #ccc;}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="head-bg">
+    <div class="container">
+      <a class="navbar-brand" href="javascript:main.goback();">
+        <img class="navbar-logo hidden-xs" src="css/imgs/pc/logo-2.png">
+        <h1 class="hidden-xs">金明源农产品溯源公共信息服务平台</h1>
+        <img class="navbar-logo visible-xs-block" src="css/imgs/app/row-l.png">
+      </a>
+      <h1 class="visible-xs-block">金明源农产品溯源公共信息服务平台</h1>
+      <!-- navbar-brand End -->
+      <div class="navbar-right">
+        <div class="btn-group">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="index.html">首 页</a></li>
+            <li><a href="traceCodeList.html">追溯码追溯</a></li>
+            <li><a href="barCode.html?step=1">条码追溯</a></li>
+            <li><a href="productsName.html?step=1">品名追溯</a></li>
+            <li><a href="company.html">企业查询</a></li>
+            <li><a href="product.html">产品查询</a></li>
+            <li><a href="consumption.html">消费提醒</a></li>
+            <li><a href="aboutUs.html">平台介绍</a></li>
+          </ul>
+        </div>
+        <!-- btn-group End -->
+      </div>
+      <!-- navbar-right End -->
+
+      <div class="picCode hidden-xs">
+        <img src="css/imgs/pc/appCode-2.jpg" alt="APP" class="small">
+        <div class="viewBox">
+          <img src="css/imgs/pc/appCode-2.jpg" alt="APP">
+          <p>APP</p>
+        </div>
+      </div>
+    </div>
+    <!-- container End -->
+  </div>
+  <!-- head-bg End -->
+</div>
+<!-- header End -->
+
+<div class="content hidden-xs banner-menu">
+  <div class="row">
+    <div class="col-md-12 b-b">
+      <div class="container text-center">
+        <div class="tags">
+          <a href="traceCodeList.html">追溯码</a>
+          <a href="barCode.html?step=1">条码</a>
+          <a href="productsName.html?step=1">品名</a>
+          <a href="company.html">企业</a>
+          <a href="product.html" class="on">产品</a>
+        </div>
+        <!-- tags End -->
+      </div>
+      <!-- container End -->
+    </div>
+    <!-- col-md-12 End -->
+  </div>
+  <!-- row End -->
+</div>
+<!-- content End -->
+
+<div class="content pc-search hidden-xs">
+  <div class="row bg">
+    <div class="container">
+      <div class="search-mod text-center">
+        <div class="form-group text-center">
+          <input class="search-input" value="" placeholder="请输入产品" type="text">
+          <a href="javaScript:void(0);" class="sBtn">
+            <span class="glyphicon glyphicon-search" aria-hidden="true" style="margin: 16px 0px 0px 5px;">
+
+            </span>
+          </a>
+        </div>
+      </div>
+      <!-- search-mod End -->
+    </div>
+  </div>
+</div>
+<!-- content End -->
+
+<div class="content app-search-2 appShow">
+  <div class="row bg">
+    <div class="container">
+      <div class="search-mod text-center" style="margin: 15px auto 0 auto !important;">
+        <div class="form-group text-center" style="margin-bottom: 0;">
+          <input class="search-input" value="" placeholder="请输入产品" type="text">
+          <a href="javaScript:void(0);" class="sBtn">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+      <!-- search-mod End -->
+    </div>
+  </div>
+</div>
+<!-- content End -->
+
+<div class="content app-items app-p-t15">
+  <div class="row bg">
+    <div class="container">
+      <div class="lists-mod">
+        <div class="row b-b hidden-xs">
+          <h3><i class="line"></i>搜索结果</h3>
+        </div>
+        <div class="row" id="itemList">
+
+
+        </div>
+      </div>
+      <!-- lists-mod End -->
+    </div>
+    <!-- container End -->
+  </div>
+  <!-- row End -->
+</div>
+<!-- content End -->
+
+<!--分页-->
+<div class="content hidden-xs">
+  <div class="row bg">
+    <div class="container text-center">
+      <div id="findListPageFoot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- companyPage End -->
+<a href="javaScript:void(0);" id="back-to-top" class="backTop" style="display: none;"></a>
+
+<div class="footer hidden-xs">
+  <div class="row">
+    <div class="container text-center">
+      <div class="col-md-12">
+        <p>Copyright © 2018 金明源农产品溯源公共信息服务平台
+      </div>
+    </div>
+    <!-- container End -->
+  </div>
+  <!-- row End -->
+</div>
+<!-- footer End -->
+
+<div class="popMask"></div>
+
+
+
+<div id="search-show-list" style="display: none;">
+  <div class="items">
+    <a href="#">
+      <div class="row">
+        <!--<div class="pic">-->
+        <!--<img src="" alt="泰森鸡凤爪">-->
+        <!--</div>-->
+        <div class="col-xs-9 hidden-xs">
+          <div class="row">
+            <h4>
+              <span class="hniois-data" name="pro_name"></span>
+            </h4>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 info">
+              <label>产品条码</label>
+              <span class="hniois-data" name="pro_code"></span>
+            </div>
+            <div class="col-xs-6 info">
+              <label>产品类型</label>
+              <span class="hniois-data" name="pro_type"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 info">
+              <label>保质期</label>
+              <span class="hniois-data" name="end_time"></span>
+            </div>
+
+            <div class="col-xs-6 info">
+              <label>产品规格</label>
+              <span class="hniois-data" name="pro_unit"></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-6 info">
+              <label>保质期11</label>
+              <span class="hniois-data" name="end_time"></span>
+            </div>
+
+            <div class="col-xs-6 info">
+              <label>产品规格222</label>
+              <span class="hniois-data" name="pro_unit"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+
+<script src="../js/common/jquery-1.12.4.min.js"></script>
+<script src="../js/common/bootstrap.min.js"></script>
+<!--<script src="../js/common/template.js"></script>-->
+<script src="../js/layui/layui.all.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/product.js"></script>
+</body>
+</html>

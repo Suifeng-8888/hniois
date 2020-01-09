@@ -1,0 +1,114 @@
+package com.hniois.web.trace;
+
+import com.hniois.trace.entity.Aptitude;
+import com.hniois.trace.service.AptitudeService;
+import com.hniois.web.Message;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * Create By javaMan
+ * 2018/9/25  16:05
+ * 企业资质管理接口
+ */
+@RequestMapping(value = "/webService/aptitude")
+@RestController
+public class AptitudeWebService {
+
+    @Resource(name = "aptitudeService")
+    private AptitudeService aptitudeService;
+
+    /**
+     * 企业资质详情
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    public Aptitude getAptitude(@PathVariable("id") Integer id) throws Exception {
+        Aptitude aptitude = new Aptitude();
+        aptitude.setId(id.toString());
+        return aptitudeService.find(aptitude);
+    }
+
+    /**
+     * 企业资质列表
+     * @param aptitude
+     * @return
+     */
+    @RequestMapping(value = "/findList", method = RequestMethod.GET)
+    public List<Aptitude> getAptitudeList(Aptitude aptitude) throws Exception {
+        return aptitudeService.findList(aptitude);
+    }
+
+    /**
+     * 企业资质新增
+     * @param aptitude
+     * @return
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public Message saveAptitude(Aptitude aptitude) {
+        Message message = new Message(0, "添加成功!", "");
+        try {
+            aptitudeService.save(aptitude);
+        } catch (Exception e) {
+            message.setCode(1);
+            message.setMsg("添加失败!");
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    /**
+     * 企业资质信息删除
+     * @param id
+     * @return
+     */
+//    @RequestMapping(value = "/del/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.GET)
+    public Message delAptitude(@PathVariable("id") Integer id) {
+        Message message = new Message();
+        if(id != null) {
+            Aptitude aptitude = new Aptitude();
+            aptitude.setId(id.toString());
+            try {
+                aptitudeService.delete(aptitude);
+                message.setCode(0);
+                message.setMsg("删除成功!");
+            } catch (Exception e) {
+                message.setCode(1);
+                message.setMsg("删除失败!");
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    /**
+     * 更新企业资质信息
+     * @param aptitude
+     * @return
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Message updateAptitude(Aptitude aptitude) {
+        Message message = new Message();
+        if(StringUtils.isNotEmpty(aptitude.getId())) {
+            try {
+                aptitudeService.update(aptitude);
+                message.setCode(0);
+                message.setMsg("更新成功!");
+            } catch (Exception e) {
+                message.setCode(1);
+                message.setMsg("更新失败!");
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+}

@@ -1,0 +1,69 @@
+package com.hniois.monitor.dao.impl;
+
+import com.hniois.common.dao.DaoSupport;
+import com.hniois.common.page.Page;
+import com.hniois.monitor.dao.CertificateDao;
+import com.hniois.monitor.entity.Certificate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository("certificateDaoImpl")
+public class CertificateDaoImpl implements CertificateDao {
+
+    @Autowired
+    private DaoSupport dao;
+
+    private String mapper = "CerficateMapper";
+
+    @Override
+    public void save(Certificate e) throws Exception {
+        dao.save(mapper+".save",e);
+    }
+
+    @Override
+    public void saveBatch(List<Certificate> e) throws Exception {
+        dao.save(mapper+".saveBatch",e);
+    }
+
+    @Override
+    public void delete(Certificate e) throws Exception {
+        dao.delete(mapper+".delete",e);
+    }
+
+    @Override
+    public void deleteBatch(Certificate e) throws Exception {
+        dao.delete(mapper+".deleteBatch",e);
+    }
+
+    @Override
+    public void update(Certificate e) throws Exception {
+        dao.update(mapper+".update",e);
+    }
+
+    @Override
+    public void updateBatch(Certificate e) throws Exception {
+        dao.update(mapper+".updateBatch",e);
+    }
+
+    @Override
+    public Certificate find(Certificate e) throws Exception {
+        return (Certificate)dao.find(mapper+".find",e);
+    }
+
+    @Override
+    public List<Certificate> findList(Certificate e) throws Exception {
+        return  (List<Certificate> )dao.findList(mapper+".findList",e);
+    }
+
+    @Override
+    public int findCount(Certificate e) throws Exception {
+        return  (Integer)dao.find(mapper+".findCount",e);
+    }
+
+    @Override
+    public Page findPage(Certificate e) throws Exception {
+        return (Page)dao.findPage(mapper+".findPage",mapper+".findPageCount",e);
+    }
+}

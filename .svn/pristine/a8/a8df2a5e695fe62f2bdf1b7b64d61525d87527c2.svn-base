@@ -1,0 +1,83 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * 三品一标登记对象
+ */
+public class Certificate extends Page {
+
+    private String mid;//ID
+    private String mkName;//品名
+    private String farm_id;//基地ID
+    private String company;//基地名称
+    private String m_img;//资质证书
+    private String m_time;//登记时间
+    private String m_person;//登记时间
+
+    private String m_path;//临时调用
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    public String getMkName() {
+        return mkName;
+    }
+
+    public void setMkName(String mkName) {
+        this.mkName = mkName;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getM_img() {
+        return m_img;
+    }
+
+    public void setM_img(String m_img) {
+        this.m_img = m_img;
+    }
+
+    public String getM_time() {
+        return m_time;
+    }
+
+    public void setM_time(String m_time) {
+        this.m_time = m_time;
+    }
+
+    public String getM_path() {
+        return m_path;
+    }
+
+    public void setM_path(String m_path) {
+        this.m_path = m_path;
+    }
+
+    public String getM_person() {
+        return m_person;
+    }
+
+    public void setM_person(String m_person) {
+        this.m_person = m_person;
+    }
+}

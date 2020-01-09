@@ -1,0 +1,123 @@
+package com.hniois.web.monitor;
+
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Chemical;
+import com.hniois.monitor.service.ChemicalManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/webService/chemical")
+public class ChemicalActionWeb extends BaseController {
+    //Chemical
+    @Resource(name = "chemicalService")
+    private ChemicalManage chemicalService;
+
+
+    /**
+     * 查询List
+     *
+     * @param e 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/findList")
+    @ResponseBody
+    public String findList(Chemical e) throws Exception {
+        List<Chemical> list = chemicalService.findList(e);
+        JSONArray arr = JSONArray.fromObject(list);
+        return arr.toString();
+    }
+
+
+    /**
+     * 查询
+     *
+     * @param s_name 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/find/{s_name}")
+    @ResponseBody
+    public String find(@PathVariable("s_name") String s_name) throws Exception {
+        Chemical p = new Chemical();
+        p.setS_name(s_name);
+        Chemical m = chemicalService.find(p);
+        JSONObject obj = JSONObject.fromObject(m);
+        return obj.toString();
+    }
+
+
+    /**
+     * 保存
+     *
+     * @param e 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public String add(Chemical e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        try {
+            chemicalService.save(e);
+            setMsg(obj, "ok", "添加成功!");
+        } catch (Exception c) {
+            setMsg(obj, "error", "添加失败!");
+            c.printStackTrace();
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     *
+     * @param e 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/update")
+    @ResponseBody
+    public String update(Chemical e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Chemical p = new Chemical();
+        p.setId(e.getId());
+        //条件判断
+        if (chemicalService.findCount(p) > 0) {
+            chemicalService.update(e);
+            setMsg(obj, "ok", "更新成功!");
+        } else {
+            setMsg(obj, "error", "更新失败!");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     *
+     * @param id 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/delete/{id}")
+    @ResponseBody
+    public String delete(@PathVariable("id") Integer id) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if (id == null) {
+            setMsg(obj, "error", "删除失败!");
+            return obj.toString();
+        } else {
+            Chemical p = new Chemical();
+            p.setId(id.toString());
+            chemicalService.delete(p);
+            setMsg(obj, "ok", "删除成功!");
+            return obj.toString();
+        }
+    }
+}

@@ -1,0 +1,20 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.BreedDao;
+import com.hniois.monitor.entity.Breed;
+import com.hniois.monitor.service.BreedManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("breedService")
+public class BreedService extends ServiceSupport<Breed,BreedDao> implements BreedManage {
+
+    @Resource(name="breedDaoImpl")
+
+    @Override
+    public void setDao(BreedDao dao) {
+        this.dao=dao;
+    }
+}

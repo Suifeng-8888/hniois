@@ -1,0 +1,66 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * 屠宰表
+ */
+public class Butcher extends Page{
+    //but_id,bred_name,bred_age,breed_id,but_time,but_person
+    private String but_id;//屠宰编号
+    private String bred_name;//家畜名称
+    private String bred_age;//家畜年龄
+    private String breed_id;//家畜编号
+    private String but_time;//屠宰时间
+    private String but_person;//屠宰员
+
+    public String getBut_id() {
+        return but_id;
+    }
+
+    public void setBut_id(String but_id) {
+        this.but_id = but_id;
+    }
+
+    public String getBred_name() {
+        return bred_name;
+    }
+
+    public void setBred_name(String bred_name) {
+        this.bred_name = bred_name;
+    }
+
+    public String getBred_age() {
+        return bred_age;
+    }
+
+    public void setBred_age(String bred_age) {
+        this.bred_age = bred_age;
+    }
+
+    public String getBreed_id() {
+        return breed_id;
+    }
+
+    public void setBreed_id(String breed_id) {
+        this.breed_id = breed_id;
+    }
+
+    public String getBut_time() {
+        return but_time;
+    }
+
+    public void setBut_time(String but_time) {
+        this.but_time = but_time;
+    }
+
+    public String getBut_person() {
+        return but_person;
+    }
+
+    public void setBut_person(String but_person) {
+        this.but_person = but_person;
+    }
+
+
+}

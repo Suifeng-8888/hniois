@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>金明源农产品溯源公共信息服务平台</title>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+    <link href="../css/default_blue.css" rel="stylesheet">
+    <link href="../css/reset.css" rel="stylesheet">
+    <link href="../css/home.css" rel="stylesheet">
+    <!-- [if lt IE 9]>
+    <script src="../js/common/respond.min.js"></script>
+    <script src="../js/common/html5shiv.min.js"></script>
+    <![endif] -->
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <a class="navbar-brand clearfix" href="index.html">
+            <img class="navbar-logo hidden-xs" src="../imgs/pc/logo-1.png">
+            <h1 class="hidden-xs">金明源农产品溯源公共信息服务平台</h1>
+        </a>
+        <div class="navbar-right">
+            <div class="btn-group">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="index.html">首 页</a></li>
+                    <li><a href="company.html">企业查询</a></li>
+                    <li><a href="product.html">产品查询</a></li>
+                    <li><a href="consumption.html">监管巡查</a></li>
+                    <li><a href="complain.html">投诉建议</a></li>
+                    <li><a href="aboutUs.html">平台介绍</a></li>
+                </ul>
+            </div>
+            <!-- btn-group End -->
+        </div>
+        <!-- navbar-right End -->
+        <div class="picCode hidden-xs">
+            <img src="../imgs/pc/appCode-2.jpg" alt="APP" class="small"/>
+            <div class="viewBox">
+                <img src="../imgs/pc/appCode-2.jpg" alt="APP"/>
+                <p>平顶山食安消费者版APP</p>
+            </div>
+        </div>
+    </div>
+    <!-- container End -->
+</div>
+
+<div class="content hidden-xs">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="home-banner">
+                <div class="container text-center">
+                    <h2>来源可追查 去向可查证 责任可追究</h2>
+                    <h3>The source can be traced back to the accountability</h3>
+                    <div class="tags">
+                        <a href="javaScript:void(0);" class="tBtn on" data-target="1" data-placeholder="请输入追溯码">追溯码</a>
+                        <!--<a href="javaScript:void(0);" class="tBtn" data-target="2" data-placeholder="请输入条码">条码</a>-->
+                        <!--<a href="javaScript:void(0);" class="tBtn" data-target="3" data-placeholder="请输入品名">品名</a>-->
+                    </div>
+                    <!-- tags End -->
+                    <div class="search-mod">
+                        <div class="form-group text-center">
+                            <input type="text" class="search-input" data-target="1" placeholder="请输入追溯码">
+                            <a href="javaScript:void(0);" class="sBtn">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="content hidden-xs">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="home-img-2">
+                <div class="container text-center">
+                    <div class="col-sm-4 img-mod">
+                        <a href="http://192.168.11.4:8200/login_manage" target="_blank">
+                            <div class="icon_photo"><img src="../imgs/pc/sys-1.png" alt="生产企业管理平台"></div>
+                            <span>生产企业管理平台</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 img-mod">
+                        <!--<a href="http://www.shfda.org/platform/act/enterprise/home.do" target="_blank">-->
+                        <a href="http://192.168.11.4:8200/login_produce" target="_blank">
+                            <div class="icon_photo"><img src="../imgs/pc/sys-2.png" alt="经营企业管理平台"></div>
+                            <span>经营企业管理平台</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-4 img-mod">
+                        <!--<a href="http://www.shfda.org/platform/government/home.do" id="zfjg">-->
+                        <a href="http://192.168.11.4:8200" target="_blank">
+                            <div class="icon_photo"><img src="../imgs/pc/sys-3.png" alt="政府监管平台"></div>
+                            <span>政府监管平台</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--新闻界面-->
+<script src="../js/layui/layui.js"></script>
+<script src="../js/news/jquery-3.3.1.min.js"></script>
+<script>
+    layui.use(['element', 'form', 'layer', 'carousel'], function() {
+        var element = layui.element,
+            carousel = layui.carousel,
+            form = layui.form;
+
+        carousel.render({
+            elem: '#car',
+            arrow: 'always',
+            width: '99%',
+            anim: 'fade',
+            height: '250px',
+            arrow: 'hover',
+            indicator: 'none'
+
+        });
+
+        $('.t-item li a').hover(function() {
+            $(this).find('.cov').slideDown();
+        }, function() {
+            $(this).find('.cov').slideUp();
+        });
+    });
+
+
+</script>
+<div class="toutiao">
+    <div class="layui-row">
+        <div class="layui-col-xs5">
+            <div class="lunbo">
+                <div class="layui-carousel" id="car" lay-filter="car" style="width: 99%; height: 250px;" lay-anim="fade" lay-indicator="none" lay-arrow="hover">
+                    <div carousel-item="">
+                        <div class=""><a href=""><img src="../imgs/news/timg (4).jpg" style="width: 430px ;height: 250px;" alt="除甲醛加盟"></a></div>
+                        <div class="layui-this layui-carousel-left"><a href=""><img src="../imgs/news/timg (2).jpg" style="width: 430px ;height: 250px;" alt="甲醛危害"></a></div>
+                        <div class="layui-carousel-next layui-carousel-left"><a href=""><img src="../imgs/news/timg (6).jpg" style="width: 430px ;height: 250px;" alt="浙大冰虫"></a></div>
+                    </div>
+                    <div class="layui-carousel-ind">
+                        <ul><li class=""></li>
+                            <li class=""></li>
+                            <li class="layui-this"></li>
+                        </ul>
+                    </div>
+                    <button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+                    <button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-xs5">
+            <div class="news">
+                <div class="t-txt">
+                    <h2>
+                        <a href="news.html" target="_blank">农药残留有哪些以及对人体有哪些危害</a></h2>
+                    <p>生活中，可能你经常会听到周围的人在谈论农药残留，说它有多恐怖、多有害......</p>
+                </div>
+                <div class="row" id="itemList">
+                </div>
+                <div style="float: right;padding-top: 8px; padding-right: 20px ">
+                <a href="news_list.html">
+                    <span >查看更多···</span>
+                </a>
+                </div>
+                <div id="search-show-list" style="display: none;">
+                <div class="w-newList" style="display:block;">
+                    <a id="hniois-adds" onclick="findID(this)" class="layui-btns" href="javascript:;">
+                        <span class="hniois-data" name="id" style="display: none;"></span>
+                        <div class="col-1" style="float:left; font-size:12px; padding-top: 8px;">
+                            [<span class="hniois-data" name="type" ></span>]
+                        </div>
+                        <div class="col-2" style="float:left; font-size:12px;padding-left: 10px; padding-top: 8px;">
+                            <span class="hniois-data" name="title"></span>
+                        </div>
+                        <div class="col-3" style="float:right; font-size:12px; padding-left: 20px; padding-top: 8px;">
+                            <span class="hniois-data"  id="time"  name="time"></span>
+                        </div>
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function findID(o){
+        var x= $(o).find("span[name='id']").html();
+        window.location.href="article.html?id="+x;
+    }
+</script>
+<!--百度地图begin-->
+<div class="map-ctn">
+    <div id="map"></div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
+    <script type="text/javascript">
+        /*获取生产基地信息及经纬度*/
+        window.onload = map_load;
+        function map_load(){
+            $.ajax({
+                url: BaseUrl + "providers/findList.do",
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    // alert(data[0].p_name)
+                    // 百度地图API功能
+                    var map = new BMap.Map("map");
+                    map.centerAndZoom(new BMap.Point(113.2939905300,33.7225028056), 11);// 初始化地图,设置中心点坐标和地图级别
+                    map.enableScrollWheelZoom(true);// 开启鼠标滚轮缩放
+                    map.addControl(new BMap.NavigationControl());//开启放大缩小按钮
+                    var opts = {
+                        width : 250,     // 信息窗口宽度
+                        height: 80,     // 信息窗口高度
+                        title : "" , // 信息窗口标题
+                        enableMessage:true//设置允许信息窗发送短息
+                    };
+                    for(var i=0;i<data.length;i++){
+                        var marker = new BMap.Marker(new BMap.Point(data[i].p_longitude,data[i].p_latitude));  // 创建标注
+                        var content = data[i].p_name+"</br>"+"地址:"+data[i].p_address+"</br>"+"联系方式:"+data[i].p_phone;
+                        map.addOverlay(marker);               // 将标注添加到地图中
+                        addClickHandler(content,marker);
+                    }
+                    function addClickHandler(content,marker){
+                        marker.addEventListener("click",function(e){
+                            openInfo(content,e)}
+                        );
+                    }
+                    function openInfo(content,e){
+                        var p = e.target;
+                        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                        var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
+                        map.openInfoWindow(infoWindow,point); //开启信息窗口
+
+                    }
+                }
+            });
+        }
+
+    </script>
+</div>
+<!--百度地图end-->
+
+
+<div class="main border_1_d2 bt20" style="padding-bottom: 120px; width: 980px;">
+    <style type="text/css">
+        .tj_yuan {
+            float: left;
+            width: 160px;
+            height: 160px;
+            margin: 20px 40px;
+            font-family: 微软雅黑;
+        }
+
+        .tj_yuan_c {
+            border: 1px solid #ccc;
+            border-radius: 75px;
+            color: #CC0001;
+            float: left;
+            width: 150px;
+            height: 150px;
+            margin: 10px 5px;
+        }
+
+        .tj_yuan p {
+            text-align: center;
+            font-size: 18px;
+            color: #222222;
+        }
+    </style>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat2" _echarts_instance_="1539161923141" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: pointer;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <script src="../js/plugs/echarts/echarts.min.js"></script>
+        <script src="../js/common/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript">
+            function getpie(dom,val,word){
+                var myChart = echarts.init(document.getElementById(dom));
+                var labelFromatter = {
+                    normal : {
+                        label : {
+                            formatter : function (params){
+                                return params.value+word
+                            },
+                            position : 'center',
+                            textStyle: {
+                                baseline : 'top',
+                                color:'#cc0001',
+                                fontSize:20,
+                                fontWeight: 500,
+                                fontFamily:'微软雅黑'
+                            }
+                        }
+                    }
+                };
+                var labelBottom = {
+                    normal : {
+                        color: '#fff5c7',
+                        label : {
+                            show : true,
+                            position : 'center'
+                        },
+                        labelLine : {
+                            show : false
+                        }
+                    },
+                    emphasis: {
+                        color: 'rgba(0,0,0,0)'
+                    }
+                };
+                var radius = [58, 48];
+                option = {
+                    series : [
+                        {
+                            type : 'pie',
+                            center : ['50%', '50%'],
+                            radius : radius,
+                            y: 'center',   // for funnel
+                            x:'center', // for funnel
+                            itemStyle : labelFromatter,
+                            data : [
+                                {name:'other', value:val, itemStyle : labelBottom}
+                            ]
+                        }
+                    ]
+                };
+                //为echarts对象加载数据
+                myChart.setOption(option);
+            }
+            $(function(){
+                //加载后台展示数据
+                    $.ajax({
+                        url: BaseUrl + "showStatics/findCount.do",
+                        data: "",
+                        type: "post",
+                        dataType: 'json',
+                        success: function (data) {
+                            getpie('myStat2',data.count1,'家');//生产基地
+                            getpie('myStat3',data.count2,'个');//检测报告数量
+                            getpie('myStat4',data.count8,'个');//三品一标产品
+                            getpie('myStat1',data.count3,'家');//监管机构
+                            getpie('myStat5',data.count4,'家');//农资供应商
+                            getpie('myStat7',data.count5,'条');//监管记录
+                            getpie('myStat8',data.count6,'家');//销售站点
+                            getpie('myStat6',data.count7,'次');//监管投诉数量
+                        }
+                    });
+            });
+
+        </script>
+        <div style="float: left; width: 150px; height: 30px; text-align: center;">
+            <p>生产基地</p>
+        </div>
+
+    </div>
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat3" _echarts_instance_="1539161923142" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0);">
+        </div>
+        <div style="float: left; width: 150px; height: 30px; text-align: center;">
+            <p>检测报告数量</p>
+        </div>
+    </div>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat4" _echarts_instance_="1539161923143" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px; cursor: pointer;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <div style="float: left; width: 150px; height: 30px; text-align: center">
+            <p>三品一标产品</p>
+        </div>
+    </div>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat1" _echarts_instance_="1539161923144" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <p>监管机构</p>
+    </div>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat5" _echarts_instance_="1539161923145" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <div style="float: left; width: 170px; height: 30px; text-align: center;">
+            <p>农资供应商</p>
+        </div>
+    </div>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat7" _echarts_instance_="1539161923146" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <div style="float: left; width: 150px; height: 30px; text-align: center;">
+            <p>监管记录</p>
+        </div>
+    </div>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat8" _echarts_instance_="1539161923147" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <div style="float: left; width: 150px; height: 30px; text-align: center;">
+            <p>销售站点</p>
+        </div>
+    </div>
+
+    <div class="tj_yuan">
+        <div class="tj_yuan_c" id="myStat6" _echarts_instance_="1539161923148" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: pointer;"><div style="position: relative; overflow: hidden; width: 150px; height: 150px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none;"></div><canvas width="150" height="150" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="150" height="150" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 150px; height: 150px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        <div style="float: left; width: 150px; height: 30px; text-align: center;">
+            <p>监管投诉数量</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="content hidden-xs">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="home-img">
+                <div class="container text-center">
+                    <div class="col-sm-3 img-mod">
+                        <a href="company.html">
+                            <div class="icon_photo"><img src="../imgs/pc/qiye.png" alt="企业"></div>
+                            <span>企业</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-3 img-mod">
+                        <a href="product.html">
+                            <div class="icon_photo"><img src="../imgs/pc/chanpin.png" alt="产品"></div>
+                            <span>产品</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-3 img-mod">
+                        <a href="consumption.html">
+                            <div class="icon_photo"><img src="../imgs/pc/xiaofeitixing.png" alt="监管巡查"></div>
+                            <span>监管巡查</span>
+                        </a>
+                    </div>
+                    <div class="col-sm-3 img-mod">
+                        <a href="complain.html">
+                            <div class="icon_photo"><img src="../imgs/pc/tousujianyi.png" alt="投诉建议"></div>
+                            <span>投诉建议</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer hidden-xs">
+    <div class="row">
+        <div class="container text-center">
+            <div class="col-md-12">
+                <p>Copyright © 2018 金明源农产品溯源公共信息服务平台</p>
+                <p>主办方：xxxxxxxxxxxx | 技术支持：xxxxxxxx</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/common/jquery-1.12.4.min.js"></script>
+<script src="../js/common/bootstrap.min.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/index_news.js"></script>
+<script>
+    $(function () {
+        main.picCodeFn();
+    })
+</script>
+</body>
+</html>

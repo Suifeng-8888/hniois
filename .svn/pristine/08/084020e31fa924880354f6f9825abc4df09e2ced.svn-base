@@ -1,0 +1,33 @@
+package com.hniois.trace.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.trace.entity.BatchCode;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.entity.temp.Temp;
+import com.hniois.trace.entity.temp.TempJump;
+
+import javax.servlet.http.HttpServletRequest;
+
+public interface QRcodeManage extends Service<QRcode> {
+
+    //获取国家标准码的方法,暂时先用时间戳代替
+    public String getRuleCode();
+
+    //获取随机防伪码
+    public String getRandomCode();
+
+    //判断当前字符传是否是7位数,不够的前面补0
+    public String getQRcode(String num);
+
+    //去掉0000234之前的0
+    public String getNew(String str);
+
+    //关联二维码
+    public void connect(QRcode e1,BatchCode e2)throws Exception;
+
+    //打印二维码页面显示的数据集合
+    public Temp goPrint(QRcode e) throws Exception;
+
+    //加载准备打印的二维码图片数据
+    public TempJump loadPic(HttpServletRequest request, String pages, String limit, Temp e) throws Exception;
+}

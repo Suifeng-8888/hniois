@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PoisonMapper" >
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Poison"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_poison(
+		<if test="pid!='' and pid!=null">pid</if>
+		<if test="crop!='' and crop!=null">,crop</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="pname!='' and pname!=null">,pname</if>
+		<if test="buy_id!='' and buy_id!=null">,buy_id</if>
+		<if test="p_time!='' and p_time!=null">,p_time</if>
+		<if test="person!='' and person!=null">,person</if>
+		<if test="p_img!='' and p_img!=null">,p_img</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (
+		<if test="pid!='' and pid!=null">#{pid}</if>
+		<if test="crop!='' and crop!=null">,#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="pname!='' and pname!=null">,#{pname}</if>
+		<if test="buy_id!='' and buy_id!=null">,#{buy_id}</if>
+		<if test="p_time!='' and p_time!=null">,#{p_time}</if>
+		<if test="person!='' and person!=null">,#{person}</if>
+		<if test="p_img!='' and p_img!=null">,#{p_img}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Poison">
+		insert into r_poison
+		(pid,`crop`,crop_id,pname,buy_id,p_time,person,p_img,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.pid},
+			#{e.crop},
+			#{e.crop_id},
+			#{e.pname},
+			#{e.buy_id},
+			#{e.p_time},
+			#{e.person},
+			#{e.p_img},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Poison">
+		update r_poison
+		<set>
+			<if test="crop !=null and crop !=''">`crop`=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="pname !=null and pname !=''">pname=#{pname},</if>
+			<if test="buy_id !=null and buy_id !=''">buy_id=#{buy_id},</if>
+			<if test="p_time !=null and p_time !=''">p_time=#{p_time},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="p_img !=null and p_img !=''">p_img=#{p_img},</if>
+			<if test="p_path !=null and p_path !=''">
+				`p_img`= REPLACE(`p_img`,CONCAT(#{p_path},','),''),
+			</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where pid=#{pid}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Poison">
+		update r_poison
+		<set>
+			<if test="crop !=null and crop !=''">`crop`=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="pname !=null and pname !=''">pname=#{pname},</if>
+			<if test="buy_id !=null and buy_id !=''">buy_id=#{buy_id},</if>
+			<if test="p_time !=null and p_time !=''">p_time=#{p_time},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="p_img !=null and p_img !=''">p_img=#{p_img},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where pid in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Poison">
+		delete from r_poison where 1=1
+		<if test="pid !=null and pid !=''">and pid=#{pid}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="pname !=null and pname !=''">and pname=#{pname}</if>
+		<if test="buy_id !=null and buy_id !=''">and buy_id=#{buy_id}</if>
+		<if test="p_time !=null and p_time !=''">and p_time=#{p_time}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="p_img !=null and p_img !=''">and p_img=#{p_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_poison
+		where pid in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Poison" resultType="com.hniois.monitor.entity.Poison">
+		select *
+		from r_poison
+		where 1=1
+		<if test="pid !=null and pid !=''">and pid=#{pid}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="pname !=null and pname !=''">and pname=#{pname}</if>
+		<if test="buy_id !=null and buy_id !=''">and buy_id=#{buy_id}</if>
+		<if test="p_time !=null and p_time !=''">and p_time=#{p_time}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="p_img !=null and p_img !=''">and p_img=#{p_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Poison" resultType="com.hniois.monitor.entity.Poison">
+		select t.*
+		from r_poison t
+		where 1=1
+		<if test="pid !=null and pid !=''">and t.pid=#{pid}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="pname !=null and pname !=''">and t.pname=#{pname}</if>
+		<if test="buy_id !=null and buy_id !=''">and t.buy_id=#{buy_id}</if>
+		<if test="p_time !=null and p_time !=''">and t.p_time=#{p_time}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="p_img !=null and p_img !=''">and t.p_img=#{p_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		ORDER BY t.p_time DESC
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Poison" resultType="java.lang.Integer">
+		select count(*)
+		from r_poison t
+		where 1=1
+		<if test="pid !=null and pid !=''">and t.pid=#{pid}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="pname !=null and pname !=''">and t.pname=#{pname}</if>
+		<if test="buy_id !=null and buy_id !=''">and t.buy_id=#{buy_id}</if>
+		<if test="p_time !=null and p_time !=''">and t.p_time=#{p_time}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="p_img !=null and p_img !=''">and t.p_img=#{p_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Poison" resultType="com.hniois.monitor.entity.Poison">
+		select *
+		from r_poison
+		where 1=1
+		<if test="pid !=null and pid !=''">and pid=#{pid}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="pname !=null and pname !=''">and pname=#{pname}</if>
+		<if test="buy_id !=null and buy_id !=''">and buy_id=#{buy_id}</if>
+		<if test="p_time !=null and p_time !=''">and p_time=#{p_time}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="p_img !=null and p_img !=''">and p_img=#{p_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		ORDER BY p_time DESC
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Poison" resultType="java.lang.Integer">
+		select count(*)
+		from r_poison t
+		where 1=1
+		<if test="pid !=null and pid !=''">and t.pid=#{pid}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="pname !=null and pname !=''">and t.pname=#{pname}</if>
+		<if test="buy_id !=null and buy_id !=''">and t.buy_id=#{buy_id}</if>
+		<if test="p_time !=null and p_time !=''">and t.p_time=#{p_time}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="p_img !=null and p_img !=''">and t.p_img=#{p_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+</mapper>

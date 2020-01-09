@@ -1,0 +1,131 @@
+package com.hniois.web.trace;
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.trace.entity.Provide;
+import com.hniois.trace.service.ProvideService;
+import com.hniois.web.Message;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * Create By javaMan
+ * 2018/9/25  17:00
+ * 供应商管理接口
+ */
+@RequestMapping(value = "/webService/provide")
+@RestController
+public class ProvideWebService extends BaseController {
+
+    @Resource(name = "provideService")
+    private ProvideService provideService;
+
+    /**
+     * 分页查询
+     * @param e
+     * @return
+     */
+    @RequestMapping("/list")
+    public String showPage(Provide e)throws Exception{
+        //获取当前页
+        int current=getThisPage(e.getPage());
+        //获取每页显示条数
+        int limit=getThisLimit(e.getLimit());
+        e.setOffset((current-1)*limit);
+        e.setPagerSize(limit);//每页显示记录数
+        Page page = provideService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+    /**
+     * 供应商详情
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    public Provide getProvide(@PathVariable("id") Integer id) throws Exception {
+        Provide provide = new Provide();
+        provide.setId(id.toString());
+        return provideService.find(provide);
+    }
+
+    /**
+     * 供应商列表
+     * @param provide
+     * @return
+     */
+    @RequestMapping(value = "/findList", method = RequestMethod.GET)
+    public List<Provide> getProvideList(Provide provide) throws Exception {
+        return provideService.findList(provide);
+    }
+
+    /**
+     * 供应商新增
+     * @param provide
+     * @return
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public Message saveProvide(Provide provide) {
+        Message message = new Message(0, "添加成功!");
+        try {
+            provideService.save(provide);
+        } catch (Exception e) {
+            message.setCode(1);
+            message.setMsg("添加失败!");
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    /**
+     * 供应商信息删除
+     * @param id
+     * @return
+     */
+//    @RequestMapping(value = "/del/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/del/{id}", method = RequestMethod.GET)
+    public Message delProvide(@PathVariable("id") Integer id) {
+        Message message = new Message();
+        if(id != null) {
+            Provide provide = new Provide();
+            provide.setId(id.toString());
+            try {
+                provideService.delete(provide);
+                message.setCode(0);
+                message.setMsg("删除成功!");
+            } catch (Exception e) {
+                message.setCode(1);
+                message.setMsg("删除失败!");
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+
+    /**
+     * 更新供应商信息
+     * @param provide
+     * @return
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public Message updateProvide(Provide provide) {
+        Message message = new Message();
+        if(StringUtils.isNotEmpty(provide.getId())) {
+            try {
+                provideService.update(provide);
+                message.setCode(0);
+                message.setMsg("更新成功!");
+            } catch (Exception e) {
+                message.setCode(1);
+                message.setMsg("更新失败!");
+                e.printStackTrace();
+            }
+        }
+        return message;
+    }
+    
+}

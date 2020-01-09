@@ -1,0 +1,168 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title>Chemical信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <link href="static/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+<div >
+    <form class="layui-form layui-form-pane" action="" >
+        <input type="hidden" name="id" id="key" value="${chemical.id}">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">化肥名称<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="cname" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.cname}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">作物id<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="s_id" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.s_id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">施肥对象名称<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="s_name" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.s_name}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">施肥人<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="person" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.person}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">施肥时间<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="c_time" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.c_time}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">化肥状态 0液体 1粉末 2颗粒<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="state" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.state}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">化肥规格<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="unit" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.unit}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">施肥数量<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="cnums" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.cnums}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">施肥方法(机器/人工)<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="method" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.method}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">供应商id<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="sup_id" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.sup_id}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">化肥功效<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="effect" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.effect}">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">土地编号<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <input name="soil_id" class="layui-input" type="text" autocomplete="off"
+                       lay-verify="required" value="${chemical.soil_id}">
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="text-align: center;"  >
+            <button class="layui-btn" lay-filter="formSave" lay-submit id="form-button" style="display: none">保存</button>
+            <button class="layui-btn layui-btn-warm" onclick="closeWin()">关闭</button>
+        </div>
+    </form>
+
+</div>
+</body>
+
+<script src="static/layui/layui.js"></script>
+<script src="static/js/jQuery/jquery-1.7.2.js"></script>
+<script>
+    //获取窗口索引
+    var index = parent.layer.getFrameIndex(window.name);
+    //初始化函数 order-1
+    $(document).ready(function() {
+        init();
+    });
+
+    //layui模块加载 order-2
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+            form = layui.form;
+
+        //监听提交
+        form.on('submit(formSave)', function(data){
+            var url = "chemical/" + ($("#key").val()==""?"add":"update") + ".do";
+            $.ajax({
+                url: url,
+                data: data.field,
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    if(data.state=="ok"){
+                        parent.formReload();
+                        parent.layer.msg(data.msg);
+                        closeWin();
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+
+    //关闭窗口
+    function closeWin(){
+        parent.layer.close(index);
+    }
+
+    function init(){
+        //初始化按钮操作
+        if("${chemical.code}"=="1"){
+            $("#form-button").show();
+        }
+    }
+</script>
+</html>

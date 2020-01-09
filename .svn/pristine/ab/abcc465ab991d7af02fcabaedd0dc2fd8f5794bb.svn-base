@@ -1,0 +1,11 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Providers;
+
+/**
+ *  Providers Manage
+ */
+public interface ProvidersManage extends Service<Providers>{
+
+}

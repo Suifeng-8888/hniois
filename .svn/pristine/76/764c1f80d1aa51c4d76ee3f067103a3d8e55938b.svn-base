@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.trace.entity.Order"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into trace_order(
+		<if test="order_id!='' and order_id!=null">order_id</if>
+		<if test="order_num!='' and order_num!=null">,order_num</if>
+		<if test="crop!='' and crop!=null">,crop</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="o_numbers!='' and o_numbers!=null">,o_numbers</if>
+		<if test="o_price!='' and o_price!=null">,o_price</if>
+		<if test="sender!='' and sender!=null">,sender</if>
+		<if test="send_time!='' and send_time!=null">,send_time</if>
+		<if test="send_address!='' and send_address!=null">,send_address</if>
+		<if test="sale_id!='' and sale_id!=null">,sale_id</if>
+		<if test="sale_name!='' and sale_name!=null">,sale_name</if>
+		<if test="recever!='' and recever!=null">,recever</if>
+		<if test="end_address!='' and end_address!=null">,end_address</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (
+		<if test="order_id!='' and order_id!=null">#{order_id}</if>
+		<if test="order_num!='' and order_num!=null">,#{order_num}</if>
+		<if test="crop!='' and crop!=null">,#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="o_numbers!='' and o_numbers!=null">,#{o_numbers}</if>
+		<if test="o_price!='' and o_price!=null">,#{o_price}</if>
+		<if test="sender!='' and sender!=null">,#{sender}</if>
+		<if test="send_time!='' and send_time!=null">,#{send_time}</if>
+		<if test="send_address!='' and send_address!=null">,#{send_address}</if>
+		<if test="sale_id!='' and sale_id!=null">,#{sale_id}</if>
+		<if test="sale_name!='' and sale_name!=null">,#{sale_name}</if>
+		<if test="recever!='' and recever!=null">,#{recever}</if>
+		<if test="end_address!='' and end_address!=null">,#{end_address}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.trace.entity.Order">
+		insert into trace_order
+		(order_id,order_num,crop,crop_id,o_numbers,o_price,sender,send_time,send_address,sale_id,sale_name,recever,end_address,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.order_id},
+			#{e.order_num},
+			#{e.crop},
+			#{e.crop_id},
+			#{e.o_numbers},
+			#{e.o_price},
+			#{e.sender},
+			#{e.send_time},
+			#{e.send_address},
+			#{e.sale_id},
+			#{e.sale_name},
+			#{e.recever},
+			#{e.end_address},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.trace.entity.Order">
+		update trace_order
+		<set>
+			<if test="order_num !=null and order_num !=''">order_num=#{order_num},</if>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="o_numbers !=null and o_numbers !=''">o_numbers=#{o_numbers},</if>
+			<if test="o_price !=null and o_price !=''">o_price=#{o_price},</if>
+			<if test="sender !=null and sender !=''">sender=#{sender},</if>
+			<if test="send_time !=null and send_time !=''">send_time=#{send_time},</if>
+			<if test="send_address !=null and send_address !=''">send_address=#{send_address},</if>
+			<if test="sale_id !=null and sale_id !=''">sale_id=#{sale_id},</if>
+			<if test="sale_name !=null and sale_name !=''">sale_name=#{sale_name},</if>
+			<if test="recever !=null and recever !=''">recever=#{recever},</if>
+			<if test="end_address !=null and end_address !=''">end_address=#{end_address},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where order_id=#{order_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.trace.entity.Order">
+		update trace_order
+		<set>
+			<if test="order_num !=null and order_num !=''">order_num=#{order_num},</if>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="o_numbers !=null and o_numbers !=''">o_numbers=#{o_numbers},</if>
+			<if test="o_price !=null and o_price !=''">o_price=#{o_price},</if>
+			<if test="sender !=null and sender !=''">sender=#{sender},</if>
+			<if test="send_time !=null and send_time !=''">send_time=#{send_time},</if>
+			<if test="send_address !=null and send_address !=''">send_address=#{send_address},</if>
+			<if test="sale_id !=null and sale_id !=''">sale_id=#{sale_id},</if>
+			<if test="sale_name !=null and sale_name !=''">sale_name=#{sale_name},</if>
+			<if test="recever !=null and recever !=''">recever=#{recever},</if>
+			<if test="end_address !=null and end_address !=''">end_address=#{end_address},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where order_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.trace.entity.Order">
+		delete from trace_order
+		where 1=1
+		<if test="order_id !=null and order_id !=''">and order_id=#{order_id}</if>
+		<if test="order_num !=null and order_num !=''">and order_num=#{order_num}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="o_numbers !=null and o_numbers !=''">and o_numbers=#{o_numbers}</if>
+		<if test="o_price !=null and o_price !=''">and o_price=#{o_price}</if>
+		<if test="sender !=null and sender !=''">and sender=#{sender}</if>
+		<if test="send_time !=null and send_time !=''">and send_time=#{send_time}</if>
+		<if test="send_address !=null and send_address !=''">and send_address=#{send_address}</if>
+		<if test="sale_id !=null and sale_id !=''">and sale_id=#{sale_id}</if>
+		<if test="sale_name !=null and sale_name !=''">and sale_name=#{sale_name}</if>
+		<if test="recever !=null and recever !=''">and recever=#{recever}</if>
+		<if test="end_address !=null and end_address !=''">and end_address=#{end_address}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from trace_order
+		where order_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.trace.entity.Order" resultType="com.hniois.trace.entity.Order">
+		select *
+		from trace_order
+		where 1=1
+		<if test="order_id !=null and order_id !=''">and order_id=#{order_id}</if>
+		<if test="order_num !=null and order_num !=''">and order_num=#{order_num}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="o_numbers !=null and o_numbers !=''">and o_numbers=#{o_numbers}</if>
+		<if test="o_price !=null and o_price !=''">and o_price=#{o_price}</if>
+		<if test="sender !=null and sender !=''">and sender=#{sender}</if>
+		<if test="send_time !=null and send_time !=''">and send_time=#{send_time}</if>
+		<if test="send_address !=null and send_address !=''">and send_address=#{send_address}</if>
+		<if test="sale_id !=null and sale_id !=''">and sale_id=#{sale_id}</if>
+		<if test="sale_name !=null and sale_name !=''">and sale_name=#{sale_name}</if>
+		<if test="recever !=null and recever !=''">and recever=#{recever}</if>
+		<if test="end_address !=null and end_address !=''">and end_address=#{end_address}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.trace.entity.Order" resultType="com.hniois.trace.entity.Order">
+		select t.*
+		from trace_order t
+		where 1=1
+		<if test="order_id !=null and order_id !=''">and t.order_id=#{order_id}</if>
+		<if test="order_num !=null and order_num !=''">and t.order_num=#{order_num}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="o_numbers !=null and o_numbers !=''">and t.o_numbers=#{o_numbers}</if>
+		<if test="o_price !=null and o_price !=''">and t.o_price=#{o_price}</if>
+		<if test="sender !=null and sender !=''">and t.sender=#{sender}</if>
+		<if test="send_time !=null and send_time !=''">and t.send_time=#{send_time}</if>
+		<if test="send_address !=null and send_address !=''">and t.send_address=#{send_address}</if>
+		<if test="sale_id !=null and sale_id !=''">and t.sale_id=#{sale_id}</if>
+		<if test="sale_name !=null and sale_name !=''">and t.sale_name=#{sale_name}</if>
+		<if test="recever !=null and recever !=''">and t.recever=#{recever}</if>
+		<if test="end_address !=null and end_address !=''">and t.end_address=#{end_address}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.trace.entity.Order" resultType="java.lang.Integer">
+		select count(*)
+		from trace_order t
+		where 1=1
+		<if test="order_id !=null and order_id !=''">and t.order_id=#{order_id}</if>
+		<if test="order_num !=null and order_num !=''">and t.order_num=#{order_num}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="o_numbers !=null and o_numbers !=''">and t.o_numbers=#{o_numbers}</if>
+		<if test="o_price !=null and o_price !=''">and t.o_price=#{o_price}</if>
+		<if test="sender !=null and sender !=''">and t.sender=#{sender}</if>
+		<if test="send_time !=null and send_time !=''">and t.send_time=#{send_time}</if>
+		<if test="send_address !=null and send_address !=''">and t.send_address=#{send_address}</if>
+		<if test="sale_id !=null and sale_id !=''">and t.sale_id=#{sale_id}</if>
+		<if test="sale_name !=null and sale_name !=''">and t.sale_name=#{sale_name}</if>
+		<if test="recever !=null and recever !=''">and t.recever=#{recever}</if>
+		<if test="end_address !=null and end_address !=''">and t.end_address=#{end_address}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.trace.entity.Order" resultType="com.hniois.trace.entity.Order">
+		select *
+		from trace_order
+		where 1=1
+		<if test="order_id !=null and order_id !=''">and order_id=#{order_id}</if>
+		<if test="order_num !=null and order_num !=''">and order_num=#{order_num}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="o_numbers !=null and o_numbers !=''">and o_numbers=#{o_numbers}</if>
+		<if test="o_price !=null and o_price !=''">and o_price=#{o_price}</if>
+		<if test="sender !=null and sender !=''">and sender=#{sender}</if>
+		<if test="send_time !=null and send_time !=''">and send_time=#{send_time}</if>
+		<if test="send_address !=null and send_address !=''">and send_address=#{send_address}</if>
+		<if test="sale_id !=null and sale_id !=''">and sale_id=#{sale_id}</if>
+		<if test="sale_name !=null and sale_name !=''">and sale_name=#{sale_name}</if>
+		<if test="recever !=null and recever !=''">and recever=#{recever}</if>
+		<if test="end_address !=null and end_address !=''">and end_address=#{end_address}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.trace.entity.Order" resultType="java.lang.Integer">
+		select count(*)
+		from trace_order t
+		where 1=1
+		<if test="order_id !=null and order_id !=''">and t.order_id=#{order_id}</if>
+		<if test="order_num !=null and order_num !=''">and t.order_num=#{order_num}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="o_numbers !=null and o_numbers !=''">and t.o_numbers=#{o_numbers}</if>
+		<if test="o_price !=null and o_price !=''">and t.o_price=#{o_price}</if>
+		<if test="sender !=null and sender !=''">and t.sender=#{sender}</if>
+		<if test="send_time !=null and send_time !=''">and t.send_time=#{send_time}</if>
+		<if test="send_address !=null and send_address !=''">and t.send_address=#{send_address}</if>
+		<if test="sale_id !=null and sale_id !=''">and t.sale_id=#{sale_id}</if>
+		<if test="sale_name !=null and sale_name !=''">and t.sale_name=#{sale_name}</if>
+		<if test="recever !=null and recever !=''">and t.recever=#{recever}</if>
+		<if test="end_address !=null and end_address !=''">and t.end_address=#{end_address}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!--订单产品收入分页查询-->
+	<select id="findCropPage" parameterType="com.hniois.trace.entity.Order" resultType="com.hniois.trace.entity.Order">
+		SELECT crop,sum(o_numbers)as 'count',ROUND(sum(o_numbers*o_price),2) as 'cost',send_time FROM trace_order
+		group by crop having send_time BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 MONTH) AND CURDATE()
+		ORDER BY send_time
+		limit #{offset},#{pageSize}
+	</select>
+	<!--订单产品收入数量查询-->
+	<select id="findCropCount" parameterType="com.hniois.trace.entity.Order" resultType="java.lang.Integer" >
+		SELECT count(*)
+		FROM(
+			SELECT crop,sum(o_numbers)as 'count',ROUND(sum(o_numbers*o_price),2) as 'cost',send_time FROM trace_order
+		group by crop having send_time BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 MONTH) AND CURDATE()
+		ORDER BY send_time
+		) as tempTs
+
+	</select>
+	<!--订单销售商交易额分页查询-->
+	<select id="findSalePage" parameterType="com.hniois.trace.entity.Order" resultType="com.hniois.trace.entity.Order">
+		SELECT sale_name,ROUND(SUM(o_numbers*o_price),2)as 'cost',send_time
+		FROM trace_order
+		GROUP BY sale_name HAVING send_time BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 MONTH) and CURDATE()
+		ORDER BY send_time
+		limit #{offset},#{pageSize}
+	</select>
+	<!--订单交易额数量查询-->
+	<select id="findSaleCount" parameterType="com.hniois.trace.entity.Order" resultType="java.lang.Integer">
+		SELECT count(*) FROM (
+			SELECT sale_name,ROUND(SUM(o_numbers*o_price),2)as 'cost',send_time
+			FROM trace_order
+			GROUP BY sale_name HAVING send_time BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 MONTH) and CURDATE()
+			ORDER BY send_time
+		) as tempTs
+	</select>
+</mapper>

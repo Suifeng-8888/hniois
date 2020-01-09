@@ -1,0 +1,11 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Seed;
+
+/**
+ *  Seed Manage
+ */
+public interface SeedManage extends Service<Seed>{
+
+}

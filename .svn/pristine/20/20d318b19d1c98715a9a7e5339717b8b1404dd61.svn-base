@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recallMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Recall"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_recall(
+		<if test="crop_name!='' and crop_name!=null">crop_name</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="cause!='' and cause!=null">,cause</if>
+		<if test="org_id!='' and org_id!=null">,org_id</if>
+		<if test="org_name!='' and org_name!=null">,org_name</if>
+		<if test="time!='' and time!=null">,time</if>
+		<if test="status!='' and status!=null">,status</if>
+		<if test="rank!='' and rank!=null">,rank</if>
+		<if test="r_num!='' and r_num!=null">,r_num</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		<if test="farm_name!='' and farm_name!=null">,farm_name</if>
+		)
+		VALUES (
+		<if test="crop_name!='' and crop_name!=null">#{crop_name}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="cause!='' and cause!=null">,#{cause}</if>
+		<if test="org_id!='' and org_id!=null">,#{org_id}</if>
+		<if test="org_name!='' and org_name!=null">,#{org_name}</if>
+		<if test="time!='' and time!=null">,#{time}</if>
+		<if test="status!='' and status!=null">,#{status}</if>
+		<if test="rank!='' and rank!=null">,#{rank}</if>
+		<if test="r_num!='' and r_num!=null">,#{r_num}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		<if test="farm_name!='' and farm_name!=null">,#{farm_name}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Recall">
+		insert into r_recall
+		(crop_name,crop_id,cause,org_id,org_name,time,status,rank,r_num,farm_id,farm_name)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.crop_name},
+			#{e.crop_id},
+			#{e.cause},
+			#{e.org_id},
+			#{e.org_name},
+			#{e.time},
+			#{e.status},
+			#{e.rank},
+			#{e.r_num},
+			#{e.farm_id},
+			#{e.farm_name}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Recall">
+		update r_recall
+		<set>
+			<if test="crop_name !=null and crop_name !=''">crop_name=#{crop_name},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="cause !=null and cause !=''">cause=#{cause},</if>
+			<if test="org_id !=null and org_id !=''">org_id=#{org_id},</if>
+			<if test="org_name !=null and org_name !=''">org_name=#{org_name},</if>
+			<if test="time !=null and time !=''">time=#{time},</if>
+			<if test="status !=null and status !=''">status=#{status},</if>
+			<if test="rank !=null and rank !=''">rank=#{rank},</if>
+			<if test="r_num !=null and r_num !=''">r_num=#{r_num},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="farm_name !=null and farm_name !=''">farm_name=#{farm_name},</if>
+		</set>
+		where r_id=#{r_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Recall">
+		update r_recall
+		<set>
+			<if test="crop_name !=null and crop_name !=''">crop_name=#{crop_name},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="cause !=null and cause !=''">cause=#{cause},</if>
+			<if test="org_id !=null and org_id !=''">org_id=#{org_id},</if>
+			<if test="org_name !=null and org_name !=''">org_name=#{org_name},</if>
+			<if test="time !=null and time !=''">time=#{time},</if>
+			<if test="status !=null and status !=''">status=#{status},</if>
+			<if test="rank !=null and rank !=''">rank=#{rank},</if>
+			<if test="r_num !=null and r_num !=''">r_num=#{r_num},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="farm_name !=null and farm_name !=''">farm_name=#{farm_name},</if>
+		</set>
+		where r_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Recall">
+		delete from r_recall where 1=1
+		<if test="r_id !=null and r_id !=''">and r_id=#{r_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="cause !=null and cause !=''">and cause=#{cause}</if>
+		<if test="org_id !=null and org_id !=''">and org_id=#{org_id}</if>
+		<if test="org_name !=null and org_name !=''">and org_name=#{org_name}</if>
+		<if test="time !=null and time !=''">and time=#{time}</if>
+		<if test="status !=null and status !=''">and status=#{status}</if>
+		<if test="rank !=null and rank !=''">and rank=#{rank}</if>
+		<if test="r_num !=null and r_num !=''">and r_num=#{r_num}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_recall
+		where r_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Recall" resultType="com.hniois.monitor.entity.Recall">
+		select *
+		from r_recall
+		where 1=1
+		<if test="r_id !=null and r_id !=''">and r_id=#{r_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="cause !=null and cause !=''">and cause=#{cause}</if>
+		<if test="org_id !=null and org_id !=''">and org_id=#{org_id}</if>
+		<if test="org_name !=null and org_name !=''">and org_name=#{org_name}</if>
+		<if test="time !=null and time !=''">and time=#{time}</if>
+		<if test="status !=null and status !=''">and status=#{status}</if>
+		<if test="rank !=null and rank !=''">and rank=#{rank}</if>
+		<if test="r_num !=null and r_num !=''">and r_num=#{r_num}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Recall" resultType="com.hniois.monitor.entity.Recall">
+		select t.*
+		from r_recall t
+		where 1=1
+		<if test="r_id !=null and r_id !=''">and t.r_id=#{r_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="cause !=null and cause !=''">and t.cause=#{cause}</if>
+		<if test="org_id !=null and org_id !=''">and t.org_id=#{org_id}</if>
+		<if test="org_name !=null and org_name !=''">and t.org_name=#{org_name}</if>
+		<if test="time !=null and time !=''">and t.time=#{time}</if>
+		<if test="status !=null and status !=''">and t.status=#{status}</if>
+		<if test="rank !=null and rank !=''">and t.rank=#{rank}</if>
+		<if test="r_num !=null and r_num !=''">and t.r_num=#{r_num}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Recall" resultType="java.lang.Integer">
+		select count(*)
+		from r_recall t
+		where 1=1
+		<if test="r_id !=null and r_id !=''">and t.r_id=#{r_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="cause !=null and cause !=''">and t.cause=#{cause}</if>
+		<if test="org_id !=null and org_id !=''">and t.org_id=#{org_id}</if>
+		<if test="org_name !=null and org_name !=''">and t.org_name=#{org_name}</if>
+		<if test="time !=null and time !=''">and t.time=#{time}</if>
+		<if test="status !=null and status !=''">and t.status=#{status}</if>
+		<if test="rank !=null and rank !=''">and t.rank=#{rank}</if>
+		<if test="r_num !=null and r_num !=''">and t.r_num=#{r_num}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Recall" resultType="com.hniois.monitor.entity.Recall">
+		select *
+		from r_recall
+		where 1=1
+		<if test="r_id !=null and r_id !=''">and r_id=#{r_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="cause !=null and cause !=''">and cause=#{cause}</if>
+		<if test="org_id !=null and org_id !=''">and org_id=#{org_id}</if>
+		<if test="org_name !=null and org_name !=''">and org_name=#{org_name}</if>
+		<if test="time !=null and time !=''">and time=#{time}</if>
+		<if test="status !=null and status !=''">and status=#{status}</if>
+		<if test="rank !=null and rank !=''">and rank=#{rank}</if>
+		<if test="r_num !=null and r_num !=''">and r_num=#{r_num}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Recall" resultType="java.lang.Integer">
+		select count(*)
+		from r_recall t
+		where 1=1
+		<if test="r_id !=null and r_id !=''">and t.r_id=#{r_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="cause !=null and cause !=''">and t.cause=#{cause}</if>
+		<if test="org_id !=null and org_id !=''">and t.org_id=#{org_id}</if>
+		<if test="org_name !=null and org_name !=''">and t.org_name=#{org_name}</if>
+		<if test="time !=null and time !=''">and t.time=#{time}</if>
+		<if test="status !=null and status !=''">and t.status=#{status}</if>
+		<if test="rank !=null and rank !=''">and t.rank=#{rank}</if>
+		<if test="r_num !=null and r_num !=''">and t.r_num=#{r_num}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+	</select>
+</mapper>

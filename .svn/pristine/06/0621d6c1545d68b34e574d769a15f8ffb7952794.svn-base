@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportDetailMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.ReportDetail"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_report_detail(detail_id
+		<if test="report_id!='' and report_id!=null">,report_id</if>
+		<if test="detail_name!='' and detail_name!=null">,detail_name</if>
+		<if test="detail_num!='' and detail_num!=null">,detail_num</if>
+		<if test="result!='' and result!=null">,result</if>
+
+		)
+		VALUES (detail_id
+		<if test="report_id!='' and report_id!=null">,#{report_id}</if>
+		<if test="detail_name!='' and detail_name!=null">,#{detail_name}</if>
+		<if test="detail_num!='' and detail_num!=null">,#{detail_num}</if>
+		<if test="result!='' and result!=null">,#{result}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.ReportDetail">
+		insert into r_report_detail
+		(detail_id,report_id,detail_name,detail_num,result)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.detail_id},
+			#{e.report_id},
+			#{e.detail_name},
+			#{e.detail_num},
+			#{e.result}
+
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.ReportDetail">
+		update r_report_detail
+		<set>
+			<if test="detail_id !=null and detail_id !=''">detail_id=#{detail_id},</if>
+			<if test="report_id !=null and report_id !=''">report_id=#{report_id},</if>
+			<if test="detail_name !=null and detail_name !=''">detail_name=#{detail_name},</if>
+			<if test="detail_num !=null and detail_num !=''">detail_num=#{detail_num},</if>
+			<if test="result !=null and result !=''">result=#{result},</if>
+		</set>
+		where detail_id=#{detail_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.ReportDetail">
+		update r_report_detail
+		<set>
+			<if test="detail_id !=null and detail_id !=''">detail_id=#{detail_id},</if>
+			<if test="report_id !=null and report_id !=''">report_id=#{report_id},</if>
+			<if test="detail_name !=null and detail_name !=''">detail_name=#{detail_name},</if>
+			<if test="detail_num !=null and detail_num !=''">detail_num=#{detail_num},</if>
+			<if test="result !=null and result !=''">result=#{result},</if>
+		</set>
+		where detail_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.ReportDetail">
+		delete from r_report_detail where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="detail_name !=null and detail_name !=''">and detail_name=#{detail_name}</if>
+		<if test="detail_num !=null and detail_num !=''">and detail_num=#{detail_num}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_report_detail
+		where detail_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.ReportDetail" resultType="com.hniois.monitor.entity.ReportDetail">
+		select *
+		from r_report_detail
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="detail_name !=null and detail_name !=''">and detail_name=#{detail_name}</if>
+		<if test="detail_num !=null and detail_num !=''">and detail_num=#{detail_num}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.ReportDetail" resultType="com.hniois.monitor.entity.ReportDetail">
+		select *
+		from r_report_detail
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="detail_name !=null and detail_name !=''">and detail_name=#{detail_name}</if>
+		<if test="detail_num !=null and detail_num !=''">and detail_num=#{detail_num}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.ReportDetail" resultType="java.lang.Integer">
+		select count(*)
+		from r_report_detail t
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and t.detail_id=#{detail_id}</if>
+		<if test="report_id !=null and report_id !=''">and t.report_id=#{report_id}</if>
+		<if test="detail_name !=null and detail_name !=''">and t.detail_name=#{detail_name}</if>
+		<if test="detail_num !=null and detail_num !=''">and t.detail_num=#{detail_num}</if>
+		<if test="result !=null and result !=''">and t.result=#{result}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.ReportDetail" resultType="com.hniois.monitor.entity.ReportDetail">
+		select *
+		from r_report_detail
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="detail_name !=null and detail_name !=''">and detail_name=#{detail_name}</if>
+		<if test="detail_num !=null and detail_num !=''">and detail_num=#{detail_num}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.ReportDetail" resultType="java.lang.Integer">
+		select count(*)
+		from r_report_detail t
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and t.detail_id=#{detail_id}</if>
+		<if test="report_id !=null and report_id !=''">and t.report_id=#{report_id}</if>
+		<if test="detail_name !=null and detail_name !=''">and t.detail_name=#{detail_name}</if>
+		<if test="detail_num !=null and detail_num !=''">and t.detail_num=#{detail_num}</if>
+		<if test="result !=null and result !=''">and t.result=#{result}</if>
+	</select>
+</mapper>

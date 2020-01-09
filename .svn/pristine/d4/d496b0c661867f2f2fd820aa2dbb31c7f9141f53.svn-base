@@ -1,0 +1,63 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class Soil extends Page {
+    //id,area,state,bz
+    private String id;//土地编号
+    private String s_name;//土地名称
+    private String farm_id;//农产id
+    private String area;//土地面积
+    private String state;//土地状态0使用中 1空置中'
+    private String  bz;//备注
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
+    }
+
+    public String getS_name() {
+        return s_name;
+    }
+
+    public void setS_name(String s_name) {
+        this.s_name = s_name;
+    }
+}

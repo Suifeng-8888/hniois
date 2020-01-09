@@ -1,0 +1,124 @@
+package com.hniois.web.trace;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.*;
+import com.hniois.monitor.service.*;
+import com.hniois.trace.entity.Batch_Material;
+import com.hniois.trace.entity.QRcodeNew;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.OrderManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.UuidUtil;
+import net.sf.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 首页扫描二维码显示信息内容
+ */
+@RestController
+@RequestMapping("/webService")
+public class queryTraceWeb extends BaseController{
+
+    //手机扫描二维码
+    @Resource(name="scanService")
+    private ScanManage scanService;
+
+    //订单对象
+    @Resource(name="orderService")
+    private OrderManage orderService;
+    //包装批次信息
+    @Resource(name ="batchService")
+    private BatchManage batchService;
+
+    //检验报告
+    @Resource(name="reportService")
+    private ReportManage reportService;
+
+    //采摘信息
+    @Resource(name="harvestService")
+    private HarvestManage harvestService;
+
+    //打药信息
+    @Resource(name="poisonService")
+    private PoisonManage poisonService;
+
+    //施肥信息
+    @Resource(name="chemicalService")
+    private ChemicalManage chemicalService;
+    //农场信息
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    //播种信息
+    @Resource(name="seedService")
+    private SeedManage seedService;
+
+    //土地信息
+    @Resource(name="soilService")
+    private SoilManage soilService;
+
+    /**
+     * 扫描二维码获取对象信息
+     * @return
+     */
+    @RequestMapping("/query")
+    public String showPage(QRcodeNew e, Scan e2)throws Exception{
+        Map<String,Object> map=new HashMap<>();
+        //根据扫描信息获取当前产品对应的批次号码
+       //根据扫描对象批次号获取检验信息
+        Report rpt=new Report();
+        List<Report> reportlist = reportService.findList(rpt);
+        map.put("report",reportlist);
+        //根据批次号获取包装对象信息
+        Batch_Material btm=new Batch_Material();
+        btm=batchService.find(btm);
+        map.put("package",btm);
+        //根据批次获取采摘信息
+        Harvest hv=new Harvest();
+        Harvest hart = harvestService.find(hv);
+        map.put("harvest",hart);
+        //根据采摘对象获取生成基地信息
+        Providers pd=new Providers();
+        pd.setP_id(hart.getFarm_id());
+        pd=providersService.find(pd);
+        map.put("farm",pd);
+        //根据采摘对象获取作物信息
+        Seed sd=new Seed();
+        sd.setFarm_id(hart.getFarm_id());
+        Seed seed=seedService.find(sd);
+        map.put("seed",seed);
+        //根据采摘信息获取土地编号信息
+        Soil sol=new Soil();
+        sol.setFarm_id(hart.getFarm_id());
+        Soil soil=soilService.find(sol);
+        //根据作物和土地编号获取打药信息
+        Poison pson=new Poison();
+        pson.setFarm_id(hart.getFarm_id());
+        List<Poison> poisonlist=poisonService.findList(pson);
+        map.put("poison",poisonlist);
+        //获取施肥信息
+        Chemical chl=new Chemical();
+        chl.setFarm_id(hart.getFarm_id());
+        List<Chemical> chemicallist=chemicalService.findList(chl);
+        map.put("chemical",chemicallist);
+
+        //获取客户扫描信息
+        Scan scan=new Scan();
+        String sid= UuidUtil.get32UUID();
+        String ntime= DateUtil.getTime();
+        scan.setScan_id(sid);
+        scan.setScan_time(ntime);
+        scan.setUser_city(e2.getUser_city());
+        scan.setUser_long(e2.getUser_long());
+        scan.setUser_lat(e2.getUser_lat());
+        scanService.save(scan);
+        JSONObject jt = JSONObject.fromObject(map);
+        return jt.toString();
+    }
+}

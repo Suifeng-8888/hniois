@@ -1,0 +1,342 @@
+package com.hniois.trace.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.hazelcast.core.IFunction;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.trace.entity.Order;
+import com.hniois.trace.service.OrderManage;
+import com.hniois.util.*;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 订单处理
+ */
+@Controller
+@RequestMapping("/order")
+public class OrderAction extends BaseController {
+
+    @Resource(name="orderService")
+    private OrderManage orderService;
+
+    private String order_list="trace/order/order_list";
+    private String order_edit="trace/order/order_edit";
+    private String supply_table="trace/order/supply_table";
+    private String crop_table="trace/order/crop_table";
+    private String transport_list="trace/transport/trans_list";
+
+    private String in_order_list="trace/bill/in_order_list";
+    private String in_sale_list="trace/bill/in_sale_list";
+
+    @RequestMapping("/toPage")
+    @ResponseBody
+    public ModelAndView toPage(Page e){
+        ModelAndView mv=this.getModelAndViewToPage(e);
+        mv.setViewName(order_list);
+        return mv;
+    }
+
+    /**
+     * 分页查询
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/list")
+    public String showPage(Order e)throws Exception{
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //获取当前页
+        int current=getThisPage(e.getPage());
+        //获取每页显示条数
+        int limit=getThisLimit(e.getLimit());
+        e.setOffset((current-1)*limit);
+        e.setPagerSize(limit);//每页显示记录数
+        Page page = orderService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 新增 or 编辑
+     * @param e
+     * @return
+     */
+    @RequestMapping("/toEdit")
+    @ResponseBody
+    public ModelAndView edit(Order e)throws Exception{
+        ModelAndView mv=this.getModelAndView();
+        Order order=new Order();
+        if(StringUtils.isNotEmpty(e.getOrder_id())){
+            order=orderService.find(e);
+        }
+        order.setCode(e.getCode());
+        mv.addObject("order",order);
+        mv.setViewName(order_edit);
+        return mv;
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public String add(Order e)throws Exception{
+        JSONObject obj=getMsg();
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        if(!StringUtils.isNotEmpty(e.getOrder_id())){
+            String uid=UuidUtil.get32UUID();
+            e.setOrder_id(uid);
+            String orderNum=DateUtil.getSecondTimes()+Tools.getRandomNum();
+            e.setOrder_num(orderNum);
+            if(StringUtils.isNotEmpty(e.getCrop_id())&&StringUtils.isNotEmpty(e.getSale_id())){
+                orderService.save(e);
+            }else{
+                setMsg(obj,"error","请从订单列表选择数据");
+            }
+
+        }else{
+            setMsg(obj,"error","新增失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(Order e)throws Exception{
+        JSONObject obj=getMsg();
+        if(StringUtils.isNotEmpty(e.getOrder_id())){
+            Order o=new Order();
+            o.setOrder_id(e.getOrder_id());
+            if(orderService.findCount(o)>0){
+                orderService.update(e);
+            }else{
+                setMsg(obj,"error","对象不存在");
+            }
+        }else{
+            setMsg(obj,"error","ID不能为空");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(Order e)throws Exception{
+        JSONObject obj=getMsg();
+        if(StringUtils.isNotEmpty(e.getOrder_id())) {
+            orderService.delete(e);
+        }else {
+            setMsg(obj, "error", "ID不能为空");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    @ResponseBody
+    public String deletes(Order e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            orderService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 订单页面导出
+     * @param e 信息
+     * @return json
+     * */
+    @RequestMapping(value="/doExports")
+    @ResponseBody
+    public void doExports(Order e) throws Exception {
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //导出工具
+        ExportExcelUtil<Order> export = new ExportExcelUtil<Order>();
+            //文件名称
+            String    filename = "orderList" + DateUtil.getTimes();
+            //导出数据信息
+            List  list = orderService.findPage(e).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+
+    /**
+     * 台账统计模块导出
+     * @param e 信息
+     * @return json
+     * */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(Order e) throws Exception {
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //导出工具
+        ExportExcelUtil<Order> export = new ExportExcelUtil<Order>();
+        String filename=null;
+        List list=new ArrayList();
+        //文件名称
+        if(e.getMsg().equals("1")){//订单销售商交易额统计
+            //文件名称
+            filename = "saleList" + DateUtil.getTimes();
+            //导出数据信息
+            list = orderService.findSalePage(e).getData();
+        }else{//订单产品收入统计
+            //文件名称
+            filename = "orderList" + DateUtil.getTimes();
+            //导出数据信息
+            list = orderService.findCropPage(e).getData();
+        }
+        //执行导出
+        doExport(filename,list,export);
+    }
+
+    /**
+     * 选择销售商
+     * @return
+     */
+    @RequestMapping("/choose")
+    public ModelAndView choose(){
+        ModelAndView mv=this.getModelAndView();
+        mv.setViewName(supply_table);
+        return mv;
+    }
+
+    /**
+     * 选择产品
+     * @return
+     */
+    @RequestMapping("/crop")
+    public ModelAndView chose(){
+        ModelAndView mv=this.getModelAndView();
+        mv.setViewName(crop_table);
+        return mv;
+    }
+
+    /**
+     * 跳转到订单运输模块
+     * @param e
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/trans")
+    public ModelAndView totransport(Order e)throws Exception{
+        ModelAndView mv=this.getModelAndView();
+        Order order = orderService.find(e);
+        mv.setViewName(transport_list);
+        mv.addObject("order",order);
+        return mv;
+    }
+
+    /**
+     * 订单商品收入页面
+     * @param e
+     * @return
+     */
+    @RequestMapping(value="/toSend")
+    public ModelAndView toBill(Page e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(in_order_list);
+        return mv;
+    }
+    /**
+     * 采购商品费用统计分页查询
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value = "/inList")
+    @ResponseBody
+    public String outlist(Order e) throws Exception{
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        if(!StringUtils.isNotEmpty(e.getBtime())){
+            e.setBtime(null);
+        }
+        if(!StringUtils.isNotEmpty(e.getEtime())){
+            e.setEtime(null);
+        }
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = orderService.findCropPage(e);
+        return JSON.toJSONString(page);
+    }
+
+
+    /**
+     * 供应商费用页面
+     * @param e
+     * @return
+     */
+    @RequestMapping(value="/toSale")
+    public ModelAndView toSupply(Page e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(in_sale_list);
+        return mv;
+    }
+    /**
+     * 采购供应产品费用统计
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value = "/inSaleList")
+    @ResponseBody
+    public String outSupplylist(Order e) throws Exception{
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        if(!StringUtils.isNotEmpty(e.getBtime())){
+            e.setBtime(null);
+        }
+        if(!StringUtils.isNotEmpty(e.getEtime())){
+            e.setEtime(null);
+        }
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = orderService.findSalePage(e);
+        return JSON.toJSONString(page);
+    }
+}

@@ -1,0 +1,235 @@
+package com.hniois.trace.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.hazelcast.core.IFunction;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.trace.entity.Batch_Material;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.service.QRcodeManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.ExportExcelUtil;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
+@Controller
+@RequestMapping("/code")
+public class QRcodeAction extends BaseController {
+
+    @Resource(name="qRcodeService")
+    private QRcodeManage codeService;
+
+    String QRcode_list="trace/code/QRcode_list";
+    String QRcode_edit="trace/code/QRcode_edit";
+
+    @RequestMapping("/toPage")
+    @ResponseBody
+    public ModelAndView toPage(Page e){
+        ModelAndView mv=this.getModelAndViewToPage(e);
+        mv.setViewName(QRcode_list);
+        return mv;
+    }
+
+    /**
+     * 分页查询
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/list")
+    public String showPage(QRcode e)throws Exception{
+        //获取当前页
+        int current=getThisPage(e.getPage());
+        //获取每页显示条数
+        int limit=getThisLimit(e.getLimit());
+        e.setOffset((current-1)*limit);
+        e.setPagerSize(limit);//每页显示记录数
+        Page page = codeService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 新增 or 编辑
+     * @param e
+     * @return
+     */
+    @RequestMapping("/toEdit")
+    @ResponseBody
+    public ModelAndView edit(QRcode e)throws Exception{
+        ModelAndView mv=this.getModelAndView();
+        QRcode rcode=new QRcode();
+        if(StringUtils.isNotEmpty(e.getCode_id())){
+            rcode=codeService.find(e);
+            if(StringUtils.isNotEmpty(rcode.getBegin_code())){
+                String newBegin=codeService.getNew(rcode.getBegin_code());
+                rcode.setBegin_code(newBegin);
+            }
+            if(StringUtils.isNotEmpty(rcode.getEnd_code())){
+                String newEnd=codeService.getNew(rcode.getEnd_code());
+                rcode.setEnd_code(newEnd);
+            }
+        }
+        rcode.setCode(e.getCode());
+        mv.addObject("QRcode",rcode);
+        mv.setViewName(QRcode_edit);
+        return mv;
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public String add(QRcode e)throws Exception{
+        JSONObject obj=getMsg();
+        //获取国际标准编码,暂时用毫秒时间戳代替
+        String rule=codeService.getRuleCode();
+        e.setRule_code(rule);
+        //获取随机防伪码
+        String random=codeService.getRandomCode();
+        e.setRandom_code(random);
+        //判断开始码和结束码是否够7位,不够的前面补0
+        String b_code=codeService.getQRcode(e.getBegin_code());
+        e.setBegin_code(b_code);
+        String e_code=codeService.getQRcode(e.getEnd_code());
+        e.setEnd_code(e_code);
+        codeService.save(e);
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(QRcode e)throws Exception{
+        JSONObject obj=getMsg();
+        if(StringUtils.isNotEmpty(e.getCode_id())){
+            QRcode qr=new QRcode();
+            qr.setCode_id(e.getCode_id());
+            if(codeService.findCount(qr)>0){
+                //判断开始码和结束码是否够7位,不够的前面补0
+                if(StringUtils.isNotEmpty(e.getBegin_code())){
+                    String b_code=codeService.getQRcode(e.getBegin_code());
+                    e.setBegin_code(b_code);
+                }
+                if(StringUtils.isNotEmpty(e.getEnd_code())){
+                    String e_code=codeService.getQRcode(e.getEnd_code());
+                    e.setEnd_code(e_code);
+                }
+                codeService.update(e);
+            }else{
+                setMsg(obj,"error","对象不存在");
+            }
+
+        }else{
+            setMsg(obj,"error","编辑ID不能为空");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(QRcode e)throws Exception{
+        JSONObject obj=getMsg();
+        if(StringUtils.isNotEmpty(e.getCode_id())) {
+            codeService.delete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    @ResponseBody
+    public String deletes(QRcode e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            codeService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 导出
+     * @param e 信息
+     * @return json
+     * */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(QRcode e) throws Exception {
+        //导出工具
+        ExportExcelUtil<QRcode> export = new ExportExcelUtil<QRcode>();
+        //文件名称
+        String filename = "QRcodeList" + DateUtil.getTimes();
+        //导出数据信息
+        List list = codeService.findPage(e).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+
+    /**
+     * 更改关联二维码分页信息
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/connectList")
+    public String showConnectPage(QRcode e)throws Exception{
+        //获取当前页
+        int current=getThisPage(e.getPage());
+        //获取每页显示条数
+        int limit=getThisLimit(e.getLimit());
+        e.setOffset((current-1)*limit);
+        e.setPagerSize(limit);//每页显示记录数
+        Page page = codeService.findConnectPage(e);
+        return JSON.toJSONString(page);
+    }
+
+
+    /**
+     * 更改关联对象信息
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/updateConnect")
+    public String updateConnect(QRcode p)throws Exception{
+        JSONObject obj=getMsg();
+        QRcode e1;
+        QRcode e2;
+        Batch_Material e3;
+        JSONObject param = JSONObject.fromObject(p.getMsg());
+        e1 = (QRcode) param.get("o1");
+        e2 = (QRcode) param.get("o2");
+        e3 = (Batch_Material) param.get("o3");
+        codeService.updateAandBandC(e1,e2,e3);
+        return JSON.toJSONString(obj);
+    }
+
+}

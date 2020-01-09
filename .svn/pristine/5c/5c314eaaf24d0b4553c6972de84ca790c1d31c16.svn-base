@@ -1,0 +1,136 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.ScanDao;
+import com.hniois.monitor.entity.*;
+import com.hniois.monitor.service.*;
+import com.hniois.trace.entity.QRcodeNew;
+import com.hniois.trace.service.OrderManage;
+import com.hniois.trace.service.QRcodeNewManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.UuidUtil;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service("scanService")
+public class ScanService extends ServiceSupport<Scan,ScanDao> implements ScanManage {
+
+    @Resource(name="scanDaoImpl")
+    @Override
+    public void setDao(ScanDao dao) {
+        this.dao=dao;
+    }
+
+    @Resource(name="qRcodeNewService")
+    private QRcodeNewManage qRcodeService;
+
+    //订单对象
+    @Resource(name="orderService")
+    private OrderManage orderService;
+
+    //检验报告
+    @Resource(name="reportService")
+    private ReportManage reportService;
+
+    //采摘信息
+    @Resource(name="harvestService")
+    private HarvestManage harvestService;
+
+    //打药信息
+    @Resource(name="poisonService")
+    private PoisonManage poisonService;
+
+    //施肥信息
+    @Resource(name="chemicalService")
+    private ChemicalManage chemicalService;
+
+    //生产基地
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    //播种信息
+    @Resource(name="seedService")
+    private SeedManage seedService;
+
+    @Override
+    public Map<String, Object> getInfo(QRcodeNew e, Scan e2)throws Exception {
+        Map<String,Object> map=new HashMap<>();
+        //根据扫描信息获取当前产品的crop_id;
+        QRcodeNew qcode = qRcodeService.find(e);
+        //将二维码中对应的次数加1
+        int num=Integer.parseInt(qcode.getC_nums());
+        map.put("numbers",num);
+        int newNum=num+1;
+        qcode.setC_nums(String.valueOf(newNum));
+        qRcodeService.update(qcode);
+        //根据扫描产品获取对应的检测信息
+        Report rpt=new Report();
+        rpt.setCrop_id(qcode.getCrop_id());
+        List<Report> reportlist = reportService.findList(rpt);
+        map.put("report",reportlist.get(0));
+        //根据产品信息获取采摘信息
+        Harvest hv=new Harvest();
+        hv.setCrop_id(qcode.getCrop_id());
+        List<Harvest> hlist = harvestService.findList(hv);
+        map.put("harvest",hlist.get(0));
+        //根据二维码信息获取生成基地信息
+        Providers pd=new Providers();
+        pd.setP_id(qcode.getFarm_id());
+        pd=providersService.find(pd);
+        map.put("farm",pd);
+        //根据产品ID获取最新的播种信息
+        Seed sd=new Seed();
+        sd.setCrop_id(qcode.getCrop_id());
+        List<Seed> slist = seedService.findList(sd);
+        map.put("seed",slist.get(0));
+
+        //根据产品ID获取打药信息
+        Poison pson=new Poison();
+        pson.setCrop_id(qcode.getCrop_id());
+        List<Poison> plist=poisonService.findList(pson);
+        map.put("poison",plist.get(0));
+        //获取施肥信息
+        Chemical chl=new Chemical();
+        chl.setCrop_id(qcode.getCrop_id());
+        List<Chemical> clist=chemicalService.findList(chl);
+        map.put("chemical",clist.get(0));
+
+        //获取客户扫描信息
+        Scan scan=new Scan();
+        String sid= UuidUtil.get32UUID();
+        scan.setScan_id(sid);
+        //扫描时间
+        String ntime= DateUtil.getDay();
+        scan.setScan_time(ntime);
+        //扫描产品信息
+        scan.setCrop_name(qcode.getCrop());
+        scan.setCrop_id(qcode.getCrop_id());
+        scan.setUser_city(e2.getUser_city());
+        scan.setUser_long(e2.getUser_long());
+        scan.setUser_lat(e2.getUser_lat());
+        dao.save(scan);
+        return map;
+    }
+
+    //手机扫描区域统计数据
+    @Override
+    public List<Scan> areaNum(Scan e) throws Exception {
+        return dao.areaNum(e);
+    }
+
+    //产品手机扫描量前四位统计信息
+    @Override
+    public List<Scan> cropNum(Scan e) throws Exception {
+        return dao.cropNum(e);
+    }
+
+    //产品手机扫描量其他统计信息
+    @Override
+    public Scan others(Scan e) throws Exception {
+        return dao.others(e);
+    }
+}

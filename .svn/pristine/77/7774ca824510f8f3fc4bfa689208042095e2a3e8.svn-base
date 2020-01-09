@@ -1,0 +1,38 @@
+@charset "utf-8";
+/*查询*/
+.search-hd{ height:120px; margin:0 auto 60px;width:1100px; padding-top:30px;}
+.search-triggers{ height:35px; line-height:35px; color:#666; padding-left:20px; font-size:14px;}
+.search-triggers ul li{ float:left; padding:0 18px;}
+.search-triggers ul li.selected{ background:#0ba15c; color:#fff; border-radius:3px;}
+.search-panel{ height:90px;background:#0ba15c;border-radius:5px; margin-top:-5px; box-sizing:border-box; padding:20px 15px;}
+.search_text{ height:50px; width:916px; display:block; float:left; margin-right:10px; padding-left:10px;}
+.search-button{ float:left; display:block; width:130px; height:50px; line-height:50px; background:#f8b551 url(../images/search.png) 20px center no-repeat;color:#fff; font-size:24px; padding-left:40px;border-radius:5px; }
+/*追溯信息*/
+.trace-cpxx{margin-bottom:10px; width:1100px; margin:20px auto 20px;padding:20px; background:#FFF; box-shadow: 1px 1px 3px #d9dbdb,-1px -1px 3px #d9dbdb; box-sizing:border-box;}
+.trace-cpxx a{color:#739a49; }
+.ns-pic{ width:130px; height:90px; margin:0 auto; border-radius:6px; margin-bottom:10px; border:1px solid #ededed;float:left; margin-right:15px;}
+.tracing_code{ font-size:18px; margin-bottom:20px;}
+.trace-tit{ color:#f00; font-weight:bold;}
+.trace-ns{height:auto; padding:0 15px; margin-bottom:10px;}
+.ncp_detail{background:#f8f9fa;}
+.ncp_detail .style-ncp{height:auto;line-height:40px;border-bottom:1px solid #dedfe0;padding-left: 10px;}
+.tpxx{margin-bottom: 10px;margin-top: 10px;text-align: center;}
+.tpxx .pic{ border-radius:6px;}
+
+.open{background:url(../images/fold2.png) right center no-repeat; background-size:10px 6px;width:10px;height: 6px; float:left; margin-left:-100%; margin-top:8px;}
+.closeDiv{background:url(../images/fold.png) right center no-repeat; background-size:6px 10px;width:6px;height: 10px; float:left; margin-left:-100%; margin-top:8px;}
+/*追溯页面标题切换效果 */
+.slideTxtBox{ width:1100px; border:1px solid #ddd; text-align:left; box-sizing:border-box; margin:0 auto 20px; background:#fff; }
+.slideTxtBox .hd{ height:40px; line-height:40px; background:#f2f2f2; padding:0 10px 0 20px;   border-bottom:1px solid #ccc;  position:relative; }
+.slideTxtBox .hd ul{ float:left;  position:absolute; left:20px; top:-1px; height:42px;}
+.slideTxtBox .hd ul li{ float:left; padding:0 15px; cursor:pointer;  }
+.slideTxtBox .hd ul li.on{ height:40px;  background:#fff; border:1px solid #ccc; border-bottom:2px solid #fff; }
+/*追溯信息-农事信息点击展开效果*/
+.bellows__item:not(.bellows--is-open) > .bellows__content { display: none; }
+.bellows__item.bellows--is-open > .bellows__content-wrapper,
+.bellows__item.bellows--is-closing > .bellows__content-wrapper {display: block; }
+.bellows__content-wrapper {display: none; clear:both; }
+.bellows__header {position: relative;border-width: 0 0 1px;font-weight:normal;font-size:14px;cursor: pointer;
+ -webkit-tap-highlight-color: transparent; height:auto; padding:15px 0; clear:both; border-bottom:1px dotted #ccc; overflow:hidden;}
+.bellows__header .time{ float:left; margin-left:-80px; width:80px;}
+.bellows__header .nshh{ float:left; width:100%; padding-left:20px; padding-right:100px; box-sizing:border-box;}

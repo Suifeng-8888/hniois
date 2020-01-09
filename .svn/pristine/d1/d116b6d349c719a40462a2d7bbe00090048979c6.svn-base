@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BatchMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.trace.entity.Batch_Material"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into trace_batch_material(batch_id
+		<if test="pro_name!='' and pro_name!=null">,pro_name</if>
+		<if test="batch!='' and batch!=null">,batch</if>
+		<if test="bat_img!='' and bat_img!=null">,bat_img</if>
+		<if test="btime!='' and btime!=null">,btime</if>
+		<if test="rule_code!='' and rule_code!=null">,rule_code</if>
+		<if test="begin_code!='' and begin_code!=null">,begin_code</if>
+		<if test="end_code!='' and end_code!=null">,end_code</if>
+		)
+		VALUES (batch_id
+		<if test="pro_name!='' and pro_name!=null">,#{pro_name}</if>
+		<if test="batch!='' and batch!=null">,#{batch}</if>
+		<if test="bat_img!='' and bat_img!=null">,#{bat_img}</if>
+		<if test="btime!='' and btime!=null">,#{btime}</if>
+		<if test="rule_code!='' and rule_code!=null">,#{rule_code}</if>
+		<if test="begin_code!='' and begin_code!=null">,#{begin_code}</if>
+		<if test="end_code!='' and end_code!=null">,#{end_code}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.trace.entity.Batch_Material">
+		insert into trace_batch_material
+		(batch_id,pro_name,batch,bat_img,btime,rule_code,begin_code,end_code)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.batch_id},
+			#{e.pro_name},
+			#{e.batch},
+			#{e.bat_img},
+			#{e.btime},
+			#{e.rule_code},
+			#{e.begin_code},
+			#{e.end_code}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.trace.entity.Batch_Material">
+		update trace_batch_material
+		<set>
+			<if test="batch_id !=null and batch_id !=''">batch_id=#{batch_id},</if>
+			<if test="pro_name !=null and pro_name !=''">pro_name=#{pro_name},</if>
+			<if test="batch !=null and batch !=''">batch=#{batch},</if>
+			<if test="bat_img !=null and bat_img !=''">bat_img=#{bat_img},</if>
+			<if test="btime !=null and btime !=''">btime=#{btime},</if>
+			<if test="rule_code !=null and rule_code !=''">rule_code=#{rule_code},</if>
+			<if test="begin_code !=null and begin_code !=''">begin_code=#{begin_code},</if>
+			<if test="end_code !=null and end_code !=''">end_code=#{end_code},</if>
+			<if test="bat_path!='' and bat_path!=null">
+				`bat_img`= REPLACE(`bat_img`,CONCAT(#{bat_path},','),''),
+			</if>
+		</set>
+		where batch_id=#{batch_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.trace.entity.Batch_Material">
+		update trace_batch_material
+		<set>
+			<if test="batch_id !=null and batch_id !=''">batch_id=#{batch_id},</if>
+			<if test="pro_name !=null and pro_name !=''">pro_name=#{pro_name},</if>
+			<if test="batch !=null and batch !=''">batch=#{batch},</if>
+			<if test="bat_img !=null and bat_img !=''">bat_img=#{bat_img},</if>
+			<if test="btime !=null and btime !=''">btime=#{btime},</if>
+			<if test="rule_code !=null and rule_code !=''">rule_code=#{rule_code},</if>
+			<if test="begin_code !=null and begin_code !=''">begin_code=#{begin_code},</if>
+			<if test="end_code !=null and end_code !=''">end_code=#{end_code},</if>
+		</set>
+		where batch_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.trace.entity.Batch_Material">
+		delete from trace_batch_material
+		where 1=1
+		<if test="batch_id !=null and batch_id !=''">and batch_id=#{batch_id}</if>
+		<if test="pro_name !=null and pro_name !=''">and pro_name=#{pro_name}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="bat_img !=null and bat_img !=''">and bat_img=#{bat_img}</if>
+		<if test="btime !=null and btime !=''">and btime=#{btime}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and end_code=#{end_code}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from trace_batch_material
+		where batch_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.trace.entity.Batch_Material" resultType="com.hniois.trace.entity.Batch_Material">
+		select *
+		from trace_batch_material
+		where 1=1
+		<if test="batch_id !=null and batch_id !=''">and batch_id=#{batch_id}</if>
+		<if test="pro_name !=null and pro_name !=''">and pro_name=#{pro_name}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="bat_img !=null and bat_img !=''">and bat_img=#{bat_img}</if>
+		<if test="btime !=null and btime !=''">and btime=#{btime}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and end_code=#{end_code}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.trace.entity.Batch_Material" resultType="com.hniois.trace.entity.Batch_Material">
+		select t.*
+		from trace_batch_material t
+		where 1=1
+		<if test="batch_id !=null and batch_id !=''">and t.batch_id=#{batch_id}</if>
+		<if test="pro_name !=null and pro_name !=''">and t.pro_name=#{pro_name}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="bat_img !=null and bat_img !=''">and t.bat_img=#{bat_img}</if>
+		<if test="btime !=null and btime !=''">and t.btime=#{btime}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and t.begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and t.end_code=#{end_code}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.trace.entity.Batch_Material" resultType="java.lang.Integer">
+		select count(*)
+		from trace_batch_material t
+		where 1=1
+		<if test="batch_id !=null and batch_id !=''">and t.batch_id=#{batch_id}</if>
+		<if test="pro_name !=null and pro_name !=''">and t.pro_name=#{pro_name}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="bat_img !=null and bat_img !=''">and t.bat_img=#{bat_img}</if>
+		<if test="btime !=null and btime !=''">and t.btime=#{btime}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and t.begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and t.end_code=#{end_code}</if>
+
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.trace.entity.Batch_Material" resultType="com.hniois.trace.entity.Batch_Material">
+		select *
+		from trace_batch_material
+		where 1=1
+		<if test="batch_id !=null and batch_id !=''">and batch_id=#{batch_id}</if>
+		<if test="pro_name !=null and pro_name !=''">and pro_name=#{pro_name}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="bat_img !=null and bat_img !=''">and bat_img=#{bat_img}</if>
+		<if test="btime !=null and btime !=''">and btime=#{btime}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and end_code=#{end_code}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.trace.entity.Batch_Material" resultType="java.lang.Integer">
+		select count(*)
+		from trace_batch_material t
+		where 1=1
+		<if test="batch_id !=null and batch_id !=''">and t.batch_id=#{batch_id}</if>
+		<if test="pro_name !=null and pro_name !=''">and t.pro_name=#{pro_name}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="bat_img !=null and bat_img !=''">and t.bat_img=#{bat_img}</if>
+		<if test="btime !=null and btime !=''">and t.btime=#{btime}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and t.begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and t.end_code=#{end_code}</if>
+	</select>
+</mapper>

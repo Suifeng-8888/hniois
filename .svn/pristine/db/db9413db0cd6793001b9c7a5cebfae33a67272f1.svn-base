@@ -1,0 +1,79 @@
+package com.hniois.web.trace;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.service.*;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.OrderManage;
+import com.hniois.trace.service.QRcodeManage;
+import net.sf.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 首页扫描二维码显示信息内容
+ */
+@RestController
+@RequestMapping("/webService/query")
+public class queryTraceWeb extends BaseController{
+
+    //订单对象
+    @Resource(name="orderService")
+    private OrderManage orderService;
+    //包装批次信息
+    @Resource(name ="batchService")
+    private BatchManage batchService;
+
+    //二维码对象信息
+    @Resource(name="qRcodeService")
+    private QRcodeManage codeService;
+
+    //检验报告
+    @Resource(name="reportService")
+    private ReportManage reportService;
+
+    //采摘信息
+    @Resource(name="harvestService")
+    private HarvestManage harvestService;
+
+    //打药信息
+    @Resource(name="poisonService")
+    private PoisonManage poisonService;
+
+    //施肥信息
+    @Resource(name="chemicalService")
+    private ChemicalManage chemicalService;
+    //检验报告详情
+    @Resource(name="reportDetailService")
+    private ReportDetailManage detailService;
+
+    //农场信息
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    //播种信息
+    @Resource(name="seedService")
+    private SeedManage seedService;
+
+    //土地信息
+    @Resource(name="soilService")
+    private SoilManage soilService;
+
+    /**
+     * 扫描二维码获取对象信息
+     * @return
+     */
+    @RequestMapping("/scan")
+    public String showPage(QRcode qRcode){
+       List list=new ArrayList();
+
+
+       //将list集合转化为json数据传递到前台页面
+       JSONObject obj = JSONObject.fromObject(list);
+        return obj.toString();
+    }
+}

@@ -1,0 +1,32 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.entity.statistics.StatisicsCount;
+import com.hniois.monitor.dao.BuyDao;
+import com.hniois.monitor.entity.Buy;
+import com.hniois.monitor.service.BuyManage;
+import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ *  Buy Service
+ */
+@Service("BuyService")
+public class BuyService extends ServiceSupport<Buy,BuyDao> implements BuyManage {
+
+    @Resource(name="BuyDaoImpl")
+    @Override
+    public void setDao(BuyDao dao) {
+        this.dao = dao;
+    }
+    @Override
+    public List<StatisicsCount> countWeek(Buy e) throws Exception {
+        return dao.countWeek(e);
+    }
+
+    @Override
+    public List<StatisicsCount> countMonth(Buy e) throws Exception {
+        return dao.countMonth(e);
+    }
+}

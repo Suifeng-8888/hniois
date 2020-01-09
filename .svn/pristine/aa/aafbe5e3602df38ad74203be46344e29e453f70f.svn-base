@@ -1,0 +1,13 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Output;
+
+/**
+ * Create By javaMan
+ * 2018/12/3  9:12
+ *
+ * 基地准出 service
+ */
+public interface OutputService extends Service<Output> {
+}

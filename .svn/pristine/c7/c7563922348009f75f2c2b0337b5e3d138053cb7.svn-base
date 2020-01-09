@@ -1,0 +1,122 @@
+package com.hniois.web.monitor;
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Buy;
+import com.hniois.monitor.service.BuyManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/webService/buy")
+public class BuyActionWeb extends BaseController {
+    //Buy
+    @Resource(name = "BuyService")
+    private BuyManage BuyService;
+
+    /**
+     * 查询List
+     *
+     * @param e 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/findList")
+    @ResponseBody
+    public String findList(Buy e) throws Exception {
+        List<Buy> list = BuyService.findList(e);
+        JSONArray arr = JSONArray.fromObject(list);
+        return arr.toString();
+    }
+
+
+    /**
+     * 查询
+     *
+     * @param b_name 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/find/{b_name}")
+    @ResponseBody
+    public String find(@PathVariable("b_name") String b_name) throws Exception {
+        Buy b = new Buy();
+        b.setB_name(b_name);
+        Buy m = BuyService.find(b);
+        JSONObject obj = JSONObject.fromObject(m);
+        return obj.toString();
+    }
+
+
+    /**
+     * 保存
+     *
+     * @param e 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public String add(Buy e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        try {
+            BuyService.save(e);
+            setMsg(obj, "ok", "添加成功!");
+        } catch (Exception c) {
+            setMsg(obj, "error", "添加失败!");
+            c.printStackTrace();
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     *
+     * @param e 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/update")
+    @ResponseBody
+    public String update(Buy e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Buy p = new Buy();
+        p.setId(e.getId());
+        //条件判断
+        if (BuyService.findCount(p) > 0) {
+            BuyService.update(e);
+            setMsg(obj, "ok", "更新成功!");
+        } else {
+            setMsg(obj, "error", "更新失败!");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     *
+     * @param id 参数
+     * @return json字符串
+     */
+    @RequestMapping(value = "/delete/{id}")
+    @ResponseBody
+    public String delete(@PathVariable("id") Integer id) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if (id == null) {
+            setMsg(obj, "error", "删除失败!");
+            return obj.toString();
+        } else {
+            Buy p = new Buy();
+            p.setId(id.toString());
+            BuyService.delete(p);
+            setMsg(obj, "ok", "删除成功!");
+            return obj.toString();
+        }
+    }
+}

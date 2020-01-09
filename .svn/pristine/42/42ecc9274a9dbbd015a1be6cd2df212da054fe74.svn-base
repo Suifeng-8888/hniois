@@ -1,0 +1,78 @@
+package com.hniois.trace.dao.impl;
+
+import com.hniois.common.dao.DaoSupport;
+import com.hniois.common.page.Page;
+import com.hniois.trace.dao.QRcodeDao;
+import com.hniois.trace.entity.QRcode;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Repository("qRcodeDaoImpl")
+public class QRcodeDaoImpl implements QRcodeDao {
+
+    @Resource
+    private DaoSupport dao;
+
+    private String mapper = "QRcodeMapper";
+
+    @Override
+    public void save(QRcode e) throws Exception {
+        dao.save(mapper+".save",e);
+    }
+
+    @Override
+    public void saveBatch(List<QRcode> e) throws Exception {
+        dao.save(mapper+".saveBatch",e);
+    }
+
+    @Override
+    public void delete(QRcode e) throws Exception {
+        dao.delete(mapper+".delete",e);
+    }
+
+    @Override
+    public void deleteBatch(QRcode e) throws Exception {
+        dao.delete(mapper+".deleteBatch",e);
+    }
+
+    @Override
+    public void update(QRcode e) throws Exception {
+        dao.update(mapper+".update",e);
+    }
+
+    @Override
+    public void updateBatch(QRcode e) throws Exception {
+        dao.update(mapper+".updateBatch",e);
+    }
+
+    @Override
+    public QRcode find(QRcode e) throws Exception {
+        return (QRcode)dao.find(mapper+".find",e);
+    }
+
+    @Override
+    public List<QRcode> findList(QRcode e) throws Exception {
+        return  (List<QRcode> )dao.findList(mapper+".findList",e);
+    }
+
+    @Override
+    public int findCount(QRcode e) throws Exception {
+        return  (Integer)dao.find(mapper+".findCount",e);
+    }
+
+    @Override
+    public Page findPage(QRcode e) throws Exception {
+        return (Page)dao.findPage(mapper+".findPage",mapper+".findPageCount",e);
+    }
+
+    /*
+        查询二维码扫描对象
+     */
+    @Override
+    public QRcode scanImg(QRcode e) throws Exception{
+        return (QRcode) dao.find(mapper+".findBatch",e);
+    }
+}

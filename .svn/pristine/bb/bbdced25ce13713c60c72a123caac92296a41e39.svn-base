@@ -1,0 +1,19 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.HarvestDao;
+import com.hniois.monitor.entity.Harvest;
+import com.hniois.monitor.service.HarvestManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("harvestService")
+public class HarvestService extends ServiceSupport<Harvest,HarvestDao> implements HarvestManage {
+
+    @Resource(name="harvestDaoImpl")
+    @Override
+    public void setDao(HarvestDao dao) {
+        this.dao=dao;
+    }
+}

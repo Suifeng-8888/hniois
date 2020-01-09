@@ -1,0 +1,159 @@
+package com.hniois.controller.system;
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.entity.system.User;
+import com.hniois.entity.token.Token;
+import com.hniois.service.system.role.RoleManage;
+import com.hniois.service.system.user.UserManage;
+import com.hniois.service.token.TokenManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/webService/user")
+public class UserWebService extends BaseController{
+    //用户
+    @Resource(name="userService")
+    private UserManage userService;
+
+    //角色
+    @Resource(name="roleService")
+    private RoleManage roleService;
+
+    //角色
+    @Resource(name="tokenService")
+    private TokenManage tokenService;
+
+
+    /**
+     * 查询List
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/findList")
+    @ResponseBody
+    public String findList(User e) throws Exception {
+        List<User> list = userService.findList(e);
+        JSONArray arr = JSONArray.fromObject(list);
+        return arr.toString();
+    }
+
+    /**
+     * 查询count
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/findCount")
+    @ResponseBody
+    public String findCount(User e) throws Exception {
+        Integer count = userService.findCount(e);
+        return String.valueOf(count);
+    }
+
+    /**
+     * 查询
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/find")
+    @ResponseBody
+    public String find(User e) throws Exception {
+        User m = userService.find(e);
+        JSONObject obj = JSONObject.fromObject(m);
+        return obj.toString();
+    }
+
+
+    /**
+     * 保存
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/add")
+    @ResponseBody
+    public String add(User e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        User p = new User();
+        p.setUser_id(e.getUser_id());
+        if(userService.findCount(p)>0){
+            setMsg(obj,"error","用户ID已存在!");
+        }else{
+            String pass = new SimpleHash("SHA-1",e.getUser_id(),User.PASSWORD).toString();
+            e.setPassword(pass);
+            userService.save(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/update")
+    @ResponseBody
+    public String update(User e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        User p = new User();
+        p.setUser_id(e.getUser_id());
+        List<User> list = userService.findList(p);
+        if(list != null && list.size() > 0 && !(list.get(0).getUser_id().equals(e.getUser_id()))){
+            setMsg(obj,"error","操作失败!");
+        }else{
+            if (StringUtils.isNotEmpty(e.getPassword())) {
+                String pass = new SimpleHash("SHA-1",e.getUser_id(),e.getPassword()).toString();
+                e.setPassword(pass);
+            }
+            userService.update(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 登录
+     * http://localhost:8080/webService/user/login?user_id=admin&password=1
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/login")
+    @ResponseBody
+    public String login(User e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        String user_id = e.getUser_id();
+        String password = e.getPassword();
+        if (user_id == null || "".equals(user_id)) {
+            return "{\"state\":\"error\",\"message\":\"用户名不能为空！\"}";
+        }
+        if (password == null || "".equals(password)) {
+            return "{\"state\":\"error\",\"message\":\"密码不能为空！\"}";
+        }
+        String pass = new SimpleHash("SHA-1",user_id,password).toString();
+        User p = new User();
+        p.setUser_id(user_id);
+        p.setPassword(pass);
+        User user = userService.find(p);
+        if(user==null){
+            setMsg(obj,"error","用户名或密码错误");
+        }else{
+            //token
+            Token k = new Token();
+            k.setToken(tokenService.getToken());
+            k.setUser_id(user_id);
+            tokenService.add(k);
+        }
+
+        return obj.toString();
+    }
+
+
+}

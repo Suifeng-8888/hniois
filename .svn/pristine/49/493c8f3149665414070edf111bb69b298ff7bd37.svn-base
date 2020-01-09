@@ -1,0 +1,213 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>金明源农产品溯源公共信息服务平台</title>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../js/plugs/paging/paging.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/content.css" rel="stylesheet">
+    <link href="../js/layui/css/layui.css" rel="stylesheet">
+
+    <style type="text/css">
+        .lists-mod {
+            cursor: default;
+        }
+
+        .lists-mod :hover {
+            border-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="head-bg">
+        <div class="container">
+            <a class="navbar-brand" href="javascript:main.goback();">
+                <img class="navbar-logo hidden-xs" src="../imgs/pc/logo-2.png">
+                <h1 class="hidden-xs">金明源农产品溯源公共信息服务平台</h1>
+            </a>
+            <div class="navbar-right">
+                <div class="btn-group">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html">首 页</a></li>
+                        <li><a href="company.html">企业查询</a></li>
+                        <li><a href="product.html">产品查询</a></li>
+                        <li><a href="consumption.html">监管巡查</a></li>
+                        <li><a href="complain.html">投诉建议</a></li>
+                        <li><a href="aboutUs.html">平台介绍</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="picCode hidden-xs">
+                <img src="../imgs/pc/appCode-2.jpg" alt="APP" class="small">
+                <div class="viewBox">
+                    <img src="../imgs/pc/appCode-2.jpg" alt="APP">
+                    <p>APP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content hidden-xs banner-menu">
+    <div class="row">
+        <div class="col-md-12 b-b">
+            <div class="container text-center">
+                <div class="tags">
+                    <a href="company.html">企业</a>
+                    <a href="product.html"class="on">产品</a>
+                    <a href="consumption.html">监管巡查</a>
+                    <a href="complain.html">投诉建议</a>
+                    <a href="aboutUs.html">平台介绍</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content pc-search hidden-xs">
+    <div class="row bg">
+        <div class="container">
+            <div class="search-mod text-center">
+                <div class="form-group text-center">
+                    <input class="search-input" value="" placeholder="请输入产品名称" type="text">
+                    <a href="javaScript:void(0);" class="sBtn">
+            <span class="glyphicon glyphicon-search" aria-hidden="true" style="margin: 16px 0px 0px 5px;">
+            </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="content app-items app-p-t15">
+    <div class="row bg">
+        <div class="container">
+            <div class="lists-mod">
+                <div class="row b-b hidden-xs">
+                    <h3><i class="line"></i>搜索结果</h3>
+                </div>
+                <div class="row" id="itemList">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--分页-->
+<div class="content hidden-xs">
+    <div class="row bg">
+        <div class="container text-center">
+            <div id="findListPageFoot"></div>
+        </div>
+    </div>
+</div>
+
+<div class="footer hidden-xs">
+    <div class="row">
+        <div class="container text-center">
+            <div class="col-md-12">
+                <p>Copyright © 2018 金明源农产品溯源公共信息服务平台</p>
+                <p>主办方：xxxxxxxxxxxx | 技术支持：xxxxxxxx</p>
+            </div>
+        </div>
+        <!-- container End -->
+    </div>
+    <!-- row End -->
+</div>
+
+<div id="search-show-list" style="display: none;">
+    <div class="items">
+        <a href="#">
+            <div class="row">
+                <div class="pic">
+                <img id="img2" alt="产品图片" />
+                </div>
+                <div class="col-xs-9 hidden-xs">
+                    <div class="row">
+                        <h4>
+                            <span class="hniois-data" name="product_name"></span>
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 info">
+                            <label>产品批次号</label>
+                            <span class="hniois-data" name="product_batch"></span>
+                        </div>
+                        <!--<div class="col-xs-6 info">-->
+                            <!--<label>检测结果</label>-->
+                            <!--<span class="hniois-data" name="result"></span>-->
+                        <!--</div>-->
+                        <div class="col-xs-6 info">
+                            <label>检测人</label>
+                            <span class="hniois-data" name="clerker"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 info">
+                            <label>出厂时间</label>
+                            <span class="hniois-data" name="ck_time"></span>
+                        </div>
+
+                        <div class="col-xs-6 info">
+                            <label>生产厂商</label>
+                            <span class="hniois-data" name="base_name"></span>
+                        </div>
+                    </div>
+                    <div>
+                    <a onclick="findID(this)">
+                        <span class="hniois-data" name="report_id" style="display: none;"></span>
+                        <span class="hniois-data" name="report_img" style="display: none;"></span>
+                        <button  class="layui-btn layui-btn-radius layui-btn-normal" style="margin-left: 20px;margin-top: 20px;">检测详情</button>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+<script>
+//二次弹窗
+function findID(id){
+    var report_id= $(id).find("span[name='report_id']").html();
+    var report_img= $(id).find("span[name='report_img']").html();
+    // var url2 = im_Pro_img.substring(0, im_Pro_img.indexOf(','));
+    var url2 = report_img.substring(report_img.indexOf(",")+1, report_img.lastIndexOf(","));
+    var html1='';
+    if (url2.length==1){
+         html1 = '<img src="http://192.168.11.4:8080/attached/file/report_default.png' + '"style="max-height:600px;max-width:100%;" />';
+    }else {
+         html1 = '<img src="http://192.168.11.4:8200/'+ url2 + '"style="max-height:600px;max-width:100%;" />';
+    }
+    var layer = layui.layer ;
+    layer.open({
+        title : "产品检测报告",
+        type: 1,
+        offset: 't',
+        maxmin: true,
+        skin: 'layui-layer-rim', //加边框
+        content: html1,
+        area:['800px','800px']
+    });
+}
+</script>
+<script src="../js/common/jquery-1.12.4.min.js"></script>
+<script src="../js/common/bootstrap.min.js"></script>
+<script src="../js/layui/layui.all.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/product.js"></script>
+</body>
+</html>

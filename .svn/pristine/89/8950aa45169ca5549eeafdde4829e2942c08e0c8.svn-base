@@ -1,0 +1,950 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title>查询统计</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="static/count/css/base.css">
+    <link rel="stylesheet" href="static/count/css/firstPage.css">
+    <link rel="stylesheet" href="static/count/css/bootstrap.min.css">
+    <link href="static/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <script src="static/js/jQuery/jquery.min-1.12.1.js"></script>
+    <script src="static/count/echarts.js"></script>
+    <script src="static/count/jquery.SuperSlide.2.1.1.js"></script>
+    <script src="static/count/unslider.min.js"></script>
+    <script src="static/count/jquery.cookie.js"></script>
+    <script src="static/count/main.js"></script>
+
+    <style>
+        #map{width: 96.5%;height:96%;margin: 7px auto;border-radius: 10px}
+        #map .anchorBL{display: none;}
+        @media (max-width: 1280px) {
+            .topLT .progress{
+                margin-top: -10px;
+            }
+        }
+        .cls{
+            position:fixed;width:70px;height:60px;top:0px; right:0px; z-index: 999;
+        }
+        .cls img{
+            width: 100%;
+        }
+        .a_img{
+            cursor: pointer;
+            filter:alpha(Opacity=80);-moz-opacity:0;opacity: 0;
+        }
+        .a_img:hover{
+            cursor: pointer;
+            filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
+        }
+        @media screen and (max-width:1280px){
+            #main4{
+                width: 100%; height:80% !important;
+            }
+        }
+        .col-sm-2,.col-sm-3{
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+         #main4_01{
+             position: absolute;
+         }
+        #main4_02{
+            position: absolute;
+        }
+        #main4_03{
+            position: absolute;
+        }
+        a{
+            color: #ffffff;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        a:hover{
+            color: #d58512 !important;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body id="bigBG" style="overflow: hidden">
+<div class="topBar">
+    <div class="cls">
+        <img src="static/count/imgs/close.png" class="a_img"
+             onclick="javascript:window.opener=null;window.open('','_self');window.close();"/>
+    </div>
+    <h5 style="font-size: 32px;">农产品质量安全监管追溯查询统计</h5>
+    <p>数据更新时间：<span id="updateTime">2018-08-10 10:20:22</span>
+        <a href="/login_count"><i class="fa fa-refresh" style="font-size: 16px; color:#ffffff; margin-left: 15px;"></i></a>
+    </p>
+</div>
+<script type="text/javascript">
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+    var time2 = new Date().format("yyyy-MM-dd hh:mm:ss");
+    $("#updateTime").html(time2);
+</script>
+<div class="topLT">
+    <div id="main01" style="width: 100%;height:100%;"></div>
+</div>
+<div class="mainLT">
+    <h5>最近一周采购数量</h5>
+    <div id="main1" style="width: 100%;height:100%;"></div>
+    <script src="static/layui/layui.js"></script>
+    <script src="static/login/js/jquery-1.7.2.js"></script>
+    <script src="static/echarts/echarts.min.js"></script>
+    <script type="text/javascript">
+        //初始化函数 order-1
+        $(document).ready(function() {
+            //初始化图表
+            initCharts();
+
+        });
+
+        //layui模块加载 order-2
+        layui.use(['layer'], function() {
+            var layer = layui.layer;
+
+        });
+
+        //初始化图表
+        function initCharts(){
+            initChart1();
+            initChart2();
+            initChart3();
+            initChart4();
+            findPage();
+            FindOutfit();
+
+        }
+
+        function initChart1(){
+            $.ajax({
+                url: 'buyStatistics/countWeek.do',
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    initChart11(data);
+                }
+            });
+        }
+        function initChart2(){
+            $.ajax({
+                url: 'buyStatistics/NoteCountWeek.do',
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    initChart12(data);
+                }
+            });
+        }
+        function initChart3(){
+            $.ajax({
+                url: 'complain/findCount.do',
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    initChart13(data);
+                }
+            });
+        }
+        function initChart4(){
+            $.ajax({
+                url: 'buyStatistics/OrderCountWeek.do',
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    initChart14(data);
+                }
+            });
+        }
+        function findPage(){
+            $.ajax({
+                url: 'provide/list.do',
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(result){
+                        $("#itemList").html("");
+                    for(var i=0;i<result.data.length;i++){
+                        //组装查询结果Html
+                        creatHtml(result.data[i]);
+                        $("#itemList").append($("#search-show-list").html());
+                        }
+                }
+            });
+        }
+        function FindOutfit(){
+            $.ajax({
+                url: 'outfit/list.do',
+                data: "",
+                type: "post",
+                dataType:'json',
+                success: function(result){
+                    $("#itemList2").html("");
+                    for(var i=0;i<result.data.length;i++){
+                        //组装查询结果Html
+                        creatHtml2(result.data[i]);
+                        $("#itemList2").append($("#search-show-list2").html());
+                    }
+                }
+            });
+        }
+
+        // 组装数据
+        function creatHtml(res) {
+            $("#search-show-list").find(".hniois-data").each(function () {
+                //清空数值
+                $(this).html("");
+                //赋值
+                $(this).html(res[$(this).attr("name")]);
+            })
+        }
+        // 组装数据2
+        function creatHtml2(res) {
+            $("#search-show-list2").find(".hniois-data2").each(function () {
+                //清空数值
+                $(this).html("");
+                //赋值
+                $(this).html(res[$(this).attr("name")]);
+            })
+        }
+
+        /* 采购柱状图*/
+        function initChart11(data) {
+            var dataNum = [];
+            var dataTime = [];
+            for (var i = 0; i < data.length; i++) {
+                dataNum.push(data[i].num);
+                dataTime.push(data[i].b_time);
+            }
+            var myChart1 = echarts.init(document.getElementById('main1'));
+            var option1;
+
+            option1 = {
+                color: ['#fc6e5a'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+
+                    left: '4%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dataTime
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    barWidth: '70%',
+                    data: dataNum,
+                    type: 'bar'
+                }],
+                textStyle: {
+                    fontSize: 100,
+                    color: '#fff'
+                },
+
+            };
+            myChart1.setOption(option1);
+        }
+        /* 监管次数折现图*/
+        function initChart12(data) {
+            var dataNum = [];
+            var dataTime = [];
+            for (var i = 0; i < data.length; i++) {
+                dataNum.push(data[i].num);
+                dataTime.push(data[i].execute_time);
+            }
+            var xAxisData;
+            var seriesData;
+            //本周每天的防护情况
+            var main4_01 = echarts.init(document.getElementById('main4_01'));
+            var result = {
+                "code": 1,
+                "msg": "操作成功",
+                "errorMsg": null,
+                "content": [
+                    [{"dd": dataTime[0], "d": dataNum[0]}],
+                    [{"dd": dataTime[1], "d": dataNum[1]}],
+                    [{"dd": dataTime[2], "d": dataNum[2]}],
+                    [{"dd": dataTime[3], "d": dataNum[3]}],
+                    [{"dd": dataTime[4], "d": dataNum[4]}],
+                    [{"dd": dataTime[5], "d": dataNum[5]}],
+                    [{"dd": dataTime[6], "d": dataNum[6]}]
+                    , dataTime[0], dataTime[1], dataTime[2], dataTime[3], dataTime[4], dataTime[5], dataTime[6]
+                ]
+            };
+            seriesData = new Array();
+            var qianqitian;
+            var qianliutian;
+            var qianwutian;
+            var qiansitian;
+            var qiansantian;
+            var yesterday;
+            var today;
+            if (ajaxdatacheck(result)) {
+                var content = result.content;
+                for (var i = 0; i < content.length; i++) {
+                    var map = content[i];
+                    if (map instanceof Array && map.length == 0) {
+                        seriesData.push(0);
+                    } else {
+                        for (var k in map) {  //通过定义一个局部变量k遍历获取到了map中所有的key值
+                            var docList = map[k]; //获取到了key所对应的value的值！
+                            seriesData.push(docList.d);
+                        }
+                    }
+                }
+                //获取每一天日期
+                qianqitian = result.content[7]
+                qianliutian = result.content[8]
+                qianwutian = result.content[9]
+                qiansitian = result.content[10]
+                qiansantian = result.content[11]
+                yesterday = result.content[12]
+                today = result.content[13]
+            }
+            var option = {
+                tooltip: {
+                    trigger: 'axis'
+                },
+                grid: {
+                    left: '3%',
+                    right: '7%',
+                    bottom: '10%',
+                    top: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: [qianqitian, qianliutian, qianwutian, qiansitian, qiansantian, yesterday, today], /*['前七天', '前六天', '前五天', '前四天', '前三天', '昨天', '今天'],*//*xAxisData,*/
+                    axisLine: {
+                        lineStyle: {
+                            type: 'solid',
+                            color: '#fff',
+                            width: '1'
+                        }
+                    }
+                },
+                yAxis: [{
+                    type: 'value',
+                    name: '单位（次）',
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#FFFFFF'
+                        }
+                    },
+                    axisLabel: {
+                        margin: 10,
+                        textStyle: {
+                            fontSize: 12
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: '次数',
+                        type: 'line',
+                        stack: '总量',
+                        smooth: true,
+                        showSymbol: false,
+                        symbol: 'circle',
+                        symbolSize: 6,
+
+                        data: seriesData,
+                    }
+                ]
+            };
+            main4_01.setOption(option);
+        }
+        // 监管投诉数量
+        function initChart13(data) {
+            var count = data.count;
+            var count2 = data.count2;
+            var myChart2 = echarts.init(document.getElementById('main01'));
+              option2 = {
+                title: {
+                    subtext: '监管投诉数量'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['投诉已解决数量', '投诉待解决数量']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['投诉']
+                },
+                series: [
+                    {
+                        name: '已解决数量',
+                        color: ['#06a4ae'],
+                        type: 'bar',
+                        barWidth: '30%',
+                        data: [count2],
+                    },
+                    {
+                        name: '待解决数量',
+                        color: ['#ff5438'],
+                        type: 'bar',
+                        barWidth: '30%',
+                        data: [count]
+                    }
+                ]
+            };
+            myChart2.setOption(option2);
+
+
+        }
+        // 最近一周订单发货数量
+        function initChart14(data) {
+            var dataNum = [];
+            var dataTime = [];
+            for (var i = 0; i < data.length; i++) {
+                dataNum.push(data[i].num);
+                dataTime.push(data[i].send_time);
+            }
+            var myChart2 = echarts.init(document.getElementById('main2'));
+            var c = 0;
+            var d = 45;
+            var xAxisData = new Array();
+            var seriesData = new Array();
+            var result = {
+                "code":1,
+                "msg":"操作成功",
+                "errorMsg":null,
+                "content":[
+                    {"device_name":dataTime[0],"totalcount":dataNum[0]},
+                    {"device_name":dataTime[1],"totalcount":dataNum[1]},
+                    {"device_name":dataTime[2],"totalcount":dataNum[2]},
+                    {"device_name":dataTime[3],"totalcount":dataNum[3]},
+                    {"device_name":dataTime[4],"totalcount":dataNum[4]},
+                    {"device_name":dataTime[5],"totalcount":dataNum[5]},
+                    {"device_name":dataTime[6],"totalcount":dataNum[6]}]
+            };
+            for (var i = 0; i < result.content.length; i++) {
+                xAxisData.push(result.content[i].device_name);
+                seriesData.push(result.content[i].totalcount);
+            };
+            option2 = {
+                color: ['#30a8ff'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '4%',
+                    right: '4%',
+                    bottom: '4%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: xAxisData,
+                        // axisLabel: {
+                        //     interval: 0
+                        // },
+                        // axisLine: {
+                        //     lineStyle: {
+                        //         type: 'solid',
+                        //         color: '#fff',
+                        //         width: '1'
+                        //     }
+                        // },
+                    }
+
+                ],
+                yAxis: [
+                    {
+                        name: '次',
+                        nameTextStyle: {
+                            fontSize: 13
+                        },
+                        type: 'value',
+                        axisLine: {
+                            lineStyle: {
+                                type: 'solid',
+                                color: '#fff',
+                                width: '1'
+                            }
+                        },
+                    }
+                ],
+                series: [
+                    {
+                        name: '发货次数',
+                        type: 'bar',
+                        barWidth: '60%',
+                        data: seriesData
+                    }
+                ],
+                textStyle: {
+                    fontSize: 100,
+                    color: '#fff'
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        show: false,
+                        xAxisIndex: [0],
+                        textStyle: {
+                            fontSize: 10,
+                        },
+                    },
+                    {
+                        type: 'inside',
+                        xAxisIndex: [0],
+                    },
+                ],
+            };
+            myChart2.setOption(option2);
+
+
+
+        }
+    </script>
+
+</div>
+
+<div class="bottomLT">
+    <h5>新加入供应商合作伙伴</h5>
+    <div class="hd">
+        <div class="col-sm-"><p class="col-sm-4" style="text-align:left;">供应商名称</p>
+            <p class="col-sm-5">联系人</p>
+            <p class="col-sm-3">联系电话</p>
+        </div>
+    </div>
+    <div class="lfBox"  style="display: none">
+        <ul class="test6" id="search-show-list">
+            <li><div class="col-sm-" >
+                <p class="col-sm-4" style="text-align: left;"><span class="hniois-data" name="name"></span></p>
+                <p class="col-sm-5"><span class="hniois-data" name="contact"></span></p>
+                <p class="col-sm-3"><span class="hniois-data" name="phone"></span></p>
+            </div>
+            </li>
+        </ul>
+    </div>
+    <div class="lfBox">
+        <ul class="test6"  id="itemList">
+
+        </ul>
+    </div>
+</div>
+<div class="map-ctn">
+    <div id="map"></div>
+    <!--<canvas id="canvas"></canvas>-->
+    <!--<div id="time"></div>-->
+
+    <!--<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
+    <script type="text/javascript" src="static/count/mapv.js"></script>
+
+    <script type="text/javascript">
+        // 百度地图API功能
+        var map = new BMap.Map("map", {
+            enableMapClick: false
+        });    // 创建Map实例
+        map.centerAndZoom(new BMap.Point(113.666486,34.753203), 8);  // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+        map.addControl(new BMap.NavigationControl());//开启放大缩小按钮
+        // 地图自定义样式
+        map.setMapStyle({
+            styleJson: [{
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#044161"
+                }
+            }, {
+                "featureType": "land",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#091934"
+                }
+            }, {
+                "featureType": "boundary",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#064f85"
+                }
+            }, {
+                "featureType": "railway",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "highway",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#004981"
+                }
+            }, {
+                "featureType": "highway",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#005b96",
+                    "lightness": 1
+                }
+            }, {
+                "featureType": "highway",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "on"
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "geometry",
+                "stylers": {
+                    "color": "#004981",
+                    "lightness": -39
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#00508b"
+                }
+            }, {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "green",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#056197",
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "subway",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "manmade",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "local",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "arterial",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "boundary",
+                "elementType": "geometry.fill",
+                "stylers": {
+                    "color": "#029fd4"
+                }
+            }, {
+                "featureType": "building",
+                "elementType": "all",
+                "stylers": {
+                    "color": "#1a5787"
+                }
+            }, {
+                "featureType": "label",
+                "elementType": "all",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }, {
+                "featureType": "poi",
+                "elementType": "labels.text.fill",
+                "stylers": {
+                    "color": "#ffffff"
+                }
+            }, {
+                "featureType": "poi",
+                "elementType": "labels.text.stroke",
+                "stylers": {
+                    "color": "#1e1c1c"
+                }
+            }, {
+                "featureType": "administrative",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "on"
+                }
+            }, {
+                "featureType": "road",
+                "elementType": "labels",
+                "stylers": {
+                    "visibility": "off"
+                }
+            }]
+        });
+
+
+    </script>
+
+</div>
+<div class="topRT">
+    <h5>合作厂家分布</h5>
+    <div id="main3" style="width: 100%;height:100%;margin: -10px auto;text-align: center"></div>
+    <script>
+        var myChart3 = echarts.init(document.getElementById('main3'));
+        var result = {
+            "code":1,
+            "msg":"操作成功",
+            "errorMsg":null,
+            "content":[
+                {"device_address":"许昌","totalcount":9},
+                {"device_address":"郑州","totalcount":6},
+                {"device_address":"洛阳","totalcount":3},
+                {"device_address":"开封","totalcount":2},
+                {"device_address":"平顶山","totalcount":2},
+                {"device_address":"其他","totalcount":17}]
+        };
+        var data = new Array();
+        for (var i = 0; i < result.content.length; i++) {
+            data.push({value: result.content[i].totalcount, name: result.content[i].device_address})
+        }
+        var option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "个 "
+            },
+            color: [
+                '#61a0a8', '#d48265', '#bda29a', '#6e7074', '#749f83', '#91c7ae',
+            ],
+            legend: {
+                left: 'center',
+                top: '1',
+                itemWidth: 18,
+                itemHeight: 15,
+                itemGap: 5,
+                data: [
+                    {name: '次数', icon: 'rect'},
+                    {name: '次数',},
+                    {name: '次数',},
+                    {name: '次数',},
+                    {name: '次数',},
+                    {name: '次数',}
+                ],
+                left: '0%',
+                right: '4%',
+                textStyle: {
+                    fontSize: 12,
+                    color: 'white'
+                }
+            },
+            formatter: function (name) {
+                return (name.length > 3 ? (name.slice(0, 3) + "..") : name);
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'pie',
+                    radius: ['20%', '60%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: [
+                        '200', '452', '520', '411', '100', '411'
+
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+
+        };
+
+        option.legend.data = data;
+        option.series[0].data = data;
+        myChart3.setOption(option);
+    </script>
+
+</div>
+<div class="mainRT">
+    <h5>最近一周发货次数</h5>
+    <div id="main2" style="width: 100%;height:100%;"></div>
+</div>
+<div class="bottomRT">
+    <h5>监管机构<%--<a href="#">更多></a>--%></h5>
+    <div class="hd">
+        <div class="col-sm-">
+            <p class="col-sm-2" style="width: 26%;">监管机构名称</p>
+            <p class="col-sm-5" style="text-align: center; width: 40%;">负责人姓名</p>
+            <p class="col-sm-5" style="width: 22%;">负责人电话</p></div>
+    </div>
+    <div class="rbBox" style="display: none">
+        <ul class="test4" id="search-show-list2">
+            <li>
+                <div class="col-sm-">
+                <p class="col-sm-2" style="width: 26%;"><span class="hniois-data2" name="name"></span></p>
+                <p class="col-sm-3" style="text-align: center; width: 40%;"><span class="hniois-data2" name="charge"></span></p>
+                    <p class="col-sm-3"><span class="hniois-data2" name="phone"></span></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="rbBox">
+        <ul class="test4"  id="itemList2">
+
+        </ul>
+    </div>
+</div>
+<div class="main-bottom">
+    <h5 id="h5s">最近一周监管任务执行次数</h5>
+
+    <div id="main4_01" style="width: 100%;height:90%;display:block"></div>
+    <div id="main4_02" style="width: 100%;height:90%;display:none"></div>
+    <div id="main4_03" style="width: 100%;height:90%;display:none"></div>
+
+</div>
+
+
+<script>
+    window.onresize = function () {
+        $('#main01').width('100%');
+        $('#main1').width('100%');
+        $('#main2').width('100%');
+        $('#main3').width('100%');
+        $('#main4_01').width('100%');
+        $('#main4_02').width('100%');
+        $('#main4_03').width('100%');
+        // $('#main5').width('100%');
+
+        myChart1.resize();
+        myChart2.resize();
+        myChart3.resize();
+        main4_01.resize();
+        main4_02.resize();
+        main4_03.resize();
+        // myChart5.resize();
+
+    };
+</script>
+
+<script>
+    var h5s=document.getElementById("h5s");
+    console.log(h5s)
+    var as=h5s.getElementsByTagName("a")
+    console.log(as);
+    var a1=document.getElementById("a1");
+    var a2=document.getElementById("a2");
+    var a3=document.getElementById("a3");
+    var char1=document.getElementById("main4_01");
+    var char2=document.getElementById("main4_02");
+    var char3=document.getElementById("main4_03");
+    console.log(a1,a2,a3)
+    a1.onclick=function() {
+        char1.style.display="block";
+        char2.style.display="none";
+        char3.style.display="none";
+        a1.style.color='#d58512';
+        a2.style.color='';
+        a3.style.color='';
+        main4_01.resize();
+    };
+    a2.onclick=function() {
+        char1.style.display="none";
+        char2.style.display="block";
+        char3.style.display="none";
+        a1.style.color='';
+        a2.style.color='#d58512';
+        a3.style.color='';
+        main4_02.resize();
+    };
+    a3.onclick=function() {
+        char1.style.display="none";
+        char2.style.display="none";
+        char3.style.display="block";
+        a1.style.color='';
+        a2.style.color='';
+        a3.style.color='#d58512';
+        main4_03.resize();
+    };
+</script>
+</body>
+</html>

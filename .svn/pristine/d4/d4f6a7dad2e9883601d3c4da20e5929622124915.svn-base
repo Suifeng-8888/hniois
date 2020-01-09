@@ -1,0 +1,11 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Complain;
+
+/**
+ * Create By javaMan
+ * 2018/8/28  14:37
+ */
+public interface ComplainService extends Service<Complain> {
+}

@@ -1,0 +1,139 @@
+package com.hniois.web.trace;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.trace.entity.Key_Control;
+import com.hniois.trace.service.KeyContrlManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping("/webService/keypoint")
+public class KeyContrlActionWeb extends BaseController {
+
+    @Resource(name = "keyContrlService")
+    private KeyContrlManage keyContrlService;
+
+
+    /**
+     * 查询用过信息
+     * @param e
+     * @return
+     */
+    @RequestMapping("/findList")
+    public String findlist(Key_Control e)throws Exception{
+        List<Key_Control> list=null;
+        if(StringUtils.isNotEmpty(e.getCtr_id())){
+            list = keyContrlService.findList(e);
+        }else{
+            list = keyContrlService.findList(new Key_Control());
+        }
+        JSONArray js = JSONArray.fromObject(list);
+        return js.toString();
+    }
+
+    /**
+     * 查询count
+     * @param e 数量
+     * @return json
+     * */
+    @RequestMapping(value="/findCount")
+    public String findCount(Key_Control e) throws Exception {
+        Integer count = keyContrlService.findCount(e);
+        return String.valueOf(count);
+    }
+    /**
+     * 查找对象
+     *
+     * @param e
+     * @return
+     */
+    @RequestMapping("/find")
+    public String find(Key_Control e)throws Exception{
+        JSONObject json = getMsg();
+        if(StringUtils.isNotEmpty(e.getCtr_id())){
+            Key_Control key=keyContrlService.find(e);
+            JSONObject js = JSONObject.fromObject(key);
+            return js.toString();
+        }else{
+            setMsg(json,"error","无此对象");
+            return json.toString();
+        }
+
+
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    public String add(Key_Control e)throws  Exception{
+        JSONObject obj=getMsg();
+        Key_Control key_control=new Key_Control();
+        key_control.setCtr_id(e.getCtr_id());
+        //先判断数据库是否已经存在当前对象
+        if(keyContrlService.findCount(key_control)>0){
+            setMsg(obj,"error","当前对象已存在");
+        }else{
+            keyContrlService.save(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    public String update(Key_Control e) throws Exception{
+        JSONObject obj=getMsg();
+        if(keyContrlService.findCount(e)>0){//对象存在可以编辑
+            keyContrlService.update(e);
+        }else{
+            setMsg(obj,"error","编辑失败");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    public String delete(Key_Control e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getCtr_id()!=null) {
+            keyContrlService.delete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    public String deletes(Key_Control e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            keyContrlService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+}

@@ -1,0 +1,17 @@
+package com.hniois.monitor.dao;
+
+import com.hniois.common.dao.Dao;
+import com.hniois.entity.statistics.StatisicsCount;
+import com.hniois.monitor.entity.Buy;
+
+import java.util.List;
+
+/**
+ *  Buy Dao
+ */
+public interface BuyDao extends Dao<Buy> {
+
+    List<StatisicsCount> countWeek(Buy e) throws Exception;
+
+    List<StatisicsCount> countMonth(Buy e) throws Exception;
+}

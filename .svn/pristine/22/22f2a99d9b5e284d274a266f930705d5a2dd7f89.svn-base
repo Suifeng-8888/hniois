@@ -1,0 +1,36 @@
+package com.hniois.trace.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.trace.dao.BatchCodeDao;
+import com.hniois.trace.entity.BatchCode;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.service.BatchCodeManage;
+import com.hniois.trace.service.QRcodeManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("batchCodeService")
+public class BatchCodeService extends ServiceSupport<BatchCode,BatchCodeDao> implements BatchCodeManage {
+
+    @Resource(name="batchCodeImpl")
+    @Override
+    public void setDao(BatchCodeDao dao) {
+        this.dao=dao;
+    }
+
+    @Resource(name="qRcodeService")
+    private QRcodeManage codeService;
+
+    @Override
+    public void updateConnect(BatchCode e) throws Exception{
+        //删除批次关联码
+        dao.delete(e);
+        //更改相应的二维码信息
+        QRcode qRcode=new QRcode();
+        qRcode.setCode_id(e.getCid());
+        qRcode.setBatch("0");
+        qRcode.setMark("1");
+        codeService.update(qRcode);
+    }
+}

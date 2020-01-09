@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>金明源农产品追溯</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/new_main.css">
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/ny.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+</head>
+
+<body>
+
+<!-- 头部 -->
+<div class="navbar ">
+    <div class="container w-100">
+        <div class="navbar-header ">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand pad-0" href="index.html">
+                <img alt="Brand" src="../imgs/logo.png">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right hidden-xm">
+                <li class="hidden-sm hidden-md">
+                    <a href="index.html" style="background-color: #1068be">首页</a>
+                </li>
+                <li>
+                    <a href="company.html">企业查询</a>
+                </li>
+                <li>
+                    <a href="product.html">产品查询</a>
+                </li>
+                <li>
+                    <a href="consumption.html">监管巡查</a>
+                </li>
+                <li>
+                    <a href="complain.html">投诉建议</a>
+                </li>
+                <li>
+                    <a href="aboutUs.html">关于我们</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div><!-- 头部end -->
+<!-- banner -->
+<div class="jumbotron">
+    <div class="container jum-box">
+        <!-- pc显示 banner字体 -->
+        <h2 class="white hidden-xs">来源可追查&nbsp;去向可查证 &nbsp;责任可追究</h2>
+        <p class="white hidden-xs">Source can be traced traceability can be verified<br /> responsibility can be
+            investigated</p>
+        <!-- 手机显示 banner字体 -->
+        <p class="white visible-xs-block xs-text xs-text-top">来源可追查&nbsp;去向可查证</p>
+        <p class="white visible-xs-block xs-text">责任可追究</p>
+        <p class="white visible-xs-block xs-text ">Source can be traced traceability </p>
+        <!-- end -->
+        <div class="banner-greens visible-lg-block visible-md-block"></div>
+        <div class="row search-box">
+            <div class="col-lg-4 col-md-5 col-sm-6 hidden-xs">
+                <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="search_code">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    <input type="text" class="form-control" placeholder="请输入17位产品追溯码" id="code">
+                </div><!-- /input-group -->
+            </div>
+        </div><!-- /.row -->
+    </div>
+</div> <!-- banner end -->
+<!--手机显示 搜索框-->
+<div class="container visible-xs-block m-b-20">
+    <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="mocing_btn">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+        <form action="#" id="moving_code">
+            <input type="text" class="form-control" placeholder="18792934000000711">
+        </form>
+    </div><!-- /.row -->
+</div>
+
+<div class="submain" id='app'>
+    <div class="position">
+        <div class="wrapper">
+            <div class="position_tit"><span class="tit">追溯码查询信息</span>&nbsp;/&nbsp;Trace Code Query Information</div>
+            <div class="sub_position">
+                您现在的位置：<a href="index.html">首页</a>&nbsp;&gt;&nbsp;追溯码查询信息
+            </div>
+        </div>
+    </div>
+    <div class="trace-cpxx productDiv">
+        <div class="tracing_code">追溯码：xs1452483804509</div>
+        <dl>
+            <dt>
+                <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/f01b8efb-dc1e-4dd4-b436-1985fc7348b8.jpg"
+                     class="ns-pic">
+            </dt>
+            <dd>
+                <p><b>产品名称：</b>户太8号冰葡萄</p>
+                <p><b>采收日期：</b>2015-08-05</p>
+                <p><b>生产企业：</b>驻马店市驿城区富强瓜果蔬菜种植合作社</p>
+                <p><b>生产基地：</b>富强瓜果种植基地</p>
+            </dd>
+        </dl>
+    </div>
+    <!-- Tab按钮 -->
+    <div class="slideTxtBox">
+        <div class="hd">
+            <ul>
+                <li v-for="(item, index) in tabList" :class="{'on':index == action_index}" @click=" action_index=index ">{{item}}</li>
+            </ul>
+        </div>
+        <div class="bd">
+            <!-- 农事信息 -->
+            <div class="trace-ns" v-if='action_index==0'>
+                <div class="bellows" id="activityDiv">
+                    <div class="bellows__item" :class="{'bellows--is-open':item.show}" v-for="(item,index) in nsData">
+                        <div class="bellows__header" @click='bellowHeade(item,index)'>
+                            <div class="nshh">{{item.name}}</div>
+                            <div :class="item.show? 'open': 'closeDiv' "></div>
+                            <div class="time">{{item.time}}</div>
+                        </div>
+                        <div class="bellows__content">
+                            <div class="ncp_detail">
+                                <div class="style-ncp" v-for="(list,index) in item.list">
+                                    <div class="container">
+                                        <div class="row" v-if=" item.list.length-1===index">
+                                            <div class="col-xs-10 col-xs-offset-1 tpxx" v-if="list.img">
+                                                <img :src="list.img" alt="" class="pic" style="width:500px;">
+                                            </div>
+                                            <div v-else>
+                                                <span>{{list.key}}：</span>
+                                                <span>{{list.val}}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span>{{list.key}}：</span>
+                                            <span>{{list.val}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 质检信息 -->
+            <div class="trace-ns" v-if='action_index==1'>
+                <div class="bellows" id="testDiv">
+                    <div class="bellows__item" :class="{'bellows--is-open':item.show}" v-for="(item,index) in zjData">
+                        <div class="bellows__header" @click='bellowHeade(item,index)'>
+                            <div class="nshh">{{item.name}}</div>
+                            <div :class="item.show? 'open': 'closeDiv' "></div>
+                            <div class="time">{{item.time}}</div>
+                        </div>
+                        <div class="bellows__content">
+                            <div class="ncp_detail">
+                                <div class="style-ncp" v-for="(list,index) in item.list">
+                                    <div class="container">
+                                        <div class="row" v-if=" item.list.length-1===index">
+                                            <div class="col-xs-10 col-xs-offset-1 tpxx" v-if="list.img">
+                                                <img :src="list.img" alt="" class="pic" style="width:500px;">
+                                            </div>
+                                            <div v-else>
+                                                <span>{{list.key}}：</span>
+                                                <span>{{list.val}}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span>{{list.key}}：</span>
+                                            <span>{{list.val}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 包装信息 -->
+            <div class="trace-ns" v-if='action_index==2'>
+                <div class="bellows">
+                    <div class="bellows__item" :class="{'bellows--is-open':item.show}" v-for="(item,index) in bzData">
+                        <div class="bellows__header" @click='bellowHeade(item,index)'>
+                            <div class="nshh">{{item.name}}</div>
+                            <div :class="item.show? 'open': 'closeDiv' "></div>
+                            <div class="time">{{item.time}}</div>
+                        </div>
+                        <div class="bellows__content">
+                            <div class="ncp_detail">
+                                <div class="style-ncp" v-for="(list,index) in item.list">
+                                    <div class="container">
+                                        <div v-if=" item.list.length-1===index">
+                                            <div class="col-xs-10 col-xs-offset-1" v-if="list.img">
+                                                <p>标签信息： </p>
+                                                <img :src="list.img" alt="" class="pic">
+                                            </div>
+                                            <div v-else>
+                                                <span>{{list.key}}：</span>
+                                                <span>{{list.val}}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span>{{list.key}}：</span>
+                                            <span>{{list.val}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="foot-info">
+        Copyright © 2018  金明源农产品溯源公共信息服务平台<br  >
+        <!--主办方：XXXXXXX&nbsp;|&nbsp;技术支持：XXX-->
+    </div>
+</footer>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            action_index: 0,
+            tabList: ['农事信息', '质检信息', '包装信息'],
+            nsData: [{
+                show: true,
+                name: '施药1',
+                time: '2015-03-22',
+                list: [{
+                    key: '开始时间',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '结束时间',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '农药名称',
+                    val: '石硫合剂'
+                }, {
+                    key: '农药名称2',
+                    val: '石硫合剂'
+                }, {
+                    img: "http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/8cb840b6-b88f-42dc-9480-4dbce09f9eb7.jpg"
+                }]
+            }, {
+                show: false,
+                name: '施药2',
+                time: '2015-03-22',
+                list: [{
+                    key: '开始时间',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '结束时间',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '农药名称',
+                    val: '石硫合剂'
+                }, {
+                    key: '农药名称2',
+                    val: '石硫合剂'
+                }]
+            }, {
+                show: false,
+                name: '施药3',
+                time: '2015-03-22',
+                list: [{
+                    key: '开始时间',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '结束时间',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '农药名称',
+                    val: '石硫合剂'
+                }, {
+                    key: '农药名称2',
+                    val: '石硫合剂'
+                }, {
+                    img: 'http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/8cb840b6-b88f-42dc-9480-4dbce09f9eb7.jpg'
+                }]
+            }],
+            zjData: [{
+                name: '农药残留检测',
+                time: '2015-03-22',
+                show: true,
+                list: [{
+                    key: '检测项目',
+                    val: '农药残留检测'
+                }, {
+                    key: '检测日期',
+                    val: '2015-03-22 19:29'
+                }, {
+                    key: '检测结果',
+                    val: '合格'
+                }
+                ]
+            }],
+            bzData: [{
+                show: true,
+                name: '总重1750公斤',
+                time: '2015-08-06',
+                list: [{
+                    key: '包装日期',
+                    val: '2015-08-06'
+                }, {
+                    key: '包装数量',
+                    val: '500箱'
+                }, {
+                    key: '记录人员',
+                    val: '圆圆 '
+                },
+                    {
+                        key: '其他说明',
+                        val: '003地块葡萄包装，共500箱，1750公斤。'
+                    },
+                    {
+                        img: 'http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/3cb2556a-466d-4afb-8584-0ba266279ecb.png'
+                    }
+                ]
+            }],
+        },
+        methods: {
+            bellowHeade: function (item, index) {
+                item.show = !item.show;
+                console.log(item.name)
+            }
+        }
+    })
+</script>
+</body>
+
+</html>

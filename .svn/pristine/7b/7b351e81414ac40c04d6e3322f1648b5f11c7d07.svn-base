@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BreedDataMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.BreedData"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_breed_detail(
+		<if test="detail_id!='' and detail_id!=null">detail_id</if>
+		<if test="breed_id!='' and detail_id!=null">,breed_id</if>
+		<if test="grow_suit!='' and grow_suit!=null">,grow_suit</if>
+		<if test="detail_sex!='' and detail_sex!=null">,detail_sex</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (
+		<if test="detail_id!='' and detail_id!=null">#{detail_id}</if>
+		<if test="breed_id!='' and breed_id!=null">,#{breed_id}</if>
+		<if test="grow_suit!='' and grow_suit!=null">,#{grow_suit}</if>
+		<if test="detail_sex!='' and detail_sex!=null">,#{detail_sex}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.BreedData">
+		insert into r_breed_detail
+		(detail_id,breed_id,grow_suit,detail_sex,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.detail_id},
+			#{e.breed_id},
+			#{e.grow_suit},
+			#{e.detail_sex},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.BreedData">
+		update r_breed_detail
+		<set>
+			<if test="breed_id !=null and breed_id !=''">breed_id=#{breed_id},</if>
+			<if test="grow_suit !=null and grow_suit !=''">grow_suit=#{grow_suit},</if>
+			<if test="detail_sex !=null and detail_sex !=''">detail_sex=#{detail_sex},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where detail_id=#{detail_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.BreedData">
+		update r_breed_detail
+		<set>
+			<if test="breed_id !=null and breed_id !=''">breed_id=#{breed_id},</if>
+			<if test="grow_suit !=null and grow_suit !=''">grow_suit=#{grow_suit},</if>
+			<if test="detail_sex !=null and detail_sex !=''">detail_sex=#{detail_sex},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where detail_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.BreedData">
+		delete from r_breed_detail where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_breed_detail
+		where detail_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.BreedData" resultType="com.hniois.monitor.entity.BreedData">
+		select *
+		from r_breed_detail
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="grow_suit !=null and grow_suit !=''">and grow_suit=#{grow_suit}</if>
+		<if test="detail_sex !=null and detail_sex !=''">and detail_sex=#{detail_sex}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.BreedData" resultType="com.hniois.monitor.entity.BreedData">
+		select *
+		from r_breed_detail
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="grow_suit !=null and grow_suit !=''">and grow_suit=#{grow_suit}</if>
+		<if test="detail_sex !=null and detail_sex !=''">and detail_sex=#{detail_sex}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.BreedData" resultType="java.lang.Integer">
+		select count(*)
+		from r_breed_detail t
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and t.detail_id=#{detail_id}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="grow_suit !=null and grow_suit !=''">and t.grow_suit=#{grow_suit}</if>
+		<if test="detail_sex !=null and detail_sex !=''">and t.detail_sex=#{detail_sex}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.BreedData" resultType="com.hniois.monitor.entity.BreedData">
+		select *
+		from r_breed_detail
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and detail_id=#{detail_id}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="grow_suit !=null and grow_suit !=''">and grow_suit=#{grow_suit}</if>
+		<if test="detail_sex !=null and detail_sex !=''">and detail_sex=#{detail_sex}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.BreedData" resultType="java.lang.Integer">
+		select count(*)
+		from r_breed_detail t
+		where 1=1
+		<if test="detail_id !=null and detail_id !=''">and t.detail_id=#{detail_id}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="grow_suit !=null and grow_suit !=''">and t.grow_suit=#{grow_suit}</if>
+		<if test="detail_sex !=null and detail_sex !=''">and t.detail_sex=#{detail_sex}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+</mapper>

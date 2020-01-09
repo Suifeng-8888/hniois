@@ -1,0 +1,136 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class Poison extends Page {
+    //id,name,s_id,s_name,sup_id,nums,unit,state,p_time,soil_id,person,bz
+    private String id;//主键
+    private String name;//农药名称
+    private String people;//农药采购人
+    private String p_id;//农产id
+    private String p_name;//农产名称
+    private String s_id;//作物id
+    private String s_name;//作物名称
+    private String nums;//农药数量
+    private String unit;//农药规格
+    private String state;//农药状态 0颗粒 1粉末 2液体
+    private String p_time;//打药时间
+    private String soil_id;//土地编号
+    private String person;//打药人
+    private String  bz;//备注
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getP_id() {
+        return p_id;
+    }
+
+    public void setP_id(String p_id) {
+        this.p_id = p_id;
+    }
+
+    public String getP_name() {
+        return p_name;
+    }
+
+    public void setP_name(String p_name) {
+        this.p_name = p_name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getS_id() {
+        return s_id;
+    }
+
+    public void setS_id(String s_id) {
+        this.s_id = s_id;
+    }
+
+    public String getS_name() {
+        return s_name;
+    }
+
+    public void setS_name(String s_name) {
+        this.s_name = s_name;
+    }
+
+    public String getNums() {
+        return nums;
+    }
+
+    public void setNums(String nums) {
+        this.nums = nums;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getP_time() {
+        return p_time;
+    }
+
+    public void setP_time(String p_time) {
+        this.p_time = p_time;
+    }
+
+    public String getSoil_id() {
+        return soil_id;
+    }
+
+    public void setSoil_id(String soil_id) {
+        this.soil_id = soil_id;
+    }
+
+    public String getPerson() {
+        return person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
+    }
+
+    public String getPeople() {
+        return people;
+    }
+
+    public void setPeople(String people) {
+        this.people = people;
+    }
+}

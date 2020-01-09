@@ -1,0 +1,37 @@
+package com.hniois.trace.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.trace.dao.BatchDao;
+import com.hniois.trace.entity.Batch_Material;
+import com.hniois.trace.entity.TraceData;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.TdataManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("batchService")
+public class BatchService extends ServiceSupport<Batch_Material,BatchDao> implements BatchManage {
+
+    @Resource(name = "batchDaoImpl")
+    @Override
+    public void setDao(BatchDao dao) {
+        this.dao=dao;
+    }
+    //包装材料
+    @Resource(name = "tdataService")
+    private TdataManage tdataService;
+
+    //重写删除方法
+    @Override
+    public void deleteT(Batch_Material e)throws Exception {
+        //删除批次对象
+        dao.delete(e);
+        //同时删除相关的包装材料信息
+        TraceData td=new TraceData();
+        td.setBatch_id(e.getBatch_id());
+        tdataService.delete(td);
+    }
+
+
+}

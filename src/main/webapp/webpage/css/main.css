@@ -1,0 +1,36 @@
+/*
+ * main.css
+ *
+ * © Jee 2017/11/22
+*/
+@charset "utf-8";
+body{font-family: 'Microsoft YaHei'}
+a,a:hover,a:visited{text-decoration: none;}
+input:focus{outline: none;}
+
+.col-md-12,.row {padding: 0 !important;margin: 0 !important;/*! max-width: 100% !important; */width: 100% !important;}
+.navbar-brand{color: #ffffff;}
+.navbar-brand:hover,.navbar-brand:visited{color: #ffffff;}
+.navbar-brand img{display: inline-block; float: left;}
+.navbar-brand h1{float: left; font-size: 24px; margin: 16px 0 0 10px;}
+.footer{color: #ffffff; font-size: 14px; background-color: #2d382b;}
+.footer .container{padding: 0px 0;}
+.footer p{margin: 5px 0; text-align: center;}
+.picCode{position: relative; top: 15px; float: right; margin-left: 5px; z-index: 99;}
+.picCode .small{width: 40px; height: 40px; border: 1px solid #ddd;}
+.picCode .viewBox{display: none; position: absolute; left: -200px; top: 55px; width: 287px; height: auto; background-color: #fff; border: 1px solid #2f2f2f;}
+.picCode .viewBox img{width: 285px; height: 285px;}
+.picCode .viewBox p{font-size: 14px; font-weight: bold; text-align: center; margin: 5px 0;}
+.picCode .viewBox:after,.picCode .viewBox:before{position: absolute; right: 18%; width: 0; height: 0; border: solid transparent; content: ' ';}
+.picCode .viewBox:after{top: -24px; border-width: 12px; border-bottom-color: #fff;}
+.picCode .viewBox:before{top: -25px; border-width: 12px; border-bottom-color: #2f2f2f;}
+
+@media (max-width: 767px) {
+	.navigation{position: fixed; left: 0; bottom: 0; width: 100%; padding-top: 10px; border-top: 1px solid #e1e1e1; -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .175); box-shadow: 0 0 2px rgba(0, 0, 0, .175); background-color: #ffffff;}
+	.navigation a{display: block; color: #333333;}
+	.navigation img{margin: 0 auto; width: 23px;}
+	.navigation span{display: block; position: relative; font-size: 14px; line-height: 25px;}
+	.navigation .lists{display: none; position: absolute; right: 5px; bottom: 60px;  width: 110px; border: 1px solid #ddd; border-radius: 3px; background-color: #fff;}
+	.navigation .lists ul,li{list-style:none; margin: 0; padding: 0;}
+	.navigation .lists ul li{height: 40px; line-height: 40px; text-align: center; border-top: 1px solid #ddd; margin: -1px 5px 0 5px;}
+}

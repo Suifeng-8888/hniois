@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ScanMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Scan" useGeneratedKeys="true" keyProperty="id">
+		insert into r_scan(
+		<if test="scan_id!='' and scan_id!=null">scan_id</if>
+		<if test="scan_name!='' and scan_name!=null">,scan_name</if>
+		<if test="scan_time!='' and scan_time!=null">,scan_time</if>
+		<if test="site!='' and site!=null">,site</if>
+		)
+		values (
+		<if test="scan_id!='' and scan_id!=null">#{scan_id}</if>
+		<if test="scan_name!='' and scan_name!=null">,#{scan_name}</if>
+		<if test="scan_time!='' and scan_time!=null">,#{scan_time}</if>
+		<if test="site!='' and site!=null">,#{site}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Scan">
+		insert into r_scan
+		(scan_id,scan_name,scan_time,site)
+		values
+		<foreach collection="data" item="e" index="index" separator=",">
+			(
+			#{e.scan_id},
+			#{e.scan_name},
+			#{e.scan_time},
+			#{e.site}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Scan">
+		update r_scan
+		<set>
+			<if test="scan_id!='' and scan_id!=null">scan_id=#{scan_id},</if>
+			<if test="scan_name!='' and scan_name!=null">scan_name=#{scan_name},</if>
+			<if test="scan_time!='' and scan_time!=null">scan_time=#{scan_time},</if>
+			<if test="site!='' and site!=null">site=#{site},</if>
+		</set>
+		where scan_id=#{scan_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Scan">
+		update r_scan
+		<set>
+			<if test="scan_id!='' and scan_id!=null">scan_id=#{scan_id},</if>
+			<if test="scan_name!='' and scan_name!=null">scan_name=#{scan_name},</if>
+			<if test="scan_time!='' and scan_time!=null">scan_time=#{scan_time},</if>
+			<if test="site!='' and site!=null">site=#{site},</if>
+		</set>
+		where scan_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Scan">
+		delete from r_scan where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="scan_name !=null and scan_name !=''">and scan_name=#{scan_name}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="site !=null and site !=''">and site=#{site}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_scan
+		where scan_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		select	*
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="scan_name !=null and scan_name !=''">and scan_name=#{scan_name}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="site !=null and site !=''">and site=#{site}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		select	*
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="scan_name !=null and scan_name !=''">and scan_name=#{scan_name}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="site !=null and site !=''">and site=#{site}</if>
+		order by scan_id
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Scan" resultType="java.lang.Integer">
+		select count(*)
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="scan_name !=null and scan_name !=''">and scan_name=#{scan_name}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="site !=null and site !=''">and site=#{site}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		select	*
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="scan_name !=null and scan_name !=''">and scan_name=#{scan_name}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="site !=null and site !=''">and site=#{site}</if>
+		order by scan_id
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Scan" resultType="java.lang.Integer">
+		select count(*)
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="scan_name !=null and scan_name !=''">and scan_name=#{scan_name}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="site !=null and site !=''">and site=#{site}</if>
+	</select>
+</mapper>

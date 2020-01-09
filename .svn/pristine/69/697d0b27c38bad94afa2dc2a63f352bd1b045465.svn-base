@@ -1,0 +1,23 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.ProvidersDao;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.ProvidersManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ *  Providers Service
+ */
+@Service("providersService")
+public class ProvidersService extends ServiceSupport<Providers,ProvidersDao> implements ProvidersManage {
+
+    @Resource(name="providersDaoImpl")
+    @Override
+    public void setDao(ProvidersDao dao) {
+        this.dao = dao;
+    }
+
+}

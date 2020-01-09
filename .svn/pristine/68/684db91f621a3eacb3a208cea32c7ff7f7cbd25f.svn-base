@@ -1,0 +1,16 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Crops;
+
+import java.util.Random;
+
+public interface CropsManage extends Service<Crops> {
+    /**
+     * 随机生成六位数验证码
+     * @return
+     */
+    public  String getRandomNum();
+
+    public String getMark()throws Exception;
+}

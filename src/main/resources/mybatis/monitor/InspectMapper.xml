@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InspectMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Inspect"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_but_inspect(
+		<if test="inspcet_id!='' and inspcet_id!=null">inspcet_id</if>
+		<if test="inspect_name!='' and inspect_name!=null">,inspect_name</if>
+		<if test="inspecter!='' and inspecter!=null">,inspecter</if>
+		<if test="inspect_time!='' and inspect_time!=null">,inspect_time</if>
+		<if test="but_id!='' and but_id!=null">,but_id</if>
+		)
+		VALUES (
+		<if test="inspcet_id!='' and inspcet_id!=null">#{inspcet_id}</if>
+		<if test="inspect_name!='' and inspect_name!=null">,#{inspect_name}</if>
+		<if test="inspecter!='' and inspecter!=null">,#{inspecter}</if>
+		<if test="inspect_time!='' and inspect_time!=null">,#{inspect_time}</if>
+		<if test="but_id!='' and but_id!=null">,#{but_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Inspect">
+		insert into r_but_inspect
+		(inspcet_id,inspect_name,inspecter,inspect_time,but_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.inspcet_id},
+			#{e.inspect_name},
+			#{e.inspecter},
+			#{e.inspect_time},
+			#{e.but_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Inspect">
+		update r_but_inspect
+		<set>
+			<if test="inspcet_id !=null and inspcet_id !=''">inspcet_id=#{inspcet_id},</if>
+			<if test="inspect_name !=null and inspect_name !=''">inspect_name=#{inspect_name},</if>
+			<if test="inspecter !=null and inspecter !=''">inspecter=#{inspecter},</if>
+			<if test="inspect_time !=null and inspect_time !=''">inspect_time=#{inspect_time},</if>
+			<if test="but_id !=null and but_id !=''">but_id=#{but_id},</if>
+		</set>
+		where inspcet_id=#{inspcet_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Inspect">
+		update r_but_inspect
+		<set>
+			<if test="inspcet_id !=null and inspcet_id !=''">inspcet_id=#{inspcet_id},</if>
+			<if test="inspect_name !=null and inspect_name !=''">inspect_name=#{inspect_name},</if>
+			<if test="inspecter !=null and inspecter !=''">inspecter=#{inspecter},</if>
+			<if test="inspect_time !=null and inspect_time !=''">inspect_time=#{inspect_time},</if>
+			<if test="but_id !=null and but_id !=''">but_id=#{but_id},</if>
+		</set>
+		where inspcet_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Inspect">
+		delete from r_but_inspect where 1=1
+		<if test="inspcet_id !=null and inspcet_id !=''">and inspcet_id=#{inspcet_id}</if>
+		<if test="inspect_name !=null and inspect_name !=''">and inspect_name=#{inspect_name}</if>
+		<if test="inspecter !=null and inspecter !=''">and inspecter=#{inspecter}</if>
+		<if test="inspect_time !=null and inspect_time !=''">and inspect_time=#{inspect_time}</if>
+		<if test="but_id !=null and but_id !=''">and but_id=#{but_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_but_inspect
+		where inspcet_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Inspect" resultType="com.hniois.monitor.entity.Inspect">
+		select *
+		from r_but_inspect
+		where 1=1
+		<if test="inspcet_id !=null and inspcet_id !=''">and inspcet_id=#{inspcet_id}</if>
+		<if test="inspect_name !=null and inspect_name !=''">and inspect_name=#{inspect_name}</if>
+		<if test="inspecter !=null and inspecter !=''">and inspecter=#{inspecter}</if>
+		<if test="inspect_time !=null and inspect_time !=''">and inspect_time=#{inspect_time}</if>
+		<if test="but_id !=null and but_id !=''">and but_id=#{but_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Inspect" resultType="com.hniois.monitor.entity.Inspect">
+		select t.*
+		from r_but_inspect t
+		where 1=1
+		<if test="inspcet_id !=null and inspcet_id !=''">and t.inspcet_id=#{inspcet_id}</if>
+		<if test="inspect_name !=null and inspect_name !=''">and t.inspect_name=#{inspect_name}</if>
+		<if test="inspecter !=null and inspecter !=''">and t.inspecter=#{inspecter}</if>
+		<if test="inspect_time !=null and inspect_time !=''">and t.inspect_time=#{inspect_time}</if>
+		<if test="but_id !=null and but_id !=''">and t.but_id=#{but_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Inspect" resultType="java.lang.Integer">
+		select count(*)
+		from r_but_inspect t
+		where 1=1
+		<if test="inspcet_id !=null and inspcet_id !=''">and t.inspcet_id=#{inspcet_id}</if>
+		<if test="inspect_name !=null and inspect_name !=''">and t.inspect_name=#{inspect_name}</if>
+		<if test="inspecter !=null and inspecter !=''">and t.inspecter=#{inspecter}</if>
+		<if test="inspect_time !=null and inspect_time !=''">and t.inspect_time=#{inspect_time}</if>
+		<if test="but_id !=null and but_id !=''">and t.but_id=#{but_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Inspect" resultType="com.hniois.monitor.entity.Inspect">
+		select *
+		from r_but_inspect
+		where 1=1
+		<if test="inspcet_id !=null and inspcet_id !=''">and inspcet_id=#{inspcet_id}</if>
+		<if test="inspect_name !=null and inspect_name !=''">and inspect_name=#{inspect_name}</if>
+		<if test="inspecter !=null and inspecter !=''">and inspecter=#{inspecter}</if>
+		<if test="inspect_time !=null and inspect_time !=''">and inspect_time=#{inspect_time}</if>
+		<if test="but_id !=null and but_id !=''">and but_id=#{but_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Inspect" resultType="java.lang.Integer">
+		select count(*)
+		from r_but_inspect t
+		where 1=1
+		<if test="inspcet_id !=null and inspcet_id !=''">and t.inspcet_id=#{inspcet_id}</if>
+		<if test="inspect_name !=null and inspect_name !=''">and t.inspect_name=#{inspect_name}</if>
+		<if test="inspecter !=null and inspecter !=''">and t.inspecter=#{inspecter}</if>
+		<if test="inspect_time !=null and inspect_time !=''">and t.inspect_time=#{inspect_time}</if>
+		<if test="but_id !=null and but_id !=''">and t.but_id=#{but_id}</if>
+	</select>
+</mapper>

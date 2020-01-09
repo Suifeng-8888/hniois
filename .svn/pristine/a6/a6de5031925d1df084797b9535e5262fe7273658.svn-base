@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CityMapper">
+	
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.City" resultType="com.hniois.monitor.entity.City">
+		select *
+		from r_city
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="province_id !=null and province_id !=''">and province_id=#{province_id}</if>
+		<if test="province_name !=null and province_name !=''">and province_name=#{province_name}</if>
+		<if test="city_id !=null and city_id !=''">and city_id=#{city_id}</if>
+		<if test="city_name !=null and city_name !=''">and city_name=#{city_name}</if>
+		<if test="county_id !=null and county_id !=''">and county_id=#{county_id}</if>
+		<if test="county_name !=null and county_name !=''">and county_name=#{county_name}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.City" resultType="com.hniois.monitor.entity.City">
+		select t.*
+		from r_city t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="province_id !=null and province_id !=''">and t.province_id=#{province_id}</if>
+		<if test="province_name !=null and province_name !=''">and t.province_name=#{province_name}</if>
+		<if test="city_id !=null and city_id !=''">and t.city_id=#{city_id}</if>
+		<if test="city_name !=null and city_name !=''">and t.city_name=#{city_name}</if>
+		<if test="county_id !=null and county_id !=''">and t.county_id=#{county_id}</if>
+		<if test="county_name !=null and county_name !=''">and county_name=#{county_name}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.City" resultType="java.lang.Integer">
+		select count(*)
+		from r_city t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="province_id !=null and province_id !=''">and t.province_id=#{province_id}</if>
+		<if test="province_name !=null and province_name !=''">and t.province_name=#{province_name}</if>
+		<if test="city_id !=null and city_id !=''">and t.city_id=#{city_id}</if>
+		<if test="city_name !=null and city_name !=''">and t.city_name=#{city_name}</if>
+		<if test="county_id !=null and county_id !=''">and t.county_id=#{county_id}</if>
+		<if test="county_name !=null and county_name !=''">and county_name=#{county_name}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.City" resultType="com.hniois.monitor.entity.City">
+		select *
+		from r_city
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="province_id !=null and province_id !=''">and province_id=#{province_id}</if>
+		<if test="province_name !=null and province_name !=''">and province_name=#{province_name}</if>
+		<if test="city_id !=null and city_id !=''">and city_id=#{city_id}</if>
+		<if test="city_name !=null and city_name !=''">and city_name=#{city_name}</if>
+		<if test="county_id !=null and county_id !=''">and county_id=#{county_id}</if>
+		<if test="county_name !=null and county_name !=''">and county_name=#{county_name}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.City" resultType="java.lang.Integer">
+		select count(*)
+		from r_city t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="province_id !=null and province_id !=''">and t.province_id=#{province_id}</if>
+		<if test="province_name !=null and province_name !=''">and t.province_name=#{province_name}</if>
+		<if test="city_id !=null and city_id !=''">and t.city_id=#{city_id}</if>
+		<if test="city_name !=null and city_name !=''">and t.city_name=#{city_name}</if>
+		<if test="county_id !=null and county_id !=''">and t.county_id=#{county_id}</if>
+		<if test="county_name !=null and county_name !=''">and county_name=#{county_name}</if>
+	</select>
+
+	<!--通过省名查询市-->
+	<select id="findCity" parameterType="com.hniois.monitor.entity.City" resultType="com.hniois.monitor.entity.City">
+		SELECT city_id,city_name from r_city WHERE province_name=#{province_name}
+		GROUP BY city_id
+	</select>
+
+	<!--通过市名查询区-->
+	<select id="findArea" parameterType="com.hniois.monitor.entity.City" resultType="com.hniois.monitor.entity.City">
+		SELECT county_id,county_name from r_city WHERE city_name=#{city_name}
+	</select>
+
+	<!--查询当前市下各区生产基地个数-->
+	<select id="findNum" parameterType="com.hniois.monitor.entity.City" resultType="com.hniois.monitor.entity.City">
+		SELECT IFNULL(b.num,0) as count,a.county_name from
+		(
+		SELECT county_name from r_city where city_name=#{city_name}
+		) as a LEFT JOIN
+		(
+		SELECT COUNT(p_id) as num,p_area from r_provider GROUP BY p_area
+		) as b
+		ON a.county_name=b.p_area
+	</select>
+</mapper>

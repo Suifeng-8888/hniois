@@ -1,0 +1,62 @@
+
+a:hover { color: #ff5438; }
+.lists-tap{
+    background: rgba(49, 127, 141, 0.25);
+    height: 40px;
+    font-weight: bold;
+}
+
+.lists-tap .ewb-wt70{
+    font-size:20px;
+    padding-left: 60px;
+    width: 170px;
+    padding-top: 8px;
+}
+
+.lists-tap .ewb-wt350{
+    font-size:20px;
+    width: 400px;
+    padding-left: 50px;
+    text-indent: 120px;
+    padding-top: 8px;
+}
+
+.lists-tap .ewb-wt360{
+    text-overflow:ellipsis;
+    font-size:20px;
+    padding-left: 250px;
+    padding-top: 8px;
+}
+
+.col-xs-67 {
+    width: 50%;
+    display: block;
+}
+
+.col-xs-61{
+    margin-top:10px;
+    float:left;
+    padding-left: 47px;
+    margin-bottom:10px;
+}
+.col-xs-62{
+    margin-top:10px;
+    float:left;
+    padding-left: 130px;
+    margin-bottom:10px;
+}
+.col-xs-63{
+    margin-top:10px;
+    float:right;
+    padding-right: 200px;
+    margin-bottom:10px;
+}
+.info1 .hniois-data{
+    font-size: 17px;
+}
+.info2 .hniois-data{
+    font-size: 17px;
+}
+.info3 .hniois-data{
+    font-size: 17px;
+}

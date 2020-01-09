@@ -1,0 +1,223 @@
+package com.hniois.monitor.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Breed;
+import com.hniois.monitor.entity.Vaccine;
+import com.hniois.monitor.service.BreedManage;
+import com.hniois.monitor.service.VaccineManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.ExportExcelUtil;
+import com.hniois.util.SessionManager;
+import com.hniois.util.UuidUtil;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.UUID;
+
+@Controller
+@RequestMapping("/breed")
+public class BreedAction extends BaseController {
+    @Resource(name="breedService")
+    private BreedManage breedService;
+
+
+    String breed_list="monitor/breed/breed_list";
+    String breed_edit="monitor/breed/breed_edit";
+    String breed_img="monitor/breed/breed_img";
+    String breed_detail="monitor/breed_detail/breed_detail";
+    String add_detail="monitor/breed_detail/add_detail";
+
+    @RequestMapping("/toPage")
+    @ResponseBody
+    public ModelAndView toPage(Page e){
+        ModelAndView mv=this.getModelAndViewToPage(e);
+        mv.setViewName(breed_list);
+        return mv;
+    }
+
+    /**
+     * 分页查询
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/list")
+    public String showPage(Breed e)throws Exception{
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //获取当前页
+        int current=getThisPage(e.getPage());
+        //获取每页显示条数
+        int limit=getThisLimit(e.getLimit());
+        e.setOffset((current-1)*limit);
+        e.setPagerSize(limit);//每页显示记录数
+        Page page = breedService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 新增 or 编辑
+     * @param e
+     * @return
+     */
+    @RequestMapping("/toEdit")
+    @ResponseBody
+    public ModelAndView edit(Breed e)throws Exception{
+        ModelAndView mv=this.getModelAndView();
+        Breed bred=new Breed();
+        if(StringUtils.isNotEmpty(e.getBreed_id())){
+            bred=breedService.find(e);
+        }
+        bred.setCode(e.getCode());
+        mv.addObject("breed",bred);
+        mv.setViewName(breed_edit);
+        return mv;
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public String add(Breed e)throws  Exception{
+
+        JSONObject obj=getMsg();
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        String b_id=UuidUtil.get32UUID();
+        String b_batch=DateUtil.getTimes();
+        e.setBreed_id(b_id);
+        e.setB_batch(b_batch);
+        breedService.save(e);
+
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(Breed e)throws Exception{
+        JSONObject obj=getMsg();
+      if(StringUtils.isNotEmpty(e.getBreed_id())){
+          breedService.update(e);
+      }else{
+          setMsg(obj,"error","ID不能为空");
+      }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(Breed e)throws Exception{
+        JSONObject obj=getMsg();
+        if(StringUtils.isNotEmpty(e.getBreed_id())) {
+            breedService.newDelete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    @ResponseBody
+    public String deletes(Breed e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            breedService.newDeleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 导出
+     * @param e 信息
+     * @return json
+     * */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(Breed e) throws Exception {
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //导出工具
+        ExportExcelUtil<Breed> export = new ExportExcelUtil<Breed>();
+        //文件名称
+        String filename = "breedList" + DateUtil.getTimes();
+        //导出数据信息
+        List list = breedService.findPage(e).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+
+    /**
+     * 养殖批次详情
+     * @param e
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/addPig")
+    public ModelAndView addPig(Breed e) throws Exception{
+        ModelAndView mv=getModelAndView();
+        Breed bred=breedService.find(e);
+        mv.addObject("breed",bred);
+        mv.setViewName(add_detail);
+        return mv;
+    }
+    /**
+     * 防疫疫苗情况
+     */
+
+    @RequestMapping("/detail")
+    public ModelAndView detail(Breed e) throws Exception{
+        ModelAndView mv=getModelAndView();
+        Breed bred=breedService.find(e);
+        mv.addObject("breed",bred);
+        mv.setViewName(breed_detail);
+        return mv;
+    }
+
+    /**
+     * 生长图片
+     * @param e 学校信息
+     */
+    @RequestMapping(value="/toEditImgs")
+    public ModelAndView toEditImgs(Breed e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Breed breed = new Breed();
+        if(StringUtils.isNotEmpty(e.getBreed_id())){
+            breed = breedService.find(e);
+        }
+        mv.addObject("breed",breed);
+        mv.setViewName(breed_img);
+        return mv;
+    }
+}

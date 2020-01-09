@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProvidersMapper">
+    <!-- 保存 -->
+    <insert id="save" parameterType="com.hniois.monitor.entity.Providers" useGeneratedKeys="true" keyProperty="id">
+        insert into r_provider(`p_id`
+        <if test="p_name!='' and p_name!=null">,`p_name`</if>
+        <if test="p_form!='' and p_form!=null">,`p_form`</if>
+        <if test="p_industry!='' and p_industry!=null">,`p_industry`</if>
+        <if test="p_category!='' and p_category!=null">,`p_category`</if>
+        <if test="p_certificate!='' and p_certificate!=null">,`p_certificate`</if>
+        <if test="p_register!='' and p_register!=null">,`p_register`</if>
+        <if test="p_time!='' and p_time!=null">,`p_time`</if>
+        <if test="p_address!='' and p_address!=null">,`p_address`</if>
+        <if test="p_phone!='' and p_phone!=null">,`p_phone`</if>
+        <if test="p_position!='' and p_position!=null">,`p_position`</if>
+        <if test="p_person!='' and p_person!=null">,`p_person`</if>
+        <if test="p_img!='' and p_img!=null">,`p_img`</if>
+        )
+        values (p_id
+        <if test="p_name!='' and p_name!=null">,#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">,#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">,#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">,#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">,#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">,#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">,#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">,#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">,#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">,#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">,#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">,#{p_img}</if>
+        )
+    </insert>
+
+
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hniois.monitor.entity.Providers">
+        update r_provider
+        <set>
+            <if test="p_name!='' and p_name!=null">`p_name`=#{p_name},</if>
+            <if test="p_form!='' and p_form!=null">`p_form`=#{p_form},</if>
+            <if test="p_industry!='' and p_industry!=null">`p_industry`=#{p_industry},</if>
+            <if test="p_category!='' and p_category!=null">`p_category`=#{p_category},</if>
+            <if test="p_certificate!='' and p_certificate!=null">`p_certificate`=#{p_certificate},</if>
+            <if test="p_register!='' and p_register!=null">`p_register`=#{p_register},</if>
+            <if test="p_time!='' and p_time!=null">`p_time`=#{p_time},</if>
+            <if test="p_address!='' and p_address!=null">`p_address`=#{p_address},</if>
+            <if test="p_phone!='' and p_phone!=null">`p_phone`=#{p_phone},</if>
+            <if test="p_position!='' and p_position!=null">`p_position`=#{p_position},</if>
+            <if test="p_person!='' and p_person!=null">`p_person`=#{p_person},</if>
+            <if test="p_img!='' and p_img!=null">`p_img`=#{p_img},</if>
+            <if test="p_path!='' and p_path!=null">
+                `p_img`= REPLACE(`p_img`,CONCAT(#{p_path},','),''),
+            </if>
+        </set>
+        where p_id=#{p_id}
+    </update>
+
+
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="com.hniois.monitor.entity.Providers">
+        delete from r_provider where 1=1
+        <if test="p_id!='' and p_id!=null">and `p_id`=#{p_id}</if>
+        <if test="p_name!='' and p_name!=null">and `p_name`=#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">and `p_form`=#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">and `p_industry`=#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">and `p_category`=#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">and `p_certificate`=#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">and `p_register`=#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">and `p_time`=#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">and `p_address`=#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">and p_phone`=#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">and p_position`=#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">and p_person`=#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">and p_img`=#{p_img}</if>
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.ArrayList">
+        delete from r_provider
+        where p_id in
+        <foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询 -->
+    <select id="find" parameterType="com.hniois.monitor.entity.Providers" resultType="com.hniois.monitor.entity.Providers">
+        select	t.*
+        from r_provider t
+        where 1=1
+        <if test="p_id!='' and p_id!=null">and t.`p_id`=#{p_id}</if>
+        <if test="p_name!='' and p_name!=null">and t.`p_name`=#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">and t.`p_form`=#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">and t.`p_industry`=#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">and t.`p_category`=#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">and t.`p_certificate`=#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">and t.`p_register`=#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">and t.`p_time`=#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">and t.`p_address`=#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">and t.p_phone`=#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">and t.p_position`=#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">and t.p_person`=#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">and t.p_img`=#{p_img}</if>
+    </select>
+
+    <!-- 查询List -->
+    <select id="findList" parameterType="com.hniois.monitor.entity.Providers" resultType="com.hniois.monitor.entity.Providers">
+        select	t.*
+        from r_provider t
+        where 1=1
+        <if test="p_id!='' and p_id!=null">and t.`p_id`=#{p_id}</if>
+        <if test="p_name!='' and p_name!=null">and t.`p_name`=#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">and t.`p_form`=#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">and t.`p_industry`=#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">and t.`p_category`=#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">and t.`p_certificate`=#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">and t.`p_register`=#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">and t.`p_time`=#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">and t.`p_address`=#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">and t.p_phone`=#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">and t.p_position`=#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">and t.p_person`=#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">and t.p_img`=#{p_img}</if>
+        order by t.p_id
+    </select>
+
+    <!-- 查询Count -->
+    <select id="findCount" parameterType="com.hniois.monitor.entity.Providers" resultType="java.lang.Integer">
+        select count(*)
+        from r_provider t
+        where 1=1
+        <if test="p_id!='' and p_id!=null">and t.`p_id`=#{p_id}</if>
+        <if test="p_name!='' and p_name!=null">and t.`p_name`=#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">and t.`p_form`=#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">and t.`p_industry`=#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">and t.`p_category`=#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">and t.`p_certificate`=#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">and t.`p_register`=#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">and t.`p_time`=#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">and t.`p_address`=#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">and t.p_phone`=#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">and t.p_position`=#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">and t.p_person`=#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">and t.p_img`=#{p_img}</if>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="findPage" parameterType="com.hniois.monitor.entity.Providers" resultType="com.hniois.monitor.entity.Providers">
+        select	t.*
+        from r_provider t
+        where 1=1
+        <if test="p_id!='' and p_id!=null">and t.`p_id`=#{p_id}</if>
+        <if test="p_name!='' and p_name!=null">and t.`p_name`=#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">and t.`p_form`=#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">and t.`p_industry`=#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">and t.`p_category`=#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">and t.`p_certificate`=#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">and t.`p_register`=#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">and t.`p_time`=#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">and t.`p_address`=#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">and t.p_phone`=#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">and t.p_position`=#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">and t.p_person`=#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">and t.p_img`=#{p_img}</if>
+        order by t.p_id
+        limit #{offset},#{pageSize}
+    </select>
+
+    <!-- 分页查询Count -->
+    <select id="findPageCount" parameterType="com.hniois.monitor.entity.Providers" resultType="java.lang.Integer">
+        select count(*)
+        from r_provider t
+        where 1=1
+        <if test="p_id!='' and p_id!=null">and t.`p_id`=#{p_id}</if>
+        <if test="p_name!='' and p_name!=null">and t.`p_name`=#{p_name}</if>
+        <if test="p_form!='' and p_form!=null">and t.`p_form`=#{p_form}</if>
+        <if test="p_industry!='' and p_industry!=null">and t.`p_industry`=#{p_industry}</if>
+        <if test="p_category!='' and p_category!=null">and t.`p_category`=#{p_category}</if>
+        <if test="p_certificate!='' and p_certificate!=null">and t.`p_certificate`=#{p_certificate}</if>
+        <if test="p_register!='' and p_register!=null">and t.`p_register`=#{p_register}</if>
+        <if test="p_time!='' and p_time!=null">and t.`p_time`=#{p_time}</if>
+        <if test="p_address!='' and p_address!=null">and t.`p_address`=#{p_address}</if>
+        <if test="p_phone!='' and p_phone!=null">and t.p_phone`=#{p_phone}</if>
+        <if test="p_position!='' and p_position!=null">and t.p_position`=#{p_position}</if>
+        <if test="p_person!='' and p_person!=null">and t.p_person`=#{p_person}</if>
+        <if test="p_img!='' and p_img!=null">and t.p_img`=#{p_img}</if>
+    </select>
+</mapper>

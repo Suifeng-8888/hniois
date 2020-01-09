@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TransMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.trace.entity.Transport"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into trace_order_trans(
+		<if test="trans_id!='' and trans_id!=null">trans_id</if>
+		<if test="order_id!='' and trans_id!=null">,order_id</if>
+		<if test="company!='' and company!=null">,company</if>
+		<if test="plate_num!='' and plate_num!=null">,plate_num</if>
+		<if test="driver!='' and driver!=null">,driver</if>
+		)
+		VALUES (
+		<if test="trans_id!='' and trans_id!=null">#{trans_id}</if>
+		<if test="order_id!='' and order_id!=null">,#{order_id}</if>
+		<if test="company!='' and company!=null">,#{company}</if>
+		<if test="plate_num!='' and plate_num!=null">,#{plate_num}</if>
+		<if test="driver!='' and driver!=null">,#{driver}</if>
+
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.trace.entity.Transport">
+		insert into trace_order_trans
+		(trans_id,order_id,company,plate_num,driver)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.trans_id},
+			#{e.order_id},
+			#{e.company},
+			#{e.plate_num},
+			#{e.driver}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.trace.entity.Transport">
+		update trace_order_trans
+		<set>
+			<if test="order_id !=null and order_id !=''">order_id=#{order_id},</if>
+			<if test="company !=null and company !=''">company=#{company},</if>
+			<if test="plate_num !=null and plate_num !=''">plate_num=#{plate_num},</if>
+			<if test="driver !=null and driver !=''">driver=#{driver},</if>
+		</set>
+		where trans_id=#{trans_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.trace.entity.Transport">
+		update trace_order_trans
+		<set>
+			<if test="order_id !=null and order_id !=''">order_id=#{order_id},</if>
+			<if test="company !=null and company !=''">company=#{company},</if>
+			<if test="plate_num !=null and plate_num !=''">plate_num=#{plate_num},</if>
+			<if test="driver !=null and driver !=''">driver=#{driver},</if>
+		</set>
+		where trans_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.trace.entity.Transport">
+		delete from trace_order_trans where 1=1
+		<if test="trans_id !=null and trans_id !=''">and trans_id=#{trans_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from trace_order_trans
+		where trans_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.trace.entity.Transport" resultType="com.hniois.trace.entity.Transport">
+		select *
+		from trace_order_trans
+		where 1=1
+		<if test="trans_id !=null and trans_id !=''">and trans_id=#{trans_id}</if>
+		<if test="order_id !=null and order_id !=''">and order_id=#{order_id}</if>
+		<if test="company !=null and company !=''">and company=#{company}</if>
+		<if test="plate_num !=null and plate_num !=''">and plate_num=#{plate_num}</if>
+		<if test="driver !=null and driver !=''">and driver=#{driver}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.trace.entity.Transport" resultType="com.hniois.trace.entity.Transport">
+		select *
+		from trace_order_trans
+		where 1=1
+		<if test="trans_id !=null and trans_id !=''">and trans_id=#{trans_id}</if>
+		<if test="order_id !=null and order_id !=''">and order_id=#{order_id}</if>
+		<if test="company !=null and company !=''">and company=#{company}</if>
+		<if test="plate_num !=null and plate_num !=''">and plate_num=#{plate_num}</if>
+		<if test="driver !=null and driver !=''">and driver=#{driver}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.trace.entity.Transport" resultType="java.lang.Integer">
+		select count(*)
+		from trace_order_trans t
+		where 1=1
+		<if test="trans_id !=null and trans_id !=''">and t.trans_id=#{trans_id}</if>
+		<if test="order_id !=null and order_id !=''">and t.order_id=#{order_id}</if>
+		<if test="company !=null and company !=''">and t.company=#{company}</if>
+		<if test="plate_num !=null and plate_num !=''">and t.plate_num=#{plate_num}</if>
+		<if test="driver !=null and driver !=''">and t.driver=#{driver}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.trace.entity.Transport" resultType="com.hniois.trace.entity.Transport">
+		select *
+		from trace_order_trans
+		where 1=1
+		<if test="trans_id !=null and trans_id !=''">and trans_id=#{trans_id}</if>
+		<if test="order_id !=null and order_id !=''">and order_id=#{order_id}</if>
+		<if test="company !=null and company !=''">and company=#{company}</if>
+		<if test="plate_num !=null and plate_num !=''">and plate_num=#{plate_num}</if>
+		<if test="driver !=null and driver !=''">and driver=#{driver}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.trace.entity.Transport" resultType="java.lang.Integer">
+		select count(*)
+		from trace_order_trans t
+		where 1=1
+		<if test="trans_id !=null and trans_id !=''">and t.trans_id=#{trans_id}</if>
+		<if test="order_id !=null and order_id !=''">and t.order_id=#{order_id}</if>
+		<if test="company !=null and company !=''">and t.company=#{company}</if>
+		<if test="plate_num !=null and plate_num !=''">and t.plate_num=#{plate_num}</if>
+		<if test="driver !=null and driver !=''">and t.driver=#{driver}</if>
+	</select>
+</mapper>

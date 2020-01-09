@@ -1,0 +1,78 @@
+package com.hniois.trace.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.trace.dao.QRcodeDao;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.service.QRcodeManage;
+import com.hniois.util.DateUtil;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("qRcodeService")
+public class QRcodeService extends ServiceSupport<QRcode,QRcodeDao> implements QRcodeManage {
+
+    @Resource(name="qRcodeDaoImpl")
+    @Override
+    public void setDao(QRcodeDao dao) {
+        this.dao=dao;
+    }
+
+    @Override
+    public String getRuleCode() {
+        //获取当前时间毫秒值
+        return DateUtil.getSecondTimes();
+    }
+
+    @Override
+    public String getRandomCode() {
+        //获取100到1000之间的随机数
+        String random=String.valueOf ((int)(Math.random()*1000+100));
+        if(random.length()<4){//不够四位的前面补0
+            random=0+random;
+        }
+        return random;
+    }
+
+    @Override
+    public String getQRcode(String num) {
+        //判断当前字符串是否是七位数,不是的话前面补0
+       switch(num.length()){
+           case 1:num="000000"+num;
+           break;
+           case 2:num="00000"+num;
+           break;
+           case 3:num="0000"+num;
+           break;
+           case 4:num="000"+num;
+           break;
+           case 5:num="00"+num;
+           break;
+           case 6:num="0"+num;
+           break;
+           default:num=num;
+           break;
+       }
+        return num;
+    }
+
+    /**
+     * 去掉数字0000234之前的0
+     * @param str
+     * @return
+     */
+    @Override
+    public String getNew(String str) {
+        String newStr=null;
+        for(int i=0;i<str.length();i++){
+            String first=String.valueOf(str.charAt(0));
+            if(first.equals("0")){
+                str= str.substring(1);
+            }else{
+                break;
+            }
+            newStr=str;
+        }
+        return newStr;
+    }
+}

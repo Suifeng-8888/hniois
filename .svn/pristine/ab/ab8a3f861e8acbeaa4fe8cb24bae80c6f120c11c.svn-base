@@ -1,0 +1,19 @@
+package com.hniois.trace.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.trace.entity.QRcode;
+
+public interface QRcodeManage extends Service<QRcode> {
+
+    //获取国家标准码的方法,暂时先用时间戳代替
+    public String getRuleCode();
+
+    //获取随机防伪码
+    public String getRandomCode();
+
+    //判断当前字符传是否是7位数,不够的前面补0
+    public String getQRcode(String num);
+
+    //去掉0000234之前的0
+    public String getNew(String str);
+}

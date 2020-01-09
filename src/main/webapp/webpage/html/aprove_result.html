@@ -1,0 +1,275 @@
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>平顶山农产品追溯公共信息服务平台</title>
+  <link href="../css/bootstrap.css" rel="stylesheet">
+  <link href="../js/plugs/paging/paging.css" rel="stylesheet">
+  <link href="../css/main.css" rel="stylesheet">
+  <link href="../css/content.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/new_main.css">
+  <link href="../js/layui/css/layui.css" rel="stylesheet">
+
+  <style type="text/css">
+    .lists-mod .no-cursor{cursor:default;}
+    .lists-mod .no-cursor:hover{border-color: #ccc;}
+    .app-items{
+      margin-top: 50px;
+    }
+    .dropdown-menu{
+      min-width: 0px;
+      padding: 5px 1px;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- 头部 -->
+<div class="navbar ">
+  <div class="container w-100">
+    <div class="navbar-header ">
+      <!--<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>-->
+      <a class="navbar-brand pad-0" href="index.html">
+        <img alt="Brand" src="../imgs/show.jpg">
+      </a>
+    </div>
+    <div class="navbar-collapse collapse" role="navigation">
+      <ul class="nav navbar-nav navbar-right hidden-xm">
+        <li class="hidden-sm hidden-md">
+          <a href="index.html">首页</a>
+        </li>
+        <li>
+          <a href="company.html">企业查询</a>
+        </li>
+        <li>
+          <a href="product.html">产品查询</a>
+        </li>
+        <li>
+          <a href="consumption.html">监管巡查</a>
+        </li>
+        <li>
+          <a href="complain.html">投诉建议</a>
+        </li>
+        <li>
+          <a style="background-color: #1068be" class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            企业备案
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" >
+            <li><a href="aprove_result.html">企业公示</a></li>
+            <li><a href="register.html">企业注册</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="aboutUs.html">关于我们</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- 头部end -->
+<div class="header">
+  <div class="head-bg">
+    <div class="container">
+      <a class="navbar-brand" href="javascript:main.goback();">
+        <h1 class="hidden-xs">生产企业审批公示</h1>
+      </a>
+      <!-- navbar-brand End -->
+      <!--<div class="navbar-right">
+        <div class="btn-group">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="index.html">首 页</a></li>
+            <li><a href="traceCodeList.html">追溯码追溯</a></li>
+            <li><a href="barCode.html?step=1">条码追溯</a></li>
+            <li><a href="productsName.html?step=1">品名追溯</a></li>
+            <li><a href="company.html">企业查询</a></li>
+            <li><a href="product.html">产品查询</a></li>
+            <li><a href="consumption.html">消费提醒</a></li>
+            <li><a href="aboutUs.html">平台介绍</a></li>
+          </ul>
+        </div>
+        &lt;!&ndash; btn-group End &ndash;&gt;
+      </div>-->
+      <!-- navbar-right End -->
+
+    </div>
+    <!-- container End -->
+  </div>
+  <!-- head-bg End -->
+</div>
+<!-- header End -->
+
+<div class="content hidden-xs banner-menu">
+  <div class="row">
+    <div class="col-md-12 b-b">
+      <div class="container text-center">
+        <!--<div class="tags">
+          <a href="traceCodeList.html">追溯码</a>
+          <a href="barCode.html?step=1">条码</a>
+          <a href="productsName.html?step=1">品名</a>
+          <a href="company.html">企业</a>
+          <a href="product.html" class="on">产品</a>
+        </div>-->
+        <!-- tags End -->
+      </div>
+      <!-- container End -->
+    </div>
+    <!-- col-md-12 End -->
+  </div>
+  <!-- row End -->
+</div>
+<!-- content End -->
+
+<div class="content pc-search hidden-xs">
+  <div class="row bg">
+    <div class="container">
+      <div class="search-mod text-center">
+        <div class="hniois-search-inputs">
+
+          <div class="layui-input-block col-sm-12">
+            <form action="crop/list.do" method="post" class="layui-form hniois-search-form" id="hniois-search-form">
+            <input type="text" class="col-sm-4" autocomplete="off" style="width:200px;height:30px;" name="p_name" placeholder="企业名称.." />
+            <span class="col-sm-2"></span>
+            <input type="text" class="col-sm-4" style="width:200px;height:30px;" autocomplete="off" name="p_area" placeholder="所属区域.." />
+              <button class="layui-btn layui-btn-sm " lay-submit lay-filter="search" >
+                <i class="fa fa-search" aria-hidden="true"></i> 查询</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+      <!-- search-mod End -->
+  </div>
+</div>
+
+<!-- content End -->
+
+<div class="content app-items app-p-t15">
+  <div class="row bg">
+    <div class="container">
+      <div class="lists-mod">
+        <div class="row b-b hidden-xs">
+          <h3>审批结果</h3>
+        </div>
+        <div class="row" id="itemList">
+
+
+        </div>
+      </div>
+      <!-- lists-mod End -->
+    </div>
+    <!-- container End -->
+  </div>
+  <!-- row End -->
+</div>
+<!-- content End -->
+
+<!--分页-->
+<!--<div class="content hidden-xs">
+  <div class="row bg">
+    <div class="container text-center">
+      <div id="findListPageFoot"></div>
+    </div>
+  </div>
+</div>-->
+
+<!-- companyPage End -->
+<a href="javaScript:void(0);" id="back-to-top" class="backTop" style="display: none;"></a>
+
+<div class="footer hidden-xs">
+  <div class="row">
+    <div class="container text-center">
+      <div class="col-md-12">
+        <p>Copyright © 2018 金明源农产品溯源公共信息服务平台
+      </div>
+    </div>
+    <!-- container End -->
+  </div>
+  <!-- row End -->
+</div>
+<!-- footer End -->
+
+<!--<div class="popMask"></div>-->
+
+
+<script src="../js/common/jquery-1.12.4.min.js"></script>
+<script src="../js/common/bootstrap.min.js"></script>
+<!--<script src="../js/common/template.js"></script>-->
+<script src="../js/layui/layui.all.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/config.js"></script>
+<!--编辑-->
+<!--<script type="text/html" id="editBar">
+  <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="detail">查看</a>
+</script>-->
+<script>
+    var data_table ;//数据表格
+    var upUrl=BaseUrl+"register/list.do";
+    $(document).ready(function() {
+       var table=layui.table;
+       var layer=layui.layer;
+       var form=layui.form;
+
+       data_table=table.render({
+           elem: '#itemList',
+           url:upUrl,
+           limits:[10],
+           cols: [[
+               //{type:'checkbox'},
+              // {field:'r_id', title: '产品ID',align:'center'},
+               {field:'p_city',  title: '市',edit:'text',align:'center',width:100},
+               {field:'p_area',  title: '区(县)',edit:'text',align:'center',width:100},
+               {field:'p_name',  title: '企业名称',edit:'text',align:'center',width:250},
+               {field:'aly_time',  title: '申请日期',edit:'text',align:'center',width:120},
+               {field:'state',  title: '审核状态',width:100,templet:function(d){
+                       var str=d.state;
+                       if (str=="0"){
+                           str="<span style='color:blue'>待审核</span>";
+                       }
+                       if(str=="1"){
+                           str="<span style='color:green'>初审通过</span>";
+                       }
+                       if(str=="2"){
+                           str="<span style='color:red'>初审驳回</span>";
+                       }
+                       if(str=="3"){
+                           str="<span style='color:green'>审批通过</span>";
+                       }
+                       if(str=="4"){
+                           str="<span style='color:red'>复审驳回</span>";
+                       }
+                       return str;
+                   }},
+               {field:'apo_time',  title: '审核日期',edit:'text',align:'center', width: 120},
+               {field:'apo_reason',  title: '驳回理由',edit:'text',align:'center', width: 350},
+              // {fixed: 'right',title: '操作', width: 100, align:'center', toolbar: '#editBar'}
+           ]],
+           height: 'full-350', cellMinWidth: 60,page: true
+       });
+
+            //监听搜索表单提交
+        form.on('submit(search)', function(data) {
+            //带条件查询
+            data_table.reload({
+                where: data.field
+            });
+            return false;
+        });
+   })
+
+</script>
+</body>
+</html>

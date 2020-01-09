@@ -1,0 +1,121 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * Create By javaMan
+ * 2018/8/28  11:55
+ * 投诉建议  Entity
+ */
+public class Complain extends Page {
+
+    private String put_name;//  投诉人姓名
+    private String put_phone;// 联系电话
+    private String put_theme;// 投诉/建议标题
+    private String put_content;//   投诉/建议内容
+    private String put_time;//  提交时间
+    private String reply_name;//    回复人员
+    private String reply_time;//    回复时间
+    private String reply_content;// 回复内容
+    private Integer status;//   状态  1 未回复 2 已回复
+
+    private String p_type;//投诉或检验 0投诉 1建议
+    private String source_code;//相关产品追溯码
+    private String crop_name;//产品名称
+
+    public String getPut_name() {
+        return put_name;
+    }
+
+    public void setPut_name(String put_name) {
+        this.put_name = put_name;
+    }
+
+    public String getPut_phone() {
+        return put_phone;
+    }
+
+    public void setPut_phone(String put_phone) {
+        this.put_phone = put_phone;
+    }
+
+    public String getPut_theme() {
+        return put_theme;
+    }
+
+    public void setPut_theme(String put_theme) {
+        this.put_theme = put_theme;
+    }
+
+    public String getPut_content() {
+        return put_content;
+    }
+
+    public void setPut_content(String put_content) {
+        this.put_content = put_content;
+    }
+
+    public String getPut_time() {
+        return put_time;
+    }
+
+    public void setPut_time(String put_time) {
+        this.put_time = put_time;
+    }
+
+    public String getReply_name() {
+        return reply_name;
+    }
+
+    public void setReply_name(String reply_name) {
+        this.reply_name = reply_name;
+    }
+
+    public String getReply_time() {
+        return reply_time;
+    }
+
+    public void setReply_time(String reply_time) {
+        this.reply_time = reply_time.substring(0, reply_time.length() - 2);
+    }
+
+    public String getReply_content() {
+        return reply_content;
+    }
+
+    public void setReply_content(String reply_content) {
+        this.reply_content = reply_content;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getP_type() {
+        return p_type;
+    }
+
+    public void setP_type(String p_type) {
+        this.p_type = p_type;
+    }
+
+    public String getSource_code() {
+        return source_code;
+    }
+
+    public void setSource_code(String source_code) {
+        this.source_code = source_code;
+    }
+
+    public String getCrop_name() {
+        return crop_name;
+    }
+
+    public void setCrop_name(String crop_name) {
+        this.crop_name = crop_name;
+    }
+}

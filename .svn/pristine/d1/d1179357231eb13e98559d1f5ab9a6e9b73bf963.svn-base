@@ -1,0 +1,20 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.ReportDetailDao;
+import com.hniois.monitor.entity.ReportDetail;
+import com.hniois.monitor.service.ReportDetailManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service
+public class ReportDetailService extends ServiceSupport<ReportDetail,ReportDetailDao> implements ReportDetailManage {
+
+    @Resource(name="reportDetailDaoImpl")
+
+    @Override
+    public void setDao(ReportDetailDao dao) {
+        this.dao=dao;
+    }
+}

@@ -1,0 +1,11 @@
+package com.hniois.monitor.dao;
+
+import com.hniois.common.dao.Dao;
+import com.hniois.monitor.entity.Note;
+
+/**
+ * Create By javaMan
+ * 2018/8/30  15:38
+ */
+public interface NoteDao extends Dao<Note> {
+}

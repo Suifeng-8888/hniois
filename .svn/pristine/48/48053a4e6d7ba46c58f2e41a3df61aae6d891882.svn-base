@@ -1,0 +1,222 @@
+package com.hniois.trace.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.HarvestManage;
+import com.hniois.monitor.service.ProvidersManage;
+import com.hniois.trace.dao.QRcodeDao;
+import com.hniois.trace.entity.BatchCode;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.entity.temp.Temp;
+import com.hniois.trace.entity.temp.TempJump;
+import com.hniois.trace.service.BatchCodeManage;
+import com.hniois.trace.service.QRcodeManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.SessionManager;
+import com.hniois.util.TwoDimensionCode;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+
+@Service("qRcodeService")
+public class QRcodeService extends ServiceSupport<QRcode,QRcodeDao> implements QRcodeManage {
+
+    @Resource(name="qRcodeDaoImpl")
+
+    @Override
+    public void setDao(QRcodeDao dao) {
+        this.dao=dao;
+    }
+
+    //批次二维码对象
+    @Resource(name="batchCodeService")
+   private BatchCodeManage btcodeService;
+    //农场
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+    //采摘
+    @Resource(name="harvestService")
+    private HarvestManage harvestService;
+
+    @Override
+    public String getRuleCode()throws Exception {
+        //获取当前时间毫秒值
+        return SessionManager.getFarmID()+this.getInfo().getP_register()+DateUtil.getSecondTimes();
+    }
+
+    //获取当前生产基地信息
+    public Providers getInfo()throws Exception{
+        Providers p=new Providers();
+        p.setP_id(SessionManager.getFarmID());
+        return providersService.find(p);
+
+    }
+
+    @Override
+    public String getRandomCode() {
+        //获取100到1000之间的随机数
+        String random=String.valueOf ((int)(Math.random()*1000+100));
+        if(random.length()<4){//不够四位的前面补0
+            random=0+random;
+        }
+        return random;
+    }
+
+    @Override
+    public String getQRcode(String num) {
+        //判断当前字符串是否是七位数,不是的话前面补0
+       switch(num.length()){
+           case 1:num="000000"+num;
+           break;
+           case 2:num="00000"+num;
+           break;
+           case 3:num="0000"+num;
+           break;
+           case 4:num="000"+num;
+           break;
+           case 5:num="00"+num;
+           break;
+           case 6:num="0"+num;
+           break;
+           default:num=num;
+           break;
+       }
+        return num;
+    }
+
+    /**
+     * 去掉数字0000234之前的0
+     * @param str
+     * @return
+     */
+    @Override
+    public String getNew(String str) {
+        String newStr=null;
+        for(int i=1;i<str.length();){
+            String first=String.valueOf(str.charAt(0));
+            if(first.equals("0")){
+                str= str.substring(1);
+            }else{
+                break;
+            }
+            newStr=str;
+        }
+        return newStr;
+    }
+
+
+
+    /**
+     * 关联二维码
+     * @param e1
+     * @param e2
+     */
+    @Override
+    public void connect(QRcode e1, BatchCode e2) throws Exception{
+        dao.update(e1);
+        btcodeService.save(e2);
+    }
+
+
+    //打印页面数据显示
+    @Override
+    public Temp goPrint(QRcode e) throws Exception{
+        QRcode qRcode=dao.find(e);
+        //获取qRcode中的起始码和结束码
+        String begin_code=qRcode.getBegin_code();
+        String end_code=qRcode.getEnd_code();
+
+       //获取生产基地信息
+        Providers farm=new Providers();
+        farm.setP_id(SessionManager.getFarmID());
+        farm=providersService.find(farm);
+        Temp temp=new Temp();
+        temp.setName(farm.getP_name());
+        temp.setTel(farm.getP_phone());
+        temp.setRandom(qRcode.getRandom_code());
+        temp.setBegin_code(qRcode.getBegin_code());
+        temp.setEnd_code(qRcode.getEnd_code());
+        temp.setRule_code(qRcode.getRule_code());
+        temp.setBatch(qRcode.getBatch());
+        return temp;
+    }
+
+    //加载二维码图片数据
+    public TempJump loadPic(HttpServletRequest request, String pages, String limit, Temp e)throws Exception{
+        String temp_url="http://wfyweb.com/retrospect";
+        //外网访问路径接口
+        String url="http://localhost:8080/webService/query?random_code=";
+        String rs = "";//承接生成的二维码图片拼接并返回给前端页面
+        String mark="";//承接顺序号返回给前端页面
+        //获取当前页
+        int page=(pages==null||pages=="") ? 1:Integer.parseInt(pages);
+        //获取每页显示条数
+        int offset=Integer.parseInt(limit);
+        String begin_code=e.getBegin_code();
+        String end_code=e.getEnd_code();
+        String batch=e.getBatch();
+        int begin=Integer.parseInt(begin_code);
+        int end=Integer.parseInt(end_code);
+
+        //起始循环值
+        int start=(page-1)*offset+begin;
+        String content="";//二维码内容
+        String img_name=null;//图片名称
+        String savePath = "";//二维码最终保存路径
+        if(start+offset>end){//说明是最后一页且不够整页
+
+            for (int i=0; i<offset+start-end;i++){
+                mark+=this.getQRcode(String.valueOf(start+i))+",";
+                img_name =batch+String.valueOf(start+i);//图片名用图片的数字序号命名
+               // content=url+e.getRandom()+"&rule_code="+e.getRule_code()+"&qcode="+this.getQRcode(start+i+"");
+                content=temp_url;
+                savePath = createPic(request,img_name,content);//图片的保存路径
+                rs += savePath+",";
+            }
+        }else{
+            //说明不是最后一页或刚好是整页数
+            for (int i=0; i<offset;i++){
+                mark+=this.getQRcode(String.valueOf(start+i))+",";
+                img_name =batch+String.valueOf(start+i);//图片名用图片的数字序号命名
+               // content=url+e.getRandom()+"&rule_code="+e.getRule_code()+"&qcode="+this.getQRcode(start+i+"");
+                content=temp_url;
+                savePath = createPic(request,img_name,content);//图片的保存路径
+                rs += savePath+",";
+            }
+        }
+        TempJump tj=new TempJump();
+        tj.setMark(mark.substring(0,mark.length()-1));
+        tj.setPic(rs.substring(0,rs.length()-1));
+        return tj;
+    }
+
+    //手机扫描二维码获取对象信息
+    @Override
+    public QRcode scanImg(QRcode e) throws Exception {
+        return dao.scanImg(e);
+    }
+
+
+    /**
+     * 根据图片路径/格式/生成二维码图片
+     */
+    public String createPic(HttpServletRequest request, String pic_name, String content){
+        //获取路径
+        String path  =  request.getRealPath("") + "/temp/"+DateUtil.getDays()+"/";
+        String savePath  =  request.getContextPath() + "temp/"+DateUtil.getDays()+"/";
+        File dirFile = new File(path);
+        if (!dirFile.exists()) {
+            dirFile.mkdirs();
+        }
+        //图片路径
+        String imgPath =  path +pic_name + ".png";
+        String imgPath2 =  savePath + pic_name + ".png";
+        //二维码
+        TwoDimensionCode handle = new TwoDimensionCode();
+        String type = "png";
+        handle.encoderQRCode(content,imgPath,type);
+        return imgPath2;
+    }
+}

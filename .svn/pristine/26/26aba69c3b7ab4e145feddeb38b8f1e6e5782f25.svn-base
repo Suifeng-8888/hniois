@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TokenMapper">
+	<insert id="save" parameterType="com.hniois.entity.token.Token">
+		insert into t_token (
+			user_id,
+			token,
+			login_time
+		)values(
+			#{user_id},
+			#{token},
+			NOW()
+		)
+	</insert>
+
+	<update id="update" parameterType="com.hniois.entity.token.Token">
+		update t_token
+		set token = #{token},login_time = NOW()
+		where user_id = #{user_id}
+	</update>
+
+	<delete id="delete" parameterType="com.hniois.entity.token.Token">
+		delete from t_token u
+		where 1=1
+		<if test="user_id !=null and user_id !=''">and u.user_id=#{user_id}</if>
+		<if test="token !=null and token !=''">and u.token=#{token}</if>
+	</delete>
+
+	<select id="find" parameterType="com.hniois.entity.token.Token"
+			resultType="com.hniois.entity.token.Token">
+		select u.*
+		from t_token u
+		where 1=1
+		<if test="user_id !=null and user_id !=''">and u.user_id=#{user_id}</if>
+		<if test="token !=null and token !=''">and u.token=#{token}</if>
+	</select>
+
+	<select id="findList" parameterType="com.hniois.entity.token.Token"
+			resultType="com.hniois.entity.token.Token">
+		select u.* 
+		from t_token u 
+		where 1=1
+		<if test="user_id !=null and user_id !=''">and u.user_id=#{user_id}</if>
+		<if test="token !=null and token !=''">and u.token=#{token}</if>
+	</select>
+
+	<select id="findCount" parameterType="com.hniois.entity.token.Token"
+			resultType="int">
+		select count(*) 
+		from t_token u 
+		where 1=1
+		<if test="user_id !=null and user_id !=''">and u.user_id=#{user_id}</if>
+		<if test="token !=null and token !=''">and u.token=#{token}</if>
+	</select>
+
+</mapper>

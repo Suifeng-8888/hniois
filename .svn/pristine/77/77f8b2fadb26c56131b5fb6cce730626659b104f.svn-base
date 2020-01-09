@@ -1,0 +1,192 @@
+package com.hniois.monitor.controller;
+
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.ProvidersManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.ExportExcelUtil;
+import com.hniois.util.SessionManager;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/providers")
+public class ProvidersAction extends BaseController{
+    //Providers
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    private String providers_list = "monitor/providers/providers_list";
+    private String providers_edit = "monitor/providers/providers_edit";
+    private String providers_table = "monitor/providers/providers_table";
+    private String providers_img = "monitor/providers/providers_img";
+
+    @RequestMapping(value="/toPage")
+    public ModelAndView toPage(Page e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(providers_list);
+        return mv;
+    }
+
+    @RequestMapping(value="/toTable")
+    public ModelAndView toTable(Providers e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(providers_table);
+        return mv;
+    }
+
+    /**
+     * 分页查询
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public String list(Providers e) throws Exception{
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setP_id(SessionManager.getFarmID());
+        }
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = providersService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 跳转
+     * @param e          参数
+     * @return           新增 or 保存页面
+     */
+    @RequestMapping(value="/toEdit")
+    public ModelAndView toAorU(Providers e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Providers providers = new Providers();
+        if(StringUtils.isNotEmpty(e.getP_id())){
+            providers = providersService.find(e);
+        }
+        providers.setCode(e.getCode());//判断：0查询 or 1 增加/修改
+        mv.addObject("providers",providers);
+        mv.setViewName(providers_edit);
+        return mv;
+    }
+
+    /**
+     * 保存
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/add")
+    @ResponseBody
+    public String add(Providers e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        providersService.save(e);
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/update")
+    @ResponseBody
+    public String update(Providers e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Providers p = new Providers();
+        p.setP_id(e.getP_id());
+        //条件判断
+        List<Providers> list = providersService.findList(p);
+        if(list != null && list.size() > 0 && !(list.get(0).getP_id().equals(e.getP_id()))){
+            setMsg(obj,"error","操作失败!");
+        }else{
+            providersService.update(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public String delete(Providers e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(e==null){
+            setMsg(obj,"error","操作失败!");
+            return obj.toString();
+        }
+        providersService.delete(e);
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/deletes")
+    @ResponseBody
+    public String deletes(Providers e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(e==null){
+            setMsg(obj,"error","操作失败!");
+            return obj.toString();
+        }
+        providersService.deleteBatch(e);
+        return obj.toString();
+    }
+
+    /**
+     * 导出
+     * @param e 用户信息
+     * @return json
+     * */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(Providers e) throws Exception {
+        if("生产基地".equals(SessionManager.getUserType())){
+            e.setP_id(SessionManager.getFarmID());
+        }
+        //导出工具
+        ExportExcelUtil<Providers> export = new ExportExcelUtil<Providers>();
+        //文件名称
+        String filename = "SupplierList" + DateUtil.getTimes();
+        //导出数据信息
+        List list = providersService.findPage(e).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+    /**
+     * 检验报告图片
+     * @param e 学校信息
+     */
+    @RequestMapping(value="/toEditImgs")
+    public ModelAndView toEditImgs(Providers e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Providers providers = new Providers();
+        if(StringUtils.isNotEmpty(e.getP_id())){
+            providers = providersService.find(e);
+        }
+        mv.addObject("providers",providers);
+        mv.setViewName(providers_img);
+        return mv;
+    }
+}

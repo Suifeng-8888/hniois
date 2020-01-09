@@ -1,0 +1,12 @@
+package com.hniois.trace.dao;
+
+import com.hniois.common.dao.Dao;
+import com.hniois.common.page.Page;
+import com.hniois.trace.entity.QRcode;
+
+import java.util.List;
+
+public interface QRcodeDao extends Dao<QRcode> {
+
+    Page findConnectPage(QRcode e) throws Exception;
+}

@@ -1,0 +1,359 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <link href="static/layui/css/layui.css" rel="stylesheet" />
+
+    <script src="static/login/js/jquery-1.7.2.js"></script>
+    <script src="static/echarts/echarts.min.js"></script>
+    <script src="static/count/echarts-wordcloud.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=1XjLLEhZhQNUzd93EjU5nOGQ"></script>
+    <script type="text/javascript" src="static/count/mapv.js"></script>
+    <style>
+        *{
+            magin:0 auto;
+            padding:0 auto;
+
+        }
+        #map .anchorBL{
+            display: none;
+        }
+        .main{
+            width: 100%;
+            height: 100%;
+            background: #f3f3f3;
+            margin:10px 0;
+            /*border:1px solid red;*/
+            background: #F9F9F9;
+        }
+        .left{
+            /*border:1px solid red;*/
+        }
+        .middle{
+            /*border:1px solid blue;*/
+            height: 50%;
+        }
+        .right{
+            /*border:1px solid green;*/
+        }
+        li{
+            border: 2px solid #f39c12;
+        }
+    </style>
+</head>
+<body class="layui-container main">
+
+<ul class="left layui-col-md3">
+    <li id="left-up" style="height: 400px;width: 100%;"></li>
+    <li id="left-down" style="height: 400px;width: 100%;"></li>
+</ul>
+<ul class="middle layui-col-md6">
+    <li id="map" style="height: 750px;width: 100%;"></li>
+</ul>
+<ul class="right layui-col-md3" >
+    <li style="height: 400px;width: 100%;" id="right-up">
+    </li>
+    <li style="height: 400px;width: 100%;" id="right-down">
+    </li>
+</ul>
+</body>
+<script>
+    $(document).ready(function () {
+        //初始化表格
+        initCharts();
+    });
+
+    //*************图标加载模块
+    function initCharts(){
+        initChart4();//扫码区域
+        initChart5();//产品扫码量
+        baidu_show(); // 地图
+        complainAjax(); // 投诉建议统计
+    }
+
+    //饼状态统计
+    function initChart4(){
+        $.ajax({
+            url: 'scan/area.do',
+            data: '',
+            type: "post",
+            dataType:'json',
+            success: function(data){
+                initChart44(data);
+            }
+        });
+    }
+    //柱状图统计
+    function initChart5(){
+        $.ajax({
+            url: 'scan/crop.do',
+            data:'',
+            type: "post",
+            dataType:'json',
+            success: function(data){
+                initChart55(data);
+                left_two_chart(data);
+            }
+        });
+    }
+
+
+    /*饼状图*/
+    function initChart44(d){
+        var arrNum=[];
+        for (var i = 0; i < d.length; i++) {
+            arrNum.push({"value": d[i].code,"name":d[i].user_city});
+        }
+        var  option = {
+            title : {
+                text: '最近半年区域扫码量对比',
+                subtext: '光标移至图上显示百分比',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: '10%',
+                data: arrNum
+            },
+            series : [
+                {
+                    name: '城市',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:arrNum,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        var myChart4 = echarts.init(document.getElementById('right-up'));
+        myChart4.setOption(option);
+    }
+    /* 柱状图*/
+    function initChart55(d){
+        var  dataCount = [];
+        var  dataName = [];
+        for(var i=0;i<d.length;i++){
+            dataCount.push(d[i].code);
+            dataName.push(d[i].crop_name);
+        }
+        var  option = {
+            title : {
+                text: '最近半年产品扫码量',
+                subtext: '光标移上显示扫码量',
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['扫码量']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data:dataName
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'扫码量',
+                    type:'bar',
+                    barWidth: '20%',
+                    data : dataCount
+                }
+
+            ]
+        };
+        var myChart5 = echarts.init(document.getElementById('right-down'));
+        myChart5.setOption(option);
+    }
+
+    //地图坐标点
+    function baidu_show() {
+        $.ajax({
+            url:"providers/findList.do",
+            type: "post",
+            dataType:'json',
+            success: function (data) {
+                var map = new BMap.Map("map", {
+                    enableMapClick: false
+                });
+                map.centerAndZoom(new BMap.Point(113.200265,33.774238), 10);  // 初始化地图,设置中心点坐标和地图级别
+                map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+                map.addControl(new BMap.NavigationControl());//开启放大缩小按钮
+
+                var opts = {
+                    width : 250,     // 信息窗口宽度
+                    height: 80,     // 信息窗口高度
+                    title : "" , // 信息窗口标题
+                    enableMessage:true//设置允许信息窗发送短息
+                };
+                for(var i=0;i<data.length;i++){
+                    var marker = new BMap.Marker(new BMap.Point(data[i].p_longitude,data[i].p_latitude));  // 创建标注
+                    var content = data[i].p_name+"</br>"+"地址:"+data[i].p_address+"</br>"+"联系方式:"+data[i].p_phone;
+                    map.addOverlay(marker);               // 将标注添加到地图中
+                    addClickHandler(content,marker);
+                }
+                function addClickHandler(content,marker){
+                    marker.addEventListener("click",function(e){
+                        openInfo(content,e)}
+                    );
+                }
+                function openInfo(content,e){
+                    var p = e.target;
+                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                    var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象
+                    map.openInfoWindow(infoWindow,point); //开启信息窗口
+                }
+            }
+        });
+    }
+
+    function complainAjax() {
+        $.ajax({
+            url: 'scan/complainChart',
+            data: '',
+            type: "post",
+            dataType:'json',
+            success: function(data){
+                complainChart(data);
+            }
+        });
+    }
+
+    function complainChart(d) {
+        var times=[];
+        var warns=[];
+        var advices=[];
+        for (var i = 0; i < d.length; i++) {
+            times.push(d[i].time);
+            warns.push(d[i].warn);
+            advices.push(d[i].advice);
+        }
+        var option = {
+            title: {
+                text: '平台投诉建议统计'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: times
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    name:'投诉',
+                    type:'line',
+                    stack: '总量',
+                    data: warns
+                },
+                {
+                    name:'建议',
+                    type:'line',
+                    stack: '总量',
+                    data: advices
+                }
+            ]
+        };
+        var chart = echarts.init(document.getElementById('left-up'));
+        chart.setOption(option);
+    }
+
+    //左二
+    function left_two_chart(d) {
+        var arrNum=[];
+        for (var i = 0; i < d.length; i++) {
+            arrNum.push({"value": d[i].code,"name":d[i].crop_name});
+        }
+        var option = {
+            title: {
+                text: '热门产品展示',
+                x: 'left',
+            },
+            tooltip: {
+                show: true
+            },
+            series: [{
+                data: arrNum,
+                name: '热点产品',
+                type: 'wordCloud',
+                textPadding: 0,
+                autoSize: {
+                    enable: true,
+                    minSize: 6
+                },
+                textStyle: {
+                    normal: {
+                        color: function() {
+                            return 'rgb(' + [
+                                Math.round(Math.random() * 105) + 100,
+                                Math.round(Math.random() * 105) + 100,
+                                Math.round(Math.random() * 105) + 100
+                            ].join(',') + ')';
+                        }
+                    },
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowColor: '#333'
+                    }
+                }
+            }]
+        };
+        var chart = echarts.init(document.getElementById('left-down'));
+        chart.setOption(option);
+    }
+    
+</script>
+</html>

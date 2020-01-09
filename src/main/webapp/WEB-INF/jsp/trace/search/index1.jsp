@@ -1,0 +1,412 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <link href="static/layui/css/layui.css" rel="stylesheet" />
+    <link href="static/layui/css/search.css" rel="stylesheet" />
+    <link href="static/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="static/js/jQuery/imgbox.css" rel="stylesheet" />
+
+    <style>
+        .report-img{
+            height: 150px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hniois-table">
+        <form class="layui-form" action="">
+            <div class="hniois-table-header">
+                <div class="layui-form-item hniois-search-btns">
+                    <%--<label class="layui-form-label">商品条码:</label>--%>
+                    <%--<div class="layui-input-inline">--%>
+                        <%--<input name="code" id="code" type="text" class="layui-input" placeholder="请输入商品条码" lay-verify="required">--%>
+                    <%--</div>--%>
+                    <label class="layui-form-label">批次号:</label>
+                    <div class="layui-input-inline">
+                        <input name="batch" id="batch" type="text" class="layui-input" placeholder="请输入批次号" lay-verify="required">
+                    </div>
+                    <button class="layui-btn" lay-submit lay-filter="formSave" >查询</button>
+                </div>
+            </div>
+        </form>
+        <div class="layui-tab layui-tab-card">
+            <ul class="layui-tab-title">
+                <li class="layui-this">企业信息</li>
+                <li>资质信息</li>
+                <%--<li>产品信息</li>--%>
+                <%--<li>生产信息</li>--%>
+                <li>追溯码信息</li>
+                <li>检验报告</li>
+                <li>销售信息</li>
+                <li>召回信息</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-fluid layui-show" id="company">
+                </div>
+                <div class="layui-tab-item" id="aptitude">
+                </div>
+                <%--<div class="layui-tab-item">暂无信息3</div>--%>
+                <%--<div class="layui-tab-item">暂无信息4</div>--%>
+                <div class="layui-tab-item" id="qRcode">
+                </div>
+                <div class="layui-tab-item" id="report">
+                </div>
+                <div class="layui-tab-item" id="orders">
+                </div>
+                <div class="layui-tab-item" id="recall">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="static/layui/layui.all.js"></script>
+<script src="static/js/jQuery/jquery-1.7.2.js"></script>
+<script src="static/hniois/hniois.js"></script>
+<script src="static/js/jQuery/jquery.imgbox.js"></script>
+<script>
+    layui.use(['layer', 'form'], function() {
+        var form =layui.form,
+            layer = layui.layer;
+        //监听提交
+        form.on('submit(formSave)', function(data){
+            $.ajax({
+                type: "post",
+                data: data.field,
+                url: "search/getdata.do",
+                dataType:'json',
+                success: function (msg){
+                    if(msg.providers.p_id != null ){
+                        var companyHtml =
+                        '<div class="layui-container">' +
+                        '<div class="layui-row">' +
+                        '<div class="layui-col-md10">' +
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">企业名称:</label>' +
+                        '<div class="layui-input-block">' +
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_name+'">' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">组织形式:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_form+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">所属行业:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_industry+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">主体类别:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_category+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">证件类型:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_certificate+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">工商注册号:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_register+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">营业期限:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_time+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">详细地址:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_address+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">' +
+                        '<label class="layui-form-label">联系电话:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.providers.p_phone+'">' +
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>';
+                        $("#company").html(companyHtml);
+                    } else {
+                        $("#company").html("<h4>暂无信息</h4>");
+                    }
+                    if(msg.providers.p_qualifications != null) {
+                        var aptitudeImg = msg.providers.p_qualifications.substring(0,msg.providers.p_qualifications.length - 1);
+                        var imgList = new Array();
+                        imgList = aptitudeImg.split(",");
+                        var aptitudeHtml = '<div class="layui-row layui-col-space20">';
+                        for (var i=0;i<imgList.length ;i++ ){
+                            aptitudeHtml += '<div class="layui-col-md2">' +
+
+                                '<a class="zoom-1" href="'+ imgList[i] +'">' +
+                                '<img src="'+ imgList[i] +'" class="report-img">' +
+                                '</a>' +
+
+                                '</div>';
+                        }
+                        aptitudeHtml += '</div>';
+                        $("#aptitude").html(aptitudeHtml);
+                        //slideshow  属性 设置 左右<  >  按钮显示
+                        $("a.zoom-1").imgbox({"slideshow": false});
+                    } else {
+                        $("#aptitude").html("<h4>暂无信息</h4>");
+                    }
+                    if(msg.qRcode != null) {
+                        // $("#qRcode").empty();
+                        var qRcode = '<div class="layui-container">'+
+                            '<div class="layui-row">'+
+                            '<div class="layui-col-md10">'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">防伪码:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.qRcode.random_code+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">国家编码:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.qRcode.rule_code+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">开始条码:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.qRcode.begin_code+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">结束条码:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.qRcode.end_code+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>';
+                        $("#qRcode").html(qRcode);
+                    } else {
+                        $("#qRcode").html("<h4>暂无信息</h4>");
+                    }
+                    if(msg.report != null) {
+                        var reportHtml = '<div class="layui-row layui-col-space10">' +
+                            '<div class="layui-col-md6">'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">检测编号:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.report.report_id+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">报告名称:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.report.report_name+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">产品名称:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.report.product_name+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">产品批次:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.report.product_batch+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">检测结果:</label>'+
+                            '<div class="layui-input-block">';
+                                var result;
+                                if(msg.report.result == 0){
+                                    result = "合格";
+                                } else if (msg.report.result == 1) {
+                                    result = "不合格";
+                                } else {
+                                    result = "";
+                                }
+                        reportHtml += '<input class="layui-input" type="text" readonly value="'+result+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">检测人:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.report.clerker+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="layui-form-item">'+
+                            '<label class="layui-form-label">检测时间:</label>'+
+                            '<div class="layui-input-block">'+
+                            '<input class="layui-input" type="text" readonly value="'+msg.report.ck_time+'">'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>';
+                                if(msg.reportDetails != null) {
+                                    reportHtml += '<div class="layui-col-md6">'+
+                                    '<table class="layui-table">'+
+                                    '<colgroup>'+
+                                    '<col width="150">'+
+                                    '<col width="200">'+
+                                    '<col>'+
+                                    '</colgroup>'+
+                                    '<thead>'+
+                                    '<tr>'+
+                                    '<th>检测项</th>'+
+                                    '<th>检测值</th>'+
+                                    '<th>结果</th>'+
+                                    '</tr>'+
+                                    '</thead>'+
+                                    '<tbody>';
+                                    for (var i = 0; i < msg.reportDetails.length; i++) {
+                                        reportHtml += '<tr>'+
+                                        '<td>'+msg.reportDetails[i].detail_name+'</td>'+
+                                        '<td>'+msg.reportDetails[i].detail_num+'</td>'+
+                                        // @ TODO  检测结果订死
+                                        '<td >合格</td>'+
+                                        '</tr>';
+                                    }
+                                    reportHtml += '</tbody>'+
+                                    '</table>'+
+                                    '</div>';
+                                }
+                        reportHtml += '</div>'+
+                        '<div class="layui-row layui-col-space10" style="margin-bottom: 40px;">';
+                        if(msg.report.report_img != null) {
+                            var report_img = msg.report.report_img.substring(0,msg.report.report_img.length - 1);
+                            var imgList = new Array();
+                            imgList = report_img.split(",");
+                            for (var i=0;i<imgList.length ;i++ ){
+                                reportHtml += '<div class="layui-col-md2">' +
+                                    '<a class="zoom-1" href="'+ imgList[i] +'">' +
+                                        '<img src="'+ imgList[i] +'" class="report-img">' +
+                                    '</a>' +
+                                    '</div>';
+                            }
+                        }
+                        reportHtml += '</div>';
+
+                        $("#report").html(reportHtml);
+                        $("a.zoom-1").imgbox({"slideshow": false});
+                    } else {
+                        $("#report").html("<h4>暂无信息</h4>");
+                    }
+                    if(msg.orders.length > 0){
+                        var ordersHtml = '<div class="layui-row layui-col-space10">' +
+                            '<div class="layui-col-md12">' +
+                            '<table class="layui-table">' +
+                            '<thead>' +
+                            '<tr>' +
+                            '<th>销售商</th>' +
+                            '<th>发货时间</th>' +
+                            '<th>发货地址</th>' +
+                            '<th>收货人</th>' +
+                            '<th>收货地址</th>' +
+                            '<th>产品名称</th>' +
+                            '<th>产品数量</th>' +
+                            '</tr>' +
+                            '</thead>' +
+                            '<tbody>';
+                               for(var i=0; i <msg.orders.length; i++) {
+                                   ordersHtml +=  '<tr>'+
+                                   '<td>' +msg.orders[i].sale_name+'</td>'+
+                                   '<td>' +msg.orders[i].send_time+'</td>'+
+                                   '<td>' +msg.orders[i].begin_address+'</td>'+
+                                   '<td>' +msg.orders[i].recever+'</td>'+
+                                   '<td>' +msg.orders[i].end_address+'</td>'+
+                                   '<td>' +msg.orders[i].batch_name+'</td>'+
+                                   '<td>' +msg.orders[i].batch_num+'</td>'+
+                                   '</tr>';
+                               }
+                        ordersHtml += '</tbody>'+
+                            '</table>'+
+                            '</div>'+
+                            '</div>';
+                        $("#orders").html(ordersHtml);
+                    } else {
+                        $("#orders").html("<h4>暂无信息</h4>");
+                    }
+                    if(msg.recall != null){
+                        var recallHtml = '<div class="layui-container">'+
+                        '<div class="layui-row">'+
+                        '<div class="layui-col-md10">'+
+                        '<div class="layui-form-item">'+
+                        '<label class="layui-form-label">产品名称:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.recall.name+'">'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">'+
+                        '<label class="layui-form-label">生产企业:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.recall.enterprise+'">'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">'+
+                        '<label class="layui-form-label">召回数量:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.recall.quantity+'">'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">'+
+                        '<label class="layui-form-label">召回原因:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<textarea class="layui-textarea" type="text" readonly>'+msg.recall.cause+'</textarea>'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">'+
+                        '<label class="layui-form-label">发布机构:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.recall.organization+'">'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="layui-form-item">'+
+                        '<label class="layui-form-label">发布时间:</label>'+
+                        '<div class="layui-input-block">'+
+                        '<input class="layui-input" type="text" readonly value="'+msg.recall.time+'">'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>';
+                        $("#recall").html(recallHtml);
+                    } else {
+                        $("#recall").html("<h4>暂无信息</h4>");
+                    }
+                },
+                error:function (e) {
+                    layer.msg("系统异常。。。");
+                }
+            });
+            return false;
+        });
+    });
+
+
+</script>
+</html>

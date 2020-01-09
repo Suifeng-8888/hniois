@@ -1,0 +1,139 @@
+package com.hniois.web.monitor;
+
+
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.ProvidersManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/webService/providers")
+public class ProvidersActionWeb extends BaseController{
+    //Providers
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    /**
+     * 分页查询
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public String list(Providers e) throws Exception{
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = providersService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 查询List
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/findList")
+    @ResponseBody
+    public String findList(Providers e) throws Exception {
+        List<Providers> list = providersService.findList(e);
+        JSONArray arr = JSONArray.fromObject(list);
+        return arr.toString();
+    }
+
+
+    /**
+     * 查询
+     * @param p_name          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/find/{p_name}")
+    @ResponseBody
+    public String find(@PathVariable("p_name") String p_name) throws Exception {
+        Providers providers = new Providers();
+        providers.setP_name(p_name);
+        Providers m = providersService.find(providers);
+        JSONObject obj = JSONObject.fromObject(m);
+        return obj.toString();
+    }
+
+    /**
+     * 保存
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/add")
+    @ResponseBody
+    public String add(Providers e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Providers p = new Providers();
+        p.setP_name(e.getP_name());
+        //条件判断
+        if(providersService.findCount(p)>0){
+            setMsg(obj,"error","主体名重复，请重新输入!");
+        }else{
+            providersService.save(e);
+            setMsg(obj,"ok","添加成功!");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/update")
+    @ResponseBody
+    public String update(Providers e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Providers p = new Providers();
+        p.setP_id(e.getP_id());
+        //条件判断
+        if(providersService.findCount(p)>0){
+            providersService.update(e);
+            setMsg(obj,"ok","更新成功!");
+        }else{
+            setMsg(obj,"error","更新失败!");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param p_id          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete/{p_id}")
+    @ResponseBody
+    public String delete(@PathVariable("p_id") Integer p_id) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(p_id==null){
+            setMsg(obj,"error","删除失败!");
+            return obj.toString();
+        }else {
+            Providers p = new Providers();
+            p.setP_id(p_id.toString());
+            providersService.delete(p);
+            setMsg(obj, "ok", "删除成功!");
+            return obj.toString();
+        }
+    }
+
+
+}

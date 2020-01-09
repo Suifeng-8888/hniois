@@ -1,0 +1,153 @@
+package com.hniois.trace.service.impl;
+
+import com.hniois.common.page.Page;
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.entity.Harvest;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.HarvestManage;
+import com.hniois.monitor.service.ProvidersManage;
+import com.hniois.trace.dao.QRcodeDao;
+import com.hniois.trace.entity.BatchCode;
+import com.hniois.trace.entity.Batch_Material;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.entity.Temp;
+import com.hniois.trace.service.BatchCodeManage;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.QRcodeManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.SessionManager;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service("qRcodeService")
+public class QRcodeService extends ServiceSupport<QRcode,QRcodeDao> implements QRcodeManage {
+
+    @Resource(name="qRcodeDaoImpl")
+
+    @Override
+    public void setDao(QRcodeDao dao) {
+        this.dao=dao;
+    }
+    //批次二维码对象
+    @Resource(name="batchCodeService")
+   private BatchCodeManage btcodeService;
+    //农场
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+    //采摘
+    @Resource(name="harvestService")
+    private HarvestManage harvestService;
+
+    @Override
+    public String getRuleCode() {
+        //获取当前时间毫秒值
+        return DateUtil.getSecondTimes();
+    }
+
+    @Override
+    public String getRandomCode() {
+        //获取100到1000之间的随机数
+        String random=String.valueOf ((int)(Math.random()*1000+100));
+        if(random.length()<4){//不够四位的前面补0
+            random=0+random;
+        }
+        return random;
+    }
+
+    @Override
+    public String getQRcode(String num) {
+        //判断当前字符串是否是七位数,不是的话前面补0
+       switch(num.length()){
+           case 1:num="000000"+num;
+           break;
+           case 2:num="00000"+num;
+           break;
+           case 3:num="0000"+num;
+           break;
+           case 4:num="000"+num;
+           break;
+           case 5:num="00"+num;
+           break;
+           case 6:num="0"+num;
+           break;
+           default:num=num;
+           break;
+       }
+        return num;
+    }
+
+    /**
+     * 去掉数字0000234之前的0
+     * @param str
+     * @return
+     */
+    @Override
+    public String getNew(String str) {
+        String newStr=null;
+        for(int i=1;i<str.length();){
+            String first=String.valueOf(str.charAt(0));
+            if(first.equals("0")){
+                str= str.substring(1);
+            }else{
+                break;
+            }
+            newStr=str;
+        }
+        return newStr;
+    }
+
+
+
+    /**
+     * 关联二维码
+     * @param e1
+     * @param e2
+     */
+    @Override
+    public void connect(QRcode e1, BatchCode e2) throws Exception{
+        dao.update(e1);
+        btcodeService.save(e2);
+    }
+
+
+    //打印页面数据显示
+    @Override
+    public List<Temp> showData(QRcode e) throws Exception{
+        String offset=e.getMsg();//获取客户选择的偏移量
+        QRcode qRcode=dao.find(e);
+        //获取qRcode中的起始码和结束码
+        String begin_code=qRcode.getBegin_code();
+        String end_code=qRcode.getEnd_code();
+
+        //根据二维码中关联的批次号获取采摘信息
+        Harvest hv=new Harvest();
+        hv.setBatch(qRcode.getBatch());
+        hv= harvestService.find(hv);
+
+       //根据采摘信息获取生产基地信息
+        Providers farm=new Providers();
+        farm.setP_id(SessionManager.getFarmID());
+        farm=providersService.find(farm);
+
+        int begin=Integer.parseInt(begin_code);
+        int end=Integer.parseInt(end_code);
+        int count=end-begin+1;
+        //组装临时对象
+        List<Temp> list=new ArrayList<>();
+
+        for(int i=0;i<count;i++){
+            Temp temp=new Temp();
+            String Tcode=e.getRule_code()+begin+i;//二维码编码
+            String random=e.getRandom_code();//防伪码
+            String mark=begin+i+"";
+        }
+        return null;
+    }
+
+
+}

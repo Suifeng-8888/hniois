@@ -1,0 +1,24 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.OutputDao;
+import com.hniois.monitor.entity.Output;
+import com.hniois.monitor.service.OutputService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ * Create By javaMan
+ * 2018/12/3  9:14
+ *  基地准出  ServiceImpl
+ */
+@Service(value = "outputService")
+public class OutputServiceImpl extends ServiceSupport<Output, OutputDao> implements OutputService {
+
+    @Resource(name = "outputDao")
+    @Override
+    public void setDao(OutputDao dao) {
+        this.dao = dao;
+    }
+}

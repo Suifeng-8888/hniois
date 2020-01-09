@@ -1,0 +1,124 @@
+package com.hniois.monitor.dao.impl;
+
+import com.hniois.common.dao.DaoSupport;
+import com.hniois.common.page.Page;
+import com.hniois.monitor.dao.RecallDao;
+import com.hniois.monitor.entity.Recall;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * Create By javaMan
+ * 2018/10/15  14:26
+ * 产品召回daoImpl
+ */
+@Repository(value = "recallDao")
+public class RecallDaoImpl implements RecallDao {
+
+    @Autowired
+    private DaoSupport dao;
+
+    private String mapper = "recallMapper";
+
+    /**
+     * 保存对象
+     *
+     * @param recall
+     */
+    @Override
+    public void save(Recall recall) throws Exception {
+        dao.save(mapper + ".save", recall);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param e
+     */
+    @Override
+    public void saveBatch(List<Recall> e) throws Exception {
+
+    }
+
+    /**
+     * 删除对象
+     *
+     * @param recall
+     */
+    @Override
+    public void delete(Recall recall) throws Exception {
+        dao.delete(mapper + ".delete", recall);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param recall
+     */
+    @Override
+    public void deleteBatch(Recall recall) throws Exception {
+        dao.delete(mapper + ".deleteBatch", recall);
+    }
+
+    /**
+     * 修改对象
+     *
+     * @param recall
+     */
+    @Override
+    public void update(Recall recall) throws Exception {
+        dao.update(mapper + ".update", recall);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param recall
+     */
+    @Override
+    public void updateBatch(Recall recall) throws Exception {
+
+    }
+
+    /**
+     * 查找对象
+     *
+     * @param recall
+     */
+    @Override
+    public Recall find(Recall recall) throws Exception {
+        return (Recall) dao.find(mapper +".find", recall);
+    }
+
+    /**
+     * 查找List
+     *
+     * @param recall
+     */
+    @Override
+    public List<Recall> findList(Recall recall) throws Exception {
+        return (List<Recall>) dao.findList(mapper + ".findList", recall);
+    }
+
+    /**
+     * 数量查询
+     *
+     * @param recall
+     */
+    @Override
+    public int findCount(Recall recall) throws Exception {
+        return 0;
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param recall
+     */
+    @Override
+    public Page findPage(Recall recall) throws Exception {
+        return dao.findPage(mapper + ".findPage", mapper + ".findPageCount", recall);
+    }
+}

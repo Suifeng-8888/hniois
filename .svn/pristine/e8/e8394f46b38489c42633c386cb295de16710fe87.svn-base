@@ -1,0 +1,92 @@
+package com.hniois.web.monitor;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.*;
+import com.hniois.monitor.service.*;
+import com.hniois.trace.entity.Batch_Material;
+import com.hniois.trace.entity.Provide;
+import com.hniois.trace.entity.Retailer;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.ProvideService;
+import com.hniois.trace.service.RetailerService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
+@RequestMapping(value="/webService/showStatics")
+public class StaticsActionWeb extends BaseController {
+    //生产基地
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+    //检测报告
+    @Resource(name="reportService")
+    private ReportManage reportService;
+    //监管机构
+    @Resource(name = "outfitService")
+    private OutfitService outfitService;
+    //农资供应商
+    @Resource(name = "provideService")
+    private ProvideService provideService;
+    //监管记录
+    @Resource(name = "noteService")
+    private NoteService noteService;
+    //销售商
+    @Resource(name = "retailerService")
+    private RetailerService retailerService;
+    //监管投诉
+    @Resource(name = "complainService")
+    private ComplainService complainService;
+    //三品一标产品
+    @Resource(name ="batchService")
+    private BatchManage batchService;
+
+    /**
+     * 查询count
+     * */
+    @RequestMapping(value="/findCount")
+    @ResponseBody
+    public Map<String, Object> findCount() throws Exception {
+        //生产基地
+        Providers pvd=new Providers();
+        Integer count1= providersService.findCount(pvd);
+        //检测报告
+        Report rpt=new Report();
+        Integer count2 = reportService.findCount(rpt);
+        //监管机构
+        Outfit oft=new Outfit();
+        Integer count3 = outfitService.findCount(oft);
+        //农资供应商
+        Provide pro=new Provide();
+        Integer count4 = provideService.findCount(pro);
+        //监管记录
+        Note not=new Note();
+        Integer count5 = noteService.findCount(not);
+        //销售商
+        Retailer ret=new Retailer();
+        Integer count6 = retailerService.findCount(ret);
+        //监管投诉
+        Complain cop = new Complain();
+        Integer count7 =  complainService.findCount(cop);
+        //三品一标产品
+        Batch_Material bat = new Batch_Material();
+        Integer count8 = batchService.findCount(bat);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("count1", count1);  // 企业基地数
+        map.put("count2", count2);  // 检测报告数
+        map.put("count3", count3);  // 监管机构数
+        map.put("count4", count4);  // 供应商数
+        map.put("count5", count5);  // 监管记录数
+        map.put("count6", count6);  // 销售商数
+        map.put("count7", count7);  // 监管投诉数
+        map.put("count8", count8);  // 三品一标产品
+        return map;
+    }
+}
+
+
+

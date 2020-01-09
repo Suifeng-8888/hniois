@@ -1,0 +1,241 @@
+package com.hniois.monitor.controller;
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Poison;
+import com.hniois.monitor.service.PoisonManage;
+import com.hniois.util.*;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+@RequestMapping("/poison")
+public class PoisonAction extends BaseController {
+
+    @Resource(name="poisonService")
+    private PoisonManage poisonService;
+
+    String poison_list="monitor/poison/poison_list";
+    String poison_edit="monitor/poison/poison_edit";
+    String crop_table="monitor/poison/crop_table";
+    String buy_table="monitor/poison/buy_table";
+    String poison_img="monitor/poison/poison_img";
+
+    @RequestMapping("/toPage")
+    @ResponseBody
+    public ModelAndView toPage(Page e){
+        ModelAndView mv=this.getModelAndViewToPage(e);
+        mv.setViewName(poison_list);
+        return mv;
+    }
+
+    /**
+     * 分页查询
+     * @param e
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/list")
+    public String showPage(Poison e)throws Exception{
+        if(Const.PROVIDER_ADMIN.equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //获取当前页
+        int current=getThisPage(e.getPage());
+        //获取每页显示条数
+        int limit=getThisLimit(e.getLimit());
+        e.setOffset((current-1)*limit);
+        e.setPagerSize(limit);//每页显示记录数
+        Page page = poisonService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 新增 or 编辑
+     * @param e
+     * @return
+     */
+    @RequestMapping("/toEdit")
+    @ResponseBody
+    public ModelAndView edit(Poison e)throws Exception{
+        ModelAndView mv=this.getModelAndView();
+        Poison poison=new Poison();
+        if(StringUtils.isNotEmpty(e.getPid())){
+            poison=poisonService.find(e);
+        }
+        poison.setCode(e.getCode());
+        mv.addObject("poison",poison);
+        mv.setViewName(poison_edit);
+        return mv;
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public String add(Poison e)throws  Exception{
+        JSONObject obj=getMsg();
+        if(Const.PROVIDER_ADMIN.equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        if(!StringUtils.isNotEmpty(e.getPid())){
+            if(StringUtils.isNotEmpty(e.getBuy_id())&&StringUtils.isNotEmpty(e.getCrop_id())){
+                //判断是否选择了多种药物
+                String buy_ids=e.getBuy_id();
+                if(buy_ids.contains(",")){
+                    //说明有多个采购ID
+                    String[] bids=buy_ids.split(",");
+                    String[] pnames=e.getPname().split(",");
+                    for(int i=0;i<bids.length;i++){
+                        String uid= UuidUtil.get32UUID();
+                        e.setPid(uid);
+                        e.setBuy_id(bids[i]);
+                        e.setPname(pnames[i]);
+                        poisonService.save(e);
+                    }
+                }else{
+                    String uid= UuidUtil.get32UUID();
+                    e.setPid(uid);
+                    poisonService.save(e);
+                }
+
+            }else{
+                setMsg(obj,"error","请从数据列表选择输入");
+            }
+        }else{
+            setMsg(obj,"error","新增失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(Poison e)throws Exception{
+        JSONObject obj=getMsg();
+        if (StringUtils.isNotEmpty(e.getPid())){
+            Poison ct=new Poison();
+            ct.setPid(e.getPid());
+            if(poisonService.findCount(ct)>0){
+                poisonService.update(e);
+            }else{
+                setMsg(obj,"error","对象不存在");
+            }
+        }else{
+            setMsg(obj,"error","ID不能为空");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public String delete(Poison e, HttpServletRequest request)throws Exception{
+        JSONObject obj=getMsg();
+        if(StringUtils.isNotEmpty(e.getPid())) {
+            poisonService.newDel(e,request);
+        }else {
+            setMsg(obj, "error", "ID不能为空");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    @ResponseBody
+    public String deletes(Poison e,HttpServletRequest request)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            poisonService.newDelBatch(e,request);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 选择作物名称
+     * @param e
+     * @return
+     */
+    @RequestMapping("/crop")
+    public ModelAndView chose(Poison e){
+        ModelAndView mv=this.getModelAndView();
+        mv.setViewName(crop_table);
+        return mv;
+    }
+
+    /**
+     * 从采购列表选择使用的农药
+     * @param e
+     * @return
+     */
+    @RequestMapping("/buy")
+    public ModelAndView chose1(Poison e){
+        ModelAndView mv=this.getModelAndView();
+        mv.setViewName(buy_table);
+        return mv;
+    }
+
+    /**
+     * 导出
+     * @param e 信息
+     * @return json
+     * */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(Poison e) throws Exception {
+        if(Const.PROVIDER_ADMIN.equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        //导出工具
+        ExportExcelUtil<Poison> export = new ExportExcelUtil<Poison>();
+        //文件名称
+        String filename = "poisonList" + DateUtil.getTimes();
+        //导出数据信息
+        List list = poisonService.findPage(e).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+
+    /**
+     * 打药图片
+     * @param e 学校信息
+     */
+    @RequestMapping(value="/toEditImgs")
+    public ModelAndView toEditImgs(Poison e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Poison poison = new Poison();
+        if(StringUtils.isNotEmpty(e.getPid())){
+            poison = poisonService.find(e);
+        }
+        mv.addObject("poison",poison);
+        mv.setViewName(poison_img);
+        return mv;
+    }
+}

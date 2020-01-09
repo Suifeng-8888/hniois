@@ -1,0 +1,35 @@
+package com.hniois.trace.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.trace.entity.QRcodeNew;
+import com.hniois.trace.entity.temp.Temp;
+import com.hniois.trace.entity.temp.newTemp;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+public interface QRcodeNewManage extends Service<QRcodeNew> {
+
+    //获取国家标准码的方法,暂时先用时间戳代替
+    public String getRuleCode()throws Exception;
+
+    //获取生成基地信息
+    public Providers getInfo()throws Exception;
+
+    //获取随机防伪码
+    public String getRandomCode();
+
+    //根据顺序码获取追溯码
+    public String getSourceCode(int i);
+
+    //自动补成9位数
+    public String getQRcode(String num);
+
+    //打印二维码页面显示的数据集合
+    public List<newTemp> goPrint(QRcodeNew e, HttpServletRequest request) throws Exception;
+
+    //重写批量更新方法
+    void changeBatch(List e)throws Exception;
+
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OutfitMapper">
+	<!--分页查询-->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Outfit" resultType="com.hniois.monitor.entity.Outfit">
+		SELECT * FROM r_outfit
+		<where>
+			<if test="name != '' and name != null">name LIKE '%${name}%'</if>
+			<if test="number != '' and number != null">AND number = #{number}</if>
+			<if test="grade != '' and grade != null">AND grade = #{grade}</if>
+			<if test="area != '' and area != null">AND area = #{area}</if>
+			<if test="site != '' and site != null">AND site = #{site}</if>
+			<if test="charge != '' and charge != null">AND charge = #{charge}</if>
+			<if test="phone != '' and phone != null">AND phone = #{phone}</if>
+		</where>
+		limit #{offset},#{pageSize}
+	</select>
+	<!--分页查询count-->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Outfit" resultType="java.lang.Integer">
+		SELECT count(*) FROM r_outfit
+		<where>
+			<if test="name != '' and name != null">name LIKE '%${name}%'</if>
+			<if test="number != '' and number != null">AND number = #{number}</if>
+			<if test="grade != '' and grade != null">AND grade = #{grade}</if>
+			<if test="area != '' and area != null">AND area = #{area}</if>
+			<if test="site != '' and site != null">AND site = #{site}</if>
+			<if test="charge != '' and charge != null">AND charge = #{charge}</if>
+			<if test="phone != '' and phone != null">AND phone = #{phone}</if>
+		</where>
+	</select>
+	<!--查询count-->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Outfit" resultType="java.lang.Integer">
+		SELECT count(*) FROM r_outfit
+		<where>
+			<if test="name != '' and name != null">name LIKE '%${name}%'</if>
+			<if test="number != '' and number != null">AND number = #{number}</if>
+			<if test="grade != '' and grade != null">AND grade = #{grade}</if>
+			<if test="area != '' and area != null">AND area = #{area}</if>
+			<if test="site != '' and site != null">AND site = #{site}</if>
+			<if test="charge != '' and charge != null">AND charge = #{charge}</if>
+			<if test="phone != '' and phone != null">AND phone = #{phone}</if>
+		</where>
+	</select>
+	<!--单个监管部门查询-->
+	<select id="find" parameterType="com.hniois.monitor.entity.Outfit" resultType="com.hniois.monitor.entity.Outfit">
+		SELECT * FROM r_outfit WHERE id = #{id}
+	</select>
+
+	<!--新增-->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Outfit" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO r_outfit
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null and name != ''" >name,</if>
+			<if test="number != null and number != ''" >number,</if>
+			<if test="grade != null and grade != ''" >grade,</if>
+			<if test="area != null and area != ''" >area,</if>
+			<if test="site != null and site != ''" >site,</if>
+			<if test="charge != null and charge != ''" >charge,</if>
+			<if test="phone != null and phone != ''" >phone,</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="name != null and name != ''" >#{name},</if>
+			<if test="number != null and number != ''" >#{number},</if>
+			<if test="grade != null and grade != ''" >#{grade},</if>
+			<if test="area != null and area != ''" >#{area},</if>
+			<if test="site != null and site != ''" >#{site},</if>
+			<if test="charge != null and charge != ''" >#{charge},</if>
+			<if test="phone != null and phone != ''" >#{phone},</if>
+		</trim>
+	</insert>
+	<!--修改-->
+	<update id="update" parameterType="com.hniois.monitor.entity.Outfit">
+		UPDATE r_outfit
+		<set>
+			<if test="name != null and name != ''" >name = #{name},</if>
+			<if test="number != null and number != ''" >number = #{number},</if>
+			<if test="grade != null and grade != ''" >grade = #{grade},</if>
+			<if test="area != null and area != ''" >area = #{area},</if>
+			<if test="site != null and site != ''" >site = #{site},</if>
+			<if test="charge != null and charge != ''" >charge = #{charge},</if>
+			<if test="phone != null and phone != ''" >phone = #{phone},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	<!--单个删除-->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Outfit">
+		DELETE FROM r_outfit
+		WHERE id=#{id}
+	</delete>
+	<!--批量删除-->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		DELETE FROM r_outfit
+		WHERE id IN
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="findList" parameterType="com.hniois.monitor.entity.Outfit" resultType="com.hniois.monitor.entity.Outfit">
+		SELECT * FROM r_outfit
+		<where>
+			<if test="name != '' and name != null">name = #{name}</if>
+			<if test="number != '' and number != null">AND number = #{number}</if>
+			<if test="grade != '' and grade != null">AND grade = #{grade}</if>
+			<if test="area != '' and area != null">AND area = #{area}</if>
+			<if test="site != '' and site != null">AND site = #{site}</if>
+			<if test="charge != '' and charge != null">AND charge = #{charge}</if>
+			<if test="phone != '' and phone != null">AND phone = #{phone}</if>
+		</where>
+	</select>
+</mapper>

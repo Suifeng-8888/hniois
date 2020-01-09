@@ -1,0 +1,146 @@
+package com.hniois.web.trace;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.trace.entity.Order;
+import com.hniois.trace.service.OrderManage;
+import com.hniois.util.DateUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping("/webService/order")
+public class OrderActionWeb extends BaseController {
+
+    @Resource(name="orderService")
+    private OrderManage orderService;
+
+
+    /**
+     * 查询用过信息
+     * @param e
+     * @return
+     */
+    @RequestMapping("/findList")
+    public String findlist(Order e)throws Exception{
+
+        List<Order> list=null;
+        if(StringUtils.isNotEmpty(e.getOrder_num())){
+            list = orderService.findList(e);
+        }else{
+            list = orderService.findList(new Order());
+        }
+        JSONArray js = JSONArray.fromObject(list);
+        return js.toString();
+    }
+
+    /**
+     * 查询count
+     * @param e 数量
+     * @return json
+     * */
+    @RequestMapping(value="/findCount")
+    public String findCount(Order e) throws Exception {
+        Integer count = orderService.findCount(e);
+        return String.valueOf(count);
+    }
+
+    /**
+     * 查找对象
+     * http://localhost:8080/webService/batch/find?batch_id=1
+     * @param e
+     * @return
+     */
+    @RequestMapping("/find")
+    public String find(Order e)throws Exception{
+
+        JSONObject json = getMsg();
+        if(StringUtils.isNotEmpty(e.getId())){
+            Order order=orderService.find(e);
+            JSONObject js = JSONObject.fromObject(order);
+            return js.toString();
+        }else{
+            setMsg(json,"error","无此对象");
+            return json.toString();
+        }
+    }
+
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    public String add(Order e)throws  Exception{
+        JSONObject obj=getMsg();
+        //先判断数据库是否已经存在当前对象
+        Order order=new Order();
+        order.setOrder_num(e.getOrder_num());
+        if(orderService.findCount(order)>0){
+            setMsg(obj,"error","当前对象已存在");
+        }else{
+            e.setCreate_time(DateUtil.getDay());
+            orderService.save(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    public String update(Order e) throws Exception{
+        JSONObject obj=getMsg();
+
+        if(orderService.findCount(e)>0){//说明对象存在
+            orderService.update(e);
+        }else{
+            setMsg(obj,"error","编辑失败");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    public String delete(Order e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getOrder_num()!=null) {
+            orderService.delete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    @ResponseBody
+    public String deletes(Order e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            orderService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+}

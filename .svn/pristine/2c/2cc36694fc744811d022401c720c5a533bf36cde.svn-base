@@ -1,0 +1,66 @@
+package com.hniois.trace.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * 批次关联二维码对象
+ */
+public class BatchCode extends Page {
+    //id,farm_id,batch,Cid,begin_code,end_code
+    private String id;//ID
+    private String farm_id;//生产基地ID
+    private String batch;//产品批次
+    private String cid;//二维码ID
+    private String begin_code;//开始码
+    private String end_code;//结束码
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+
+    public String getBegin_code() {
+        return begin_code;
+    }
+
+    public void setBegin_code(String begin_code) {
+        this.begin_code = begin_code;
+    }
+
+    public String getEnd_code() {
+        return end_code;
+    }
+
+    public void setEnd_code(String end_code) {
+        this.end_code = end_code;
+    }
+}

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HarvestMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Harvest"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_harvest(id
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		<if test="s_id!='' and s_id!=null">,s_id</if>
+		<if test="soil_id!='' and soil_id!=null">,soil_id</if>
+		<if test="s_name!='' and s_name!=null">,s_name</if>
+		<if test="person!='' and person!=null">,person</if>
+		<if test="h_time!='' and h_time!=null">,h_time</if>
+		<if test="batch!='' and batch!=null">,batch</if>
+		<if test="state!='' and state!=null">,state</if>
+		)
+		VALUES (id
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		<if test="soil_id!='' and soil_id!=null">,#{soil_id}</if>
+		<if test="s_id!='' and s_id!=null">,#{s_id}</if>
+		<if test="s_name!='' and s_name!=null">,#{s_name}</if>
+		<if test="person!='' and person!=null">,#{person}</if>
+		<if test="h_time!='' and h_time!=null">,#{h_time}</if>
+		<if test="batch!='' and batch!=null">,#{batch}</if>
+		<if test="state!='' and state!=null">,#{state}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Harvest">
+		insert into r_harvest
+		(id,farm_id,soil_id,s_id,s_name,person,h_time,batch,state)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.id},
+			#{e.farm_id},
+			#{e.soil_id},
+			#{e.s_id},
+			#{e.s_name},
+			#{e.person},
+			#{e.h_time},
+			#{e.batch},
+			#{e.state}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Harvest">
+		update r_harvest
+		<set>
+			<if test="id !=null and id !=''">id=#{id},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="soil_id !=null and soil_id !=''">soil_id=#{soil_id},</if>
+			<if test="s_id !=null and s_id !=''">s_id=#{s_id},</if>
+			<if test="s_name !=null and s_name !=''">s_name=#{s_name},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="h_time !=null and h_time !=''">h_time=#{h_time},</if>
+			<if test="batch !=null and batch !=''">batch=#{batch},</if>
+			<if test="state !=null and state !=''">state=#{state},</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Harvest">
+		update r_harvest
+		<set>
+			<if test="id !=null and id !=''">id=#{id},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="soil_id !=null and soil_id !=''">soil_id=#{soil_id},</if>
+			<if test="s_id !=null and s_id !=''">s_id=#{s_id},</if>
+			<if test="s_name !=null and s_name !=''">s_name=#{s_name},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="h_time !=null and h_time !=''">h_time=#{h_time},</if>
+			<if test="batch !=null and batch !=''">batch=#{batch},</if>
+			<if test="state !=null and state !=''">state=#{state},</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Harvest">
+		delete from r_harvest where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and soil_id=#{soil_id}</if>
+		<if test="s_id !=null and s_id !=''">and s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="h_time !=null and h_time !=''">and h_time=#{h_time}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_harvest
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Harvest" resultType="com.hniois.monitor.entity.Harvest">
+		select *
+		from r_harvest
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=ifnull(#{farm_id},farm_id)</if>
+		<if test="soil_id !=null and soil_id !=''">and soil_id=#{soil_id}</if>
+		<if test="s_id !=null and s_id !=''">and s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="h_time !=null and h_time !=''">and h_time=#{h_time}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Harvest" resultType="com.hniois.monitor.entity.Harvest">
+		select t.*
+		from r_harvest t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=ifnull(#{farm_id},t.farm_id)</if>
+		<if test="soil_id !=null and soil_id !=''">and t.soil_id=#{soil_id}</if>
+		<if test="s_id !=null and s_id !=''">and t.s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and t.s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="h_time !=null and h_time !=''">and t.h_time=#{h_time}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Harvest" resultType="java.lang.Integer">
+		select count(*)
+		from r_harvest t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=ifnull(#{farm_id},t.farm_id)</if>
+		<if test="soil_id !=null and soil_id !=''">and t.soil_id=#{soil_id}</if>
+		<if test="s_id !=null and s_id !=''">and t.s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and t.s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="h_time !=null and h_time !=''">and t.h_time=#{h_time}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Harvest" resultType="com.hniois.monitor.entity.Harvest">
+		select *
+		from r_harvest
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=ifnull(#{farm_id},farm_id)</if>
+		<if test="soil_id !=null and soil_id !=''">and soil_id=#{soil_id}</if>
+		<if test="s_id !=null and s_id !=''">and s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="h_time !=null and h_time !=''">and h_time=#{h_time}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Harvest" resultType="java.lang.Integer">
+		select count(*)
+		from r_harvest t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=ifnull(#{farm_id},t.farm_id)</if>
+		<if test="soil_id !=null and soil_id !=''">and t.soil_id=#{soil_id}</if>
+		<if test="s_id !=null and s_id !=''">and t.s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and t.s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="h_time !=null and h_time !=''">and t.h_time=#{h_time}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+	</select>
+</mapper>

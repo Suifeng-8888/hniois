@@ -1,0 +1,146 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title>产品管理</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, record-scalable=no">
+    <link href="static/login/layui/css/layui.css" rel="stylesheet" />
+
+</head>
+<body>
+<div >
+<form class="layui-form layui-form-pane" action="" >
+    <input type="hidden" name="crop_id" id="key" value="${crop.crop_id}">
+    <input type="hidden" name="farm_id"  value="${crop.farm_id}">
+    <input type="hidden" name="type_img" value="${crop.type_img}">
+    <input type="hidden" name="crop_img" value="${crop.crop_img}">
+    <input type="hidden" name="crop_mark" value="${crop.crop_mark}">
+    <div class="layui-form-item">
+            <%--<label class="layui-form-label">采摘作物<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block" id="check">
+                <input name="s_name" type="text" autocomplete="off" style="width:400px;height:35px;"
+                       id="s_name" placeholder="请选择" lay-verify="required"  value="${crop.s_name}">
+                <span data-method="notice"  class="layui-btn  layui-btn-normal chose">请选择作物</span>
+            </div>--%>
+        <%--<div class="layui-form-item">--%>
+
+        <%--<div class="layui-form-item">--%>
+            <label class="layui-form-label">产品名称</label>
+            <div class="layui-input-block">
+                <input name="crop_name" class="layui-input" type="text" autocomplete="off"
+                       value="${crop.crop_name}">
+            </div>
+                <label class="layui-form-label">所属分类<span style="color: #FF5722">*</span></label>
+                <div class="layui-input-block">
+                    <select name="ctype" id="tp" lay-verify="required" lay-search="">
+                        <option value="">请选择</option>
+                        <option value="蔬菜">蔬菜</option>
+                        <option value="水果">水果</option>
+                        <option value="食用菌">食用菌</option>
+                        <option value="谷物类">谷物类</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+        <%--</div>--%>
+        <%--<div class="layui-form-item">--%>
+            <label class="layui-form-label">三品一标分类<span style="color: #FF5722">*</span></label>
+            <div class="layui-input-block">
+                <select name="crop_type" id="sta" lay-verify="required" lay-search="">
+                    <option value="">请选择</option>
+                    <option value="无公害">无公害</option>
+                    <option value="绿色">绿色</option>
+                    <option value="有机">有机</option>
+                    <option value="普通">普通</option>
+                </select>
+            </div>
+        <%--</div>--%>
+
+                <label class="layui-form-label">产品描述</label>
+                <div class="layui-input-block">
+                    <input name="crop_desc" class="layui-input" type="text" autocomplete="off"
+                           value="${crop.crop_desc}">
+                </div>
+    </div>
+    <div class="layui-form-item" style="text-align: center;display: none" id="form-button" >
+        <button class="layui-btn" lay-filter="formSave" lay-submit>保存</button>
+        <button class="layui-btn layui-btn-warm" onclick="closeWin()">关闭</button>
+    </div>
+</form>
+
+</div>
+</body>
+
+<script src="static/layui/layui.js"></script>
+<script src="static/login/js/jquery-1.7.2.js"></script>
+<script>
+    //获取窗口索引
+    var index = parent.layer.getFrameIndex(window.name);
+    //初始化函数 order-1
+    $(document).ready(function() {
+        init();
+        initSta();
+       // initMachName();
+
+    });
+
+
+    //layui模块加载 order-2
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+            form = layui.form;
+
+
+        //监听提交
+        form.on('submit(formSave)', function(data){
+            var url = "crop/" + ($("#key").val()==""?"add":"update") + ".do";
+            $.ajax({
+                url: url,
+                data: data.field,
+                type: "post",
+                dataType:'json',
+                success: function(data){
+                    if(data.state=="ok"){
+                        parent.formReload();
+                        parent.layer.msg(data.msg);
+                        closeWin();
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+            return false;
+        });
+
+    });
+
+    function closeWin(){
+       parent.layer.close(index);
+    }
+
+    function init(){
+        //初始化按钮操作
+        if("${crop.code}"=="1"){
+            $("#form-button").show();
+        }
+    }
+
+
+    function initSta(){
+        $("#sta").val("${crop.crop_type}");
+        $("#tp").val("${crop.ctype}");
+    }
+
+</script>
+</html>

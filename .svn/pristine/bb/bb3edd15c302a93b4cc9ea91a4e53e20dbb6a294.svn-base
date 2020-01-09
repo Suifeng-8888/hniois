@@ -1,0 +1,156 @@
+package com.hniois.web.monitor;
+
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Outfit;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.OutfitService;
+import com.hniois.monitor.service.ProvidersManage;
+import com.hniois.util.Const;
+import com.hniois.util.SessionManager;
+import com.hniois.web.Message;
+import com.hniois.web.TokenProving;
+import net.sf.json.JSONArray;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping(value="/webService/providers")
+public class ProvidersActionWeb extends BaseController{
+    //Providers  企业基地service
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    @Resource(name="outfitService")
+    private OutfitService outfitService;
+
+    /**
+     * 企业基地新增
+     * @param providers
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public Message add(Providers providers, String token) throws Exception {
+        Message message = new Message();
+//        验证  token  超级管理员  监管部门管理员有权限
+        String userBZ = TokenProving.verifyToken(token);
+        if(Const.ADMINISTRATOR.equals(userBZ) || Const.OUTFIT_ADMIN.equals(userBZ)) {
+            // TODO: 2018/12/20 企业基地重名验证
+            providersService.save(providers);
+            message.setCode(0);
+            message.setMsg("新增成功!");
+        } else {
+            message.setCode(1);
+            message.setMsg("未知错误！！！");
+        }
+        return message;
+    }
+    /**
+     * 删除
+     * @param p_id          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete/{p_id}/{token}", method = RequestMethod.GET)
+    public Message delete(@PathVariable(value = "p_id") String p_id,
+                          @PathVariable(value = "token") String token) throws Exception {
+        Message message = new Message();
+        if(StringUtils.isNotEmpty(p_id) && StringUtils.isNotEmpty(token)) {
+            String userBZ = TokenProving.verifyToken(token);
+            if(Const.ADMINISTRATOR.equals(userBZ) || Const.OUTFIT_ADMIN.equals(userBZ)) {
+                Providers p = new Providers();
+                p.setP_id(p_id);
+                providersService.delete(p);
+                message.setCode(0);
+                message.setMsg("删除成功!");
+            } else {
+                message.setCode(1);
+                message.setMsg("未知错误!");
+            }
+        } else {
+            message.setCode(1);
+            message.setMsg("参数不能为空!");
+        }
+        return message;
+    }
+
+    /**
+     * 分页查询
+     * @param e
+     * @return
+     * */
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public Page list(Providers e) throws Exception{
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = providersService.findPage(e);
+        return page;
+    }
+
+    /**
+     * 查询List
+     * @param providers
+     * @return
+     * */
+    @RequestMapping(value="/findList", method = RequestMethod.POST)
+    public List<Providers> findList(Providers providers) throws Exception {
+        if(providers.getMsg().equals("OUTFIT_ADMIN")){//判断当前登录用户是否是监管机构
+            //获取当前监管机构对象
+            Outfit oft=new Outfit() ;
+            oft.setId(providers.getP_id());//监管机构ID
+            oft=outfitService.find(oft);
+            Providers pro=new Providers();
+            //获取监管机构登记
+            if(oft.getGrade().equals("2")){//说明是区级机构
+                //设置要查询的生产基地区域
+                pro.setP_area(oft.getArea());
+            }else if(oft.getGrade().equals("3")){//说明是市级机构
+                pro.setP_city(oft.getP_city());
+            }
+            List<Providers> list = providersService.findList(pro);
+            return list;
+        }else{//当前登录用户是生产基地,里面还有生产基地的id
+            return providersService.findList(providers);
+        }
+    }
+
+    /**
+     * 查询
+     * @param p_id
+     * @return
+     * */
+    @RequestMapping(value="/find/{p_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Providers find(@PathVariable("p_id") String p_id) throws Exception {
+        Providers providers = new Providers();
+        providers.setP_id(p_id);
+        Providers m = providersService.find(providers);
+        return m;
+    }
+
+    /**
+     * 修改
+     * @param providers
+     * @return
+     * */
+    @RequestMapping(value="/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Message update(Providers providers) throws Exception {
+        Message message = new Message();
+        if(StringUtils.isNotEmpty(providers.getP_id())) {
+            providersService.update(providers);
+            message.setCode(0);
+            message.setMsg("更新成功!");
+        } else {
+            message.setCode(1);
+            message.setMsg("参数不能为空！");
+        }
+        return message;
+    }
+}

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChemicalMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Chemical"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_chemical(
+		<if test="id!='' and id!=null">id</if>
+		<if test="crop!='' and crop!=null">,crop</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="cname!='' and cname!=null">,cname</if>
+		<if test="buy_id!='' and buy_id!=null">,buy_id</if>
+		<if test="c_time!='' and c_time!=null">,c_time</if>
+		<if test="method!='' and method!=null">,method</if>
+		<if test="person!='' and person!=null">,person</if>
+		<if test="c_img!='' and c_img!=null">,c_img</if>
+		<if test="farm_id!='' and farm_id!=null">,`farm_id`</if>
+		)
+		VALUES (
+		<if test="id!='' and crop!=null">#{id}</if>
+		<if test="crop!='' and crop!=null">,#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="cname!='' and cname!=null">,#{cname}</if>
+		<if test="buy_id!='' and buy_id!=null">,#{buy_id}</if>
+		<if test="c_time!='' and c_time!=null">,#{c_time}</if>
+		<if test="method!='' and method!=null">,#{method}</if>
+		<if test="person!='' and person!=null">,#{person}</if>
+		<if test="c_img!='' and c_img!=null">,#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Chemical">
+		insert into r_chemical
+		(id,crop,crop_id,cname,buy_id,c_time,method,person,c_img,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.id},
+			#{e.crop},
+			#{e.crop_id},
+			#{e.cname},
+			#{e.buy_id},
+			#{e.c_time},
+			#{e.method},
+			#{e.person},
+			#{e.c_img},
+			#{farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Chemical">
+		update r_chemical
+		<set>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="cname !=null and cname !=''">cname=#{cname},</if>
+			<if test="buy_id !=null and buy_id !=''">buy_id=#{buy_id},</if>
+			<if test="c_time !=null and c_time !=''">c_time=#{c_time},</if>
+			<if test="method !=null and method !=''">method=#{method},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="c_img !=null and c_img !=''">c_img=#{c_img},</if>
+			<if test="c_path !=null and c_path !=''">
+				`c_img`= REPLACE(`c_img`,CONCAT(#{c_path},','),''),
+			</if>
+			<if test="farm_id!='' and farm_id!=null">farm_id=#{farm_id},</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Chemical">
+		update r_chemical
+		<set>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="cname !=null and cname !=''">cname=#{cname},</if>
+			<if test="buy_id !=null and buy_id !=''">buy_id=#{buy_id},</if>
+			<if test="c_time !=null and c_time !=''">c_time=#{c_time},</if>
+			<if test="method !=null and method !=''">method=#{method},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="c_img !=null and c_img !=''">c_img=#{c_img},</if>
+			<if test="farm_id!='' and farm_id!=null">farm_id=#{farm_id},</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Chemical">
+		delete from r_chemical where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="cname !=null and cname !=''">and cname=#{cname}</if>
+		<if test="buy_id !=null and buy_id !=''">and buy_id=#{buy_id}</if>
+		<if test="c_time !=null and c_time !=''">and c_time=#{c_time}</if>
+		<if test="method !=null and method !=''">and method=#{method}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="c_img !=null and c_img !=''">and c_img=#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_chemical
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Chemical" resultType="com.hniois.monitor.entity.Chemical">
+		select *
+		from r_chemical
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="cname !=null and cname !=''">and cname=#{cname}</if>
+		<if test="buy_id !=null and buy_id !=''">and buy_id=#{buy_id}</if>
+		<if test="c_time !=null and c_time !=''">and c_time=#{c_time}</if>
+		<if test="method !=null and method !=''">and method=#{method}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="c_img !=null and c_img !=''">and c_img=#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Chemical" resultType="com.hniois.monitor.entity.Chemical">
+		select t.*
+		from r_chemical t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="cname !=null and cname !=''">and t.cname=#{cname}</if>
+		<if test="buy_id !=null and buy_id !=''">and t.buy_id=#{buy_id}</if>
+		<if test="c_time !=null and c_time !=''">and t.c_time=#{c_time}</if>
+		<if test="method !=null and method !=''">and t.method=#{method}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="c_img !=null and c_img !=''">and t.c_img=#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.farm_id=#{farm_id}</if>
+		ORDER BY t.c_time DESC
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Chemical" resultType="java.lang.Integer">
+		select count(*)
+		from r_chemical t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="cname !=null and cname !=''">and t.cname=#{cname}</if>
+		<if test="buy_id !=null and buy_id !=''">and t.buy_id=#{buy_id}</if>
+		<if test="c_time !=null and c_time !=''">and t.c_time=#{c_time}</if>
+		<if test="method !=null and method !=''">and t.method=#{method}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="c_img !=null and c_img !=''">and t.c_img=#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Chemical" resultType="com.hniois.monitor.entity.Chemical">
+		select *
+		from r_chemical
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="cname !=null and cname !=''">and cname=#{cname}</if>
+		<if test="buy_id !=null and buy_id !=''">and buy_id=#{buy_id}</if>
+		<if test="c_time !=null and c_time !=''">and c_time=#{c_time}</if>
+		<if test="method !=null and method !=''">and method=#{method}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="c_img !=null and c_img !=''">and c_img=#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+		  ORDER BY c_time DESC
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Chemical" resultType="java.lang.Integer">
+		select count(*)
+		from r_chemical t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="cname !=null and cname !=''">and t.cname=#{cname}</if>
+		<if test="buy_id !=null and buy_id !=''">and t.buy_id=#{buy_id}</if>
+		<if test="c_time !=null and c_time !=''">and t.c_time=#{c_time}</if>
+		<if test="method !=null and method !=''">and t.method=#{method}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="c_img !=null and c_img !=''">and t.c_img=#{c_img}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.farm_id=#{farm_id}</if>
+	</select>
+</mapper>

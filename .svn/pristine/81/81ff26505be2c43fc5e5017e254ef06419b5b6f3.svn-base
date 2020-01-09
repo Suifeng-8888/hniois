@@ -1,0 +1,13 @@
+package com.hniois.monitor.controller;
+
+import com.hniois.controller.base.BaseController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * 手机扫描农产品操作
+ */
+@Controller
+@RequestMapping("/scan")
+public class ScanAction extends BaseController {
+}

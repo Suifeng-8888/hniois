@@ -1,0 +1,20 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.CertificateDao;
+import com.hniois.monitor.entity.Certificate;
+import com.hniois.monitor.service.CertificateManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("certificateService")
+public class CertificateService extends ServiceSupport<Certificate,CertificateDao> implements CertificateManage {
+
+    @Resource(name="certificateDaoImpl")
+    @Override
+    public void setDao(CertificateDao dao) {
+        this.dao=dao;
+    }
+
+}

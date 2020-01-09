@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ComplainMapper">
+	<!--分页查询-->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Complain" resultType="com.hniois.monitor.entity.Complain">
+		SELECT * FROM r_complain
+		<where>
+			<if test="put_name != '' and put_name != null">put_name =#{put_name}</if>
+			<if test="put_phone != '' and put_phone != null">AND put_phone = #{put_phone}</if>
+			<if test="put_email != '' and put_email != null">AND put_email = #{put_email}</if>
+			<if test="put_site != '' and put_site != null">AND put_site = #{put_site}</if>
+			<if test="put_theme != '' and put_theme != null">AND put_theme = #{put_theme}</if>
+			<if test="put_content != '' and put_content != null">AND put_content = #{put_content}</if>
+			<if test="put_time != '' and put_time != null">AND put_time = #{put_time}</if>
+			<if test="reply_name != '' and reply_name != null">AND reply_name = #{reply_name}</if>
+			<if test="reply_time != '' and reply_time != null">AND reply_time = #{reply_time}</if>
+			<if test="reply_content != '' and reply_content != null">AND reply_content = #{reply_content}</if>
+			<if test="status != '' and status != null">AND status = #{status}</if>
+		</where>
+		limit #{offset},#{pageSize}
+	</select>
+	<!--分页查询count-->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Complain" resultType="java.lang.Integer">
+		SELECT count(*) FROM r_complain
+		<where>
+			<if test="put_name != '' and put_name != null">put_name =#{put_name}</if>
+			<if test="put_phone != '' and put_phone != null">AND put_phone = #{put_phone}</if>
+			<if test="put_email != '' and put_email != null">AND put_email = #{put_email}</if>
+			<if test="put_site != '' and put_site != null">AND put_site = #{put_site}</if>
+			<if test="put_theme != '' and put_theme != null">AND put_theme = #{put_theme}</if>
+			<if test="put_content != '' and put_content != null">AND put_content = #{put_content}</if>
+			<if test="put_time != '' and put_time != null">AND put_time = #{put_time}</if>
+			<if test="reply_name != '' and reply_name != null">AND reply_name = #{reply_name}</if>
+			<if test="reply_time != '' and reply_time != null">AND reply_time = #{reply_time}</if>
+			<if test="reply_content != '' and reply_content != null">AND reply_content = #{reply_content}</if>
+			<if test="status != '' and status != null">AND status = #{status}</if>
+		</where>
+	</select>
+	<!--分页查询count-->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Complain" resultType="java.lang.Integer">
+		SELECT count(*) FROM r_complain
+		<where>
+			<if test="put_name != '' and put_name != null">put_name =#{put_name}</if>
+			<if test="put_phone != '' and put_phone != null">AND put_phone = #{put_phone}</if>
+			<if test="put_email != '' and put_email != null">AND put_email = #{put_email}</if>
+			<if test="put_site != '' and put_site != null">AND put_site = #{put_site}</if>
+			<if test="put_theme != '' and put_theme != null">AND put_theme = #{put_theme}</if>
+			<if test="put_content != '' and put_content != null">AND put_content = #{put_content}</if>
+			<if test="put_time != '' and put_time != null">AND put_time = #{put_time}</if>
+			<if test="reply_name != '' and reply_name != null">AND reply_name = #{reply_name}</if>
+			<if test="reply_time != '' and reply_time != null">AND reply_time = #{reply_time}</if>
+			<if test="reply_content != '' and reply_content != null">AND reply_content = #{reply_content}</if>
+			<if test="status != '' and status != null">AND status = #{status}</if>
+		</where>
+	</select>
+	<!--回复-->
+	<update id="reply" parameterType="com.hniois.monitor.entity.Complain">
+		UPDATE r_complain
+		<set>
+			<if test="reply_name != null and reply_name != ''" >reply_name = #{reply_name},</if>
+			reply_time = NOW(),
+			<if test="reply_content != null and reply_content != ''" >reply_content = #{reply_content},</if>
+			status = 2
+		</set>
+        WHERE id = #{id}
+    </update>
+
+    <!--单个查询-->
+    <select id="find" parameterType="com.hniois.monitor.entity.Complain" resultType="com.hniois.monitor.entity.Complain">
+        SELECT * FROM r_complain
+        WHERE id=#{id}
+    </select>
+
+    <!--单个删除-->
+    <delete id="delete" parameterType="com.hniois.monitor.entity.Complain">
+		DELETE FROM r_complain
+		WHERE id=#{id}
+	</delete>
+
+    <!--批量删除-->
+    <delete id="deleteBatch" parameterType="java.util.ArrayList">
+        DELETE FROM r_complain
+        WHERE id IN
+        <foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+	<insert id="save" parameterType="com.hniois.monitor.entity.Article" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO r_complain
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="put_name != null and put_name != ''" >put_name,</if>
+			<if test="put_phone != null and put_phone != ''" >put_phone,</if>
+			<if test="put_email != null and put_email != ''" >put_email,</if>
+			<if test="put_site != null and put_site != ''" >put_site,</if>
+			<if test="put_theme != null and put_theme != ''" >put_theme,</if>
+			<if test="put_content != null and put_content != ''" >put_content,</if>
+			<if test="put_time != null and put_time != ''" >put_time,</if>
+
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="put_name != null and put_name != ''" >#{put_name},</if>
+			<if test="put_phone != null and put_phone != ''" >#{put_phone},</if>
+			<if test="put_email != null and put_email != ''" >#{put_email},</if>
+			<if test="put_site != null and put_site != ''" >#{put_site},</if>
+			<if test="put_theme != null and put_theme != ''" >#{put_theme},</if>
+			<if test="put_content != null and put_content != ''" >#{put_content},</if>
+			<if test="put_time != null and put_time != ''" >NOW(),</if>
+		</trim>
+	</insert>
+
+</mapper>

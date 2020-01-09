@@ -1,0 +1,219 @@
+package com.hniois.monitor.controller;
+
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Seed;
+import com.hniois.monitor.service.SeedManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.ExportExcelUtil;
+import com.hniois.util.SessionManager;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/seed")
+public class SeedAction extends BaseController{
+    //Seed
+    @Resource(name="seedService")
+    private SeedManage seedService;
+
+    private String seed_list = "monitor/seed/seed_list";
+    private String seed_edit = "monitor/seed/seed_edit";
+    private String seed_table = "monitor/seed/seed_table";
+    private String seed_soil = "monitor/seed/seed_soil";
+
+    @RequestMapping(value="/toPage")
+    public ModelAndView toPage(Page e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(seed_list);
+        return mv;
+    }
+    @RequestMapping(value="/toTable")
+    public ModelAndView toTable(Seed e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(seed_table);
+        return mv;
+    }
+    @RequestMapping(value="/toTable2")
+    public ModelAndView toTable2(Seed e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(seed_soil);
+        return mv;
+    }
+    /**
+     * 分页查询
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public String list(Seed e) throws Exception{
+        e.setFa_id(SessionManager.getFarmID());
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = seedService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 查询List
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/findList")
+    @ResponseBody
+    public String findList(Seed e) throws Exception {
+        e.setFa_id(SessionManager.getFarmID());
+        List<Seed> list = seedService.findList(e);
+        JSONArray arr = JSONArray.fromObject(list);
+        return arr.toString();
+    }
+
+    /**
+     * 查询count
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/findCount")
+    @ResponseBody
+    public String findCount(Seed e) throws Exception {
+        e.setFa_id(SessionManager.getFarmID());
+        Integer count = seedService.findCount(e);
+        return String.valueOf(count);
+    }
+
+    /**
+     * 查询
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/find")
+    @ResponseBody
+    public String find(Seed e) throws Exception {
+        e.setFa_id(SessionManager.getFarmID());
+        Seed m = seedService.find(e);
+        JSONObject obj = JSONObject.fromObject(m);
+        return obj.toString();
+    }
+
+
+    /**
+     * 跳转
+     * @param e          参数
+     * @return           新增 or 保存页面
+     */
+    @RequestMapping(value="/toEdit")
+    public ModelAndView toAorU(Seed e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Seed seed = new Seed();
+        if(StringUtils.isNotEmpty(e.getS_id())){
+            seed = seedService.find(e);
+        }
+        seed.setCode(e.getCode());//判断：0查询 or 1 增加/修改
+        mv.addObject("seed",seed);
+        mv.setViewName(seed_edit);
+        return mv;
+    }
+
+    /**
+     * 保存
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/add")
+    @ResponseBody
+    public String add(Seed e) throws Exception {
+        e.setFa_id(SessionManager.getFarmID());
+        JSONObject obj = getMsg();//返回信息
+        seedService.save(e);
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/update")
+    @ResponseBody
+    public String update(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Seed p = new Seed();
+        p.setS_id(e.getS_id());
+        //条件判断
+        List<Seed> list = seedService.findList(p);
+        if(list != null && list.size() > 0 && !(list.get(0).getS_id().equals(e.getS_id()))){
+            setMsg(obj,"error","操作失败!");
+        }else{
+            seedService.update(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public String delete(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(e==null){
+            setMsg(obj,"error","操作失败!");
+            return obj.toString();
+        }
+        seedService.delete(e);
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/deletes")
+    @ResponseBody
+    public String deletes(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(e==null){
+            setMsg(obj,"error","操作失败!");
+            return obj.toString();
+        }
+        seedService.deleteBatch(e);
+        return obj.toString();
+    }
+    /**
+     * 导出Excel
+     * @param seed
+     */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(Seed seed) throws Exception {
+        seed.setFa_id(SessionManager.getFarmID());
+        //导出工具
+        ExportExcelUtil<Seed> export =  new ExportExcelUtil<Seed>();
+        //文件名称
+        String filename = "Seed_list" + DateUtil.getTimes();
+        //导出数据信息
+        List list = seedService.findPage(seed).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+}

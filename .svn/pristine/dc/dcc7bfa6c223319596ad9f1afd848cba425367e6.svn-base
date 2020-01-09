@@ -1,0 +1,23 @@
+package com.hniois.monitor.service.impl;
+
+import com.hniois.common.page.Page;
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.monitor.dao.HandleDao;
+import com.hniois.monitor.entity.Handle;
+import com.hniois.monitor.entity.Harvest;
+import com.hniois.monitor.service.HandleManage;
+import com.hniois.monitor.service.HarvestManage;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service("handleService")
+public class HandleService extends ServiceSupport<Handle,HandleDao> implements HandleManage{
+    @Resource(name="handleDaoImpl")
+    @Override
+    public void setDao(HandleDao dao) {
+        this.dao=dao;
+    }
+
+}

@@ -1,0 +1,122 @@
+package com.hniois.monitor.dao.impl;
+
+import com.hniois.common.dao.DaoSupport;
+import com.hniois.common.page.Page;
+import com.hniois.monitor.dao.ArticleDao;
+import com.hniois.monitor.entity.Article;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * Create By javaMan
+ * 2018/9/13  15:02
+ */
+@Repository(value = "articleDao")
+public class ArticleDaoImpl implements ArticleDao {
+
+    @Autowired
+    private DaoSupport dao;
+
+    private String mapper = "ArticleMapper";
+    /**
+     * 保存对象
+     *
+     * @param article
+     */
+    @Override
+    public void save(Article article) throws Exception {
+        dao.save(mapper + ".save", article);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param e
+     */
+    @Override
+    public void saveBatch(List<Article> e) throws Exception {
+
+    }
+
+    /**
+     * 删除对象
+     *
+     * @param article
+     */
+    @Override
+    public void delete(Article article) throws Exception {
+        dao.delete(mapper + ".delete", article);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param article
+     */
+    @Override
+    public void deleteBatch(Article article) throws Exception {
+        dao.delete(mapper + ".deleteBatch", article);
+    }
+
+    /**
+     * 修改对象
+     *
+     * @param article
+     */
+    @Override
+    public void update(Article article) throws Exception {
+        dao.update(mapper + ".update", article);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param article
+     */
+    @Override
+    public void updateBatch(Article article) throws Exception {
+
+    }
+
+    /**
+     * 查找对象
+     *
+     * @param article
+     */
+    @Override
+    public Article find(Article article) throws Exception {
+        return (Article) dao.find(mapper + ".find", article);
+    }
+
+    /**
+     * 查找List
+     *
+     * @param article
+     */
+    @Override
+    public List<Article> findList(Article article) throws Exception {
+        return (List<Article>) dao.findList(mapper + ".findList", article);
+    }
+
+    /**
+     * 数量查询
+     *
+     * @param article
+     */
+    @Override
+    public int findCount(Article article) throws Exception {
+        return 0;
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param article
+     */
+    @Override
+    public Page findPage(Article article) throws Exception {
+        return dao.findPage(mapper + ".findPage", mapper + ".findPageCount", article);
+    }
+}

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SeedMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Seed" useGeneratedKeys="true" keyProperty="id">
+		insert into r_seed(
+		<if test="s_id!='' and s_id!=null">`s_id`</if>
+		<if test="crop!='' and crop!=null">,`crop`</if>
+		<if test="crop_id!='' and crop_id!=null">,`crop_id`</if>
+		<if test="s_name!='' and s_name!=null">,`s_name`</if>
+		<if test="buy_id!='' and buy_id!=null">,`buy_id`</if>
+		<if test="s_time!='' and s_time!=null">,`s_time`</if>
+		<if test="tool!='' and tool!=null">,`tool`</if>
+		<if test="s_img!='' and s_img!=null">,`s_img`</if>
+		<if test="s_descr!='' and s_descr!=null">`s_descr`</if>
+		<if test="people!='' and people!=null">,`people`</if>
+		<if test="farm_id!='' and farm_id!=null">,`farm_id`</if>
+		<if test="bz!='' and bz!=null">,`bz`</if>
+		)
+		values (
+		<if test="s_id!='' and s_id!=null">#{s_id}</if>
+		<if test="crop!='' and crop!=null">,#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="s_name!='' and s_name!=null">,#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">,#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">,#{s_time}</if>
+		<if test="tool!='' and tool!=null">,#{tool}</if>
+		<if test="s_img!='' and s_img!=null">,#{s_img}</if>
+		<if test="s_descr!='' and s_descr!=null">#{s_descr}</if>
+		<if test="people!='' and people!=null">,#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		<if test="bz!='' and bz!=null">,#{bz}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Seed">
+		insert into r_seed
+		(
+		s_id,`crop`,`crop_id`,`s_name`,`buy_id`,`s_time`,`tool`,`s_img`,s_descr,`people`,farm_id,`bz`
+		)
+		values
+		<foreach collection="data" item="e" index="index" separator=",">
+			(
+
+			#{s_id},
+			#{crop},
+			#{crop_id},
+			#{s_name},
+			#{buy_id},
+			#{s_time},
+			#{tool},
+			#{s_img},
+			#{s_descr},
+			#{people},
+			#{farm_id},
+			#{bz}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Seed">
+		update r_seed
+		<set>
+			<if test="crop!='' and crop!=null">`crop`=#{crop},</if>
+			<if test="crop_id!='' and crop_id!=null">`crop_id`=#{crop_id},</if>
+			<if test="s_name!='' and s_name!=null">`s_name`=#{s_name},</if>
+			<if test="buy_id!='' and buy_id!=null">`buy_id`=#{buy_id},</if>
+			<if test="s_time!='' and s_time!=null">`s_time`=#{s_time},</if>
+			<if test="tool!='' and tool!=null">`tool`=#{tool},</if>
+			<if test="people!='' and people!=null">`people`=#{people},</if>
+			<if test="farm_id!='' and farm_id!=null">`farm_id`=#{farm_id},</if>
+			<if test="bz!='' and bz!=null">`bz`=#{bz},</if>
+			<if test="s_img!='' and s_img!=null">`s_img`=#{s_img},</if>
+			<if test="s_path!='' and s_path!=null">
+				`s_img`= REPLACE(`s_img`,CONCAT(#{s_path},','),''),
+			</if>
+			<if test="s_descr!=null">`s_descr`=#{s_descr},</if>
+		</set>
+		where s_id=#{s_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Seed">
+		update r_seed
+		<set>
+			<if test="crop!='' and crop!=null">`crop`=#{crop},</if>
+			<if test="crop_id!='' and crop_id!=null">`crop_id`=#{crop_id},</if>
+
+			<if test="s_name!='' and s_name!=null">`s_name`=#{s_name},</if>
+			<if test="buy_id!='' and buy_id!=null">`buy_id`=#{buy_id},</if>
+			<if test="s_time!='' and s_time!=null">`s_time`=#{s_time},</if>
+			<if test="tool!='' and tool!=null">`tool`=#{tool},</if>
+			<if test="s_img!='' and s_img!=null">`s_img`=#{s_img},</if>
+			<if test="s_descr!=null">`s_descr`=#{s_descr},</if>
+			<if test="people!='' and people!=null">`people`=#{people},</if>
+			<if test="farm_id!='' and farm_id!=null">`farm_id`=#{farm_id},</if>
+			<if test="bz!='' and bz!=null">`bz`=#{bz},</if>
+		</set>
+		where s_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Seed">
+		delete from r_seed where 1=1
+		<if test="s_id!='' and s_id!=null">and `s_id`=#{s_id}</if>
+		<if test="crop!='' and crop!=null">and `crop`=#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">and `crop_id`=#{crop_id}</if>
+		<if test="s_img!='' and s_img!=null">and `s_img`=#{s_img}</if>
+		<if test="s_name!='' and s_name!=null">and `s_name`=#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">and `buy_id`=#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">and `s_time`=#{s_time}</if>
+		<if test="tool!='' and tool!=null">and `tool`=#{tool}</if>
+		<if test="people!='' and people!=null">and `people`=#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">and `farm_id`=#{farm_id}</if>
+		<if test="bz!='' and bz!=null">and `bz`=#{bz}</if>
+		<if test="s_descr!='' and s_descr!=null">and `s_descr`=#{s_descr}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_seed
+		where s_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Seed" resultType="com.hniois.monitor.entity.Seed">
+		select	t.*
+		from r_seed t
+		where 1=1
+		<if test="s_id!='' and s_id!=null">and t.`s_id`=#{s_id}</if>
+		<if test="crop!='' and crop!=null">and t.`crop`=#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">and t.`crop_id`=#{crop_id}</if>
+		<if test="s_img!='' and s_img!=null">and t.`s_img`=#{s_img}</if>
+		<if test="s_name!='' and s_name!=null">and t.`s_name`=#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">and t.`buy_id`=#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">and t.`s_time`=#{s_time}</if>
+		<if test="tool!='' and tool!=null">and t.`tool`=#{tool}</if>
+		<if test="people!='' and people!=null">and t.`people`=#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.`farm_id`=#{farm_id}</if>
+		<if test="bz!='' and bz!=null">and t.`bz`=#{bz}</if>
+		<if test="s_descr!='' and s_descr!=null">and t.`s_descr`=#{s_descr}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Seed" resultType="com.hniois.monitor.entity.Seed">
+		select	t.*
+		from r_seed t
+		where 1=1
+		<if test="s_id!='' and s_id!=null">and t.`s_id`=#{s_id}</if>
+		<if test="crop!='' and crop!=null">and t.`crop`=#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">and t.`crop_id`=#{crop_id}</if>
+		<if test="s_img!='' and s_img!=null">and t.`s_img`=#{s_img}</if>
+		<if test="s_name!='' and s_name!=null">and t.`s_name`=#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">and t.`buy_id`=#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">and t.`s_time`=#{s_time}</if>
+		<if test="tool!='' and tool!=null">and t.`tool`=#{tool}</if>
+		<if test="people!='' and people!=null">and t.`people`=#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.`farm_id`=#{farm_id}</if>
+		<if test="bz!='' and bz!=null">and t.`bz`=#{bz}</if>
+		<if test="s_descr!='' and s_descr!=null">and t.`s_descr`=#{s_descr}</if>
+		order by t.s_id
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Seed" resultType="java.lang.Integer">
+		select count(*)
+		from r_seed t
+		where 1=1
+		<if test="s_id!='' and s_id!=null">and t.`s_id`=#{s_id}</if>
+		<if test="crop!='' and crop!=null">and t.`crop`=#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">and t.`crop_id`=#{crop_id}</if>
+		<if test="s_img!='' and s_img!=null">and t.`s_img`=#{s_img}</if>
+		<if test="s_name!='' and s_name!=null">and t.`s_name`=#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">and t.`buy_id`=#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">and t.`s_time`=#{s_time}</if>
+		<if test="tool!='' and tool!=null">and t.`tool`=#{tool}</if>
+		<if test="people!='' and people!=null">and t.`people`=#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.`farm_id`=#{farm_id}</if>
+		<if test="bz!='' and bz!=null">and t.`bz`=#{bz}</if>
+		<if test="s_descr!='' and s_descr!=null">and t.`s_descr`=#{s_descr}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Seed" resultType="com.hniois.monitor.entity.Seed">
+		select	t.*
+		from r_seed t
+		where 1=1
+		<if test="s_id!='' and s_id!=null">and t.`s_id`=#{s_id}</if>
+		<if test="crop!='' and crop!=null">and t.`crop`=#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">and t.`crop_id`=#{crop_id}</if>
+		<if test="s_img!='' and s_img!=null">and t.`s_img`=#{s_img}</if>
+		<if test="s_name!='' and s_name!=null">and t.`s_name`=#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">and t.`buy_id`=#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">and t.`s_time`=#{s_time}</if>
+		<if test="tool!='' and tool!=null">and t.`tool`=#{tool}</if>
+		<if test="people!='' and people!=null">and t.`people`=#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.`farm_id`=#{farm_id}</if>
+		<if test="bz!='' and bz!=null">and t.`bz`=#{bz}</if>
+		<if test="s_descr!='' and s_descr!=null">and t.`s_descr`=#{s_descr}</if>
+		order by t.s_id
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Seed" resultType="java.lang.Integer">
+		select count(*)
+		from r_seed t
+		where 1=1
+		<if test="s_id!='' and s_id!=null">and t.`s_id`=#{s_id}</if>
+		<if test="crop!='' and crop!=null">and t.`crop`=#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">and t.`crop_id`=#{crop_id}</if>
+		<if test="s_img!='' and s_img!=null">and t.`s_img`=#{s_img}</if>
+		<if test="s_name!='' and s_name!=null">and t.`s_name`=#{s_name}</if>
+		<if test="buy_id!='' and buy_id!=null">and t.`buy_id`=#{buy_id}</if>
+		<if test="s_time!='' and s_time!=null">and t.`s_time`=#{s_time}</if>
+		<if test="tool!='' and tool!=null">and t.`tool`=#{tool}</if>
+		<if test="people!='' and people!=null">and t.`people`=#{people}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.`farm_id`=#{farm_id}</if>
+		<if test="bz!='' and bz!=null">and t.`bz`=#{bz}</if>
+		<if test="s_descr!='' and s_descr!=null">and t.`s_descr`=#{s_descr}</if>
+	</select>
+</mapper>

@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+var config={
+	//项目地址
+  // baseUrl:"http://localhost:8080/xftx/",
+//	baseUrl:"http://www.app-zc.cn/xftx/",
+	baseUrl:"http://www.shfda.org/p/",
+	//公众号id
+//	appId:"wxe99eff030b730ede",
+//  appId:"wx4700a3e305d44a75",
+    appId:"wx257e0708180822d0",
+	APIUrl:"https://www.shfda.org/platform-query/"
+};
+
+//本地路径
+var BaseUrl = "http://192.168.11.4:8008/webService/";
+var webPath = "http://localhost:8080/webpage/html/";
+var imgPath = "http://192.168.11.4:8008/";
+//114路径
+//var BaseUrl = "http://192.168.11.4:8200/webService/";

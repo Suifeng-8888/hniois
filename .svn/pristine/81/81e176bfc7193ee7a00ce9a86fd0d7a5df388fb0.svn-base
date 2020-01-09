@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ChemicalMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Chemical"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_chemical(
+		<if test="cname!='' and cname!=null">cname</if>
+		<if test="s_id!='' and s_id!=null">,s_id</if>
+		<if test="s_name!='' and s_name!=null">,s_name</if>
+		<if test="person!='' and person!=null">,person</if>
+		<if test="c_time!='' and c_time!=null">,c_time</if>
+		<if test="state!='' and state!=null">,state</if>
+		<if test="unit!='' and unit!=null">,unit</if>
+		<if test="cnums!='' and cnums!=null">,cnums</if>
+		<if test="method!='' and method!=null">,method</if>
+		<if test="ch_batch!='' and ch_batch!=null">,ch_batch</if>
+		<if test="se_batch!='' and se_batch!=null">,se_batch</if>
+		<if test="farm_id!='' and farm_id!=null">,`farm_id`</if>
+		<if test="soil_id!='' and soil_id!=null">,soil_id</if>
+		)
+		VALUES (
+		<if test="cname!='' and cname!=null">#{cname}</if>
+		<if test="s_id!='' and s_id!=null">,#{s_id}</if>
+		<if test="s_name!='' and s_name!=null">,#{s_name}</if>
+		<if test="person!='' and person!=null">,#{person}</if>
+		<if test="c_time!='' and c_time!=null">,#{c_time}</if>
+		<if test="state!='' and state!=null">,#{state}</if>
+		<if test="unit!='' and unit!=null">,#{unit}</if>
+		<if test="cnums!='' and cnums!=null">,#{cnums}</if>
+		<if test="method!='' and method!=null">,#{method}</if>
+		<if test="ch_batch!='' and ch_batch!=null">,#{ch_batch}</if>
+		<if test="se_batch!='' and se_batch!=null">,#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		<if test="soil_id!='' and soil_id!=null">,#{soil_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Chemical">
+		insert into r_chemical
+		(cname,s_id,s_name,person,c_time,state,unit,cnums,method,ch_batch,se_batch,soil_id,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.cname},
+			#{e.s_id},
+			#{e.s_name},
+			#{e.person},
+			#{e.c_time},
+			#{e.state},
+			#{e.unit},
+			#{e.cnums},
+			#{e.method},
+			#{e.ch_batch},
+			#{e.se_batch},
+			#{farm_id},
+			#{e.soil_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Chemical">
+		update r_chemical
+		<set>
+			<if test="cname !=null and cname !=''">cname=#{cname},</if>
+			<if test="s_id !=null and s_id !=''">s_id=#{s_id},</if>
+			<if test="s_name !=null and s_name !=''">s_name=#{s_name},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="c_time !=null and c_time !=''">c_time=#{c_time},</if>
+			<if test="state !=null and state !=''">state=#{state},</if>
+			<if test="unit !=null and unit !=''">unit=#{unit},</if>
+			<if test="cnums !=null and cnums !=''">cnums=#{cnums},</if>
+			<if test="method !=null and method !=''">method=#{method},</if>
+			<if test="ch_batch !=null and ch_batch !=''">ch_batch=#{ch_batch},</if>
+			<if test="se_batch !=null and se_batch !=''">se_batch=#{se_batch},</if>
+			<if test="farm_id!='' and farm_id!=null">farm_id=#{farm_id},</if>
+			<if test="soil_id !=null and soil_id !=''">soil_id=#{soil_id},</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Chemical">
+		update r_chemical
+		<set>
+			<if test="cname !=null and cname !=''">cname=#{cname},</if>
+			<if test="s_id !=null and s_id !=''">s_id=#{s_id},</if>
+			<if test="s_name !=null and s_name !=''">s_name=#{s_name},</if>
+			<if test="person !=null and person !=''">person=#{person},</if>
+			<if test="c_time !=null and c_time !=''">c_time=#{c_time},</if>
+			<if test="state !=null and state !=''">state=#{state},</if>
+			<if test="unit !=null and unit !=''">unit=#{unit},</if>
+			<if test="cnums !=null and cnums !=''">cnums=#{cnums},</if>
+			<if test="method !=null and method !=''">method=#{method},</if>
+			<if test="ch_batch !=null and ch_batch !=''">ch_batch=#{ch_batch},</if>
+			<if test="se_batch !=null and se_batch !=''">se_batch=#{se_batch},</if>
+			<if test="farm_id!='' and farm_id!=null">farm_id=#{farm_id},</if>
+			<if test="soil_id !=null and soil_id !=''">soil_id=#{soil_id},</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Chemical">
+		delete from r_chemical where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="cname !=null and cname !=''">and cname=#{cname}</if>
+		<if test="s_id !=null and s_id !=''">and s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="c_time !=null and c_time !=''">and c_time=#{c_time}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		<if test="unit !=null and unit !=''">and unit=#{unit}</if>
+		<if test="cnums !=null and cnums !=''">and cnums=#{cnums}</if>
+		<if test="method !=null and method !=''">and method=#{method}</if>
+		<if test="ch_batch !=null and ch_batch !=''">and ch_batch=#{ch_batch}</if>
+		<if test="se_batch !=null and se_batch !=''">and se_batch=#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and soil_id=#{soil_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_chemical
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Chemical" resultType="com.hniois.monitor.entity.Chemical">
+		select *
+		from r_chemical
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="cname !=null and cname !=''">and cname=#{cname}</if>
+		<if test="s_id !=null and s_id !=''">and s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="c_time !=null and c_time !=''">and c_time=#{c_time}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		<if test="unit !=null and unit !=''">and unit=#{unit}</if>
+		<if test="cnums !=null and cnums !=''">and cnums=#{cnums}</if>
+		<if test="method !=null and method !=''">and method=#{method}</if>
+		<if test="ch_batch !=null and ch_batch !=''">and ch_batch=#{ch_batch}</if>
+		<if test="se_batch !=null and se_batch !=''">and se_batch=#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and soil_id=#{soil_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Chemical" resultType="com.hniois.monitor.entity.Chemical">
+		select t.*
+		from r_chemical t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="cname !=null and cname !=''">and t.cname=#{cname}</if>
+		<if test="s_id !=null and s_id !=''">and t.s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and t.s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="c_time !=null and c_time !=''">and t.c_time=#{c_time}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+		<if test="unit !=null and unit !=''">and t.unit=#{unit}</if>
+		<if test="cnums !=null and cnums !=''">and t.cnums=#{cnums}</if>
+		<if test="method !=null and method !=''">and t.method=#{method}</if>
+		<if test="ch_batch !=null and ch_batch !=''">and t.ch_batch=#{ch_batch}</if>
+		<if test="se_batch !=null and se_batch !=''">and t.se_batch=#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and t.soil_id=#{soil_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Chemical" resultType="java.lang.Integer">
+		select count(*)
+		from r_chemical t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="cname !=null and cname !=''">and t.cname=#{cname}</if>
+		<if test="s_id !=null and s_id !=''">and t.s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and t.s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="c_time !=null and c_time !=''">and t.c_time=#{c_time}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+		<if test="unit !=null and unit !=''">and t.unit=#{unit}</if>
+		<if test="cnums !=null and cnums !=''">and t.cnums=#{cnums}</if>
+		<if test="method !=null and method !=''">and t.method=#{method}</if>
+		<if test="ch_batch !=null and ch_batch !=''">and t.ch_batch=#{ch_batch}</if>
+		<if test="se_batch !=null and se_batch !=''">and t.se_batch=#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and t.soil_id=#{soil_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Chemical" resultType="com.hniois.monitor.entity.Chemical">
+		select *
+		from r_chemical
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="cname !=null and cname !=''">and cname=#{cname}</if>
+		<if test="s_id !=null and s_id !=''">and s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and person=#{person}</if>
+		<if test="c_time !=null and c_time !=''">and c_time=#{c_time}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		<if test="unit !=null and unit !=''">and unit=#{unit}</if>
+		<if test="cnums !=null and cnums !=''">and cnums=#{cnums}</if>
+		<if test="method !=null and method !=''">and method=#{method}</if>
+		<if test="ch_batch !=null and ch_batch !=''">and ch_batch=#{ch_batch}</if>
+		<if test="se_batch !=null and se_batch !=''">and se_batch=#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and soil_id=#{soil_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Chemical" resultType="java.lang.Integer">
+		select count(*)
+		from r_chemical t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="cname !=null and cname !=''">and t.cname=#{cname}</if>
+		<if test="s_id !=null and s_id !=''">and t.s_id=#{s_id}</if>
+		<if test="s_name !=null and s_name !=''">and t.s_name=#{s_name}</if>
+		<if test="person !=null and person !=''">and t.person=#{person}</if>
+		<if test="c_time !=null and c_time !=''">and t.c_time=#{c_time}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+		<if test="unit !=null and unit !=''">and t.unit=#{unit}</if>
+		<if test="cnums !=null and cnums !=''">and t.cnums=#{cnums}</if>
+		<if test="method !=null and method !=''">and t.method=#{method}</if>
+		<if test="ch_batch !=null and ch_batch !=''">and t.ch_batch=#{ch_batch}</if>
+		<if test="se_batch !=null and se_batch !=''">and t.se_batch=#{se_batch}</if>
+		<if test="farm_id!='' and farm_id!=null">and t.farm_id=#{farm_id}</if>
+		<if test="soil_id !=null and soil_id !=''">and t.soil_id=#{soil_id}</if>
+	</select>
+</mapper>

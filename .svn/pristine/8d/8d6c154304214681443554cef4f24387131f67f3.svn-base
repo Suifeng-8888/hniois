@@ -1,0 +1,172 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %><%--解析时间的标签--%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<html>
+<head>
+    <title>Title</title>
+    <base href="<%=basePath%>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <link href="static/layui/css/layui.css" rel="stylesheet" />
+    <link href="static/layui/css/search.css" rel="stylesheet" />
+    <link href="static/font-awesome/css/font-awesome.css" rel="stylesheet" />
+</head>
+<style>
+    *{
+        margin: 0 auto;
+        padding: 0;
+    }
+    .left{
+        background-color: #00B83F;
+        width:100px;
+        height:110px;
+    }
+    .left span{
+        height: 30px;
+        line-height: 30px;
+    }
+    .right{
+        width:100px;
+        height:100px;
+    }
+    .item{
+        width:240px;
+        height:120px;
+    }
+    span{
+        display: block;
+    }
+</style>
+<body>
+<%--条件筛选--%>
+<div class="head">
+    <div>
+        <form id="fm" >
+            <select id="limt" onchange="showData(1)">
+                <option>选择每页图片数</option>
+                <option value="5">5</option>
+                <option value="8">8</option>
+                <option value="10">10</option>
+            </select>
+        </form>
+        <span class="layui-btn" onclick="doPrint()">打印</span>
+    </div>
+</div>
+
+<%--展示每页二维码排版--%>
+<div class="search" id="search_show">
+    <%--每一个要打印的二维码图片--%>
+
+</div>
+<div id="demo1"></div>
+<div id="item_html" style="display: none;">
+    <div class="item" >
+        <%--左边内容:背景图片,公司地址/联系电话 顺序代码--%>
+        <div class="left" >
+            <span >${temp.name}</span>
+            <span >${temp.tel}</span>
+            <span name="mark"></span>
+        </div>
+        <%--右边内容:二维码和防伪码--%>
+        <div style="float: left;margin-left:110px;margin-top:-100px; "  class="right">
+            <%--  TEMP/20181030   /   AAA --%>
+            <img name="the_img" src="" style="width:100px;height:100px;"  alt="二维码">
+            <span  >${temp.random}</span>
+        </div>
+    </div>
+</div>
+</body>
+<script src="static/layui/layui.all.js"></script>
+<script src="static/login/js/jquery-1.7.2.js"></script>
+<script src="static/hniois/hniois.js"></script>
+<script>
+    $(document).ready(function(){
+        //初始化只显示选择和确定按钮
+        $(".search").hide();
+    });
+
+    layui.use(['laypage', 'layer'], function() {
+        var laypage = layui.laypage
+            , layer = layui.layer;
+
+        //总页数低于页码总数
+        laypage.render({
+            elem: 'demo1'
+            ,count: "${temp.count}" //
+            ,jump: function(obj, first){
+                if(!first){
+                    showData(obj.curr);
+                }
+            }
+        });
+    });
+
+    function doPrint() {
+        var oldHtml = window.document.body.innerHTML;
+        $(".head").hide();
+        window.document.body.innerHTML = $("#search_show").html();
+        window.print();
+        window.document.body.innerHTML = oldHtml;
+    }
+    //加载当前页面数据
+    function showData(page){
+        var begin = "${temp.begin_code}";
+        var end = "${temp.end_code}";
+        var batch="${temp.batch}";
+        var random="${temp.random}";
+        //获取客户选择的下拉框内容
+        var num = $("#limt").val();
+        var rule="${temp.rule_code}";
+        //初始页设置为
+        var pages=page?page:1;
+        $.ajax({
+            url:'code/load.do',
+            data:{
+                begin_code:begin,
+                end_code:end,
+                rule_code:rule,
+                random:random,
+                batch:batch,
+                limit:num,
+                pages:pages,
+            },
+            dateType:"json",
+            success:function(data){
+                var obj=JSON.parse(data);
+                var arrPic=obj.pic.split(',');
+                var arrMark=obj.mark.split(",");
+
+                $("#search_show").html("");
+                //组装模板 item
+                for(var i=0;i<arrPic.length;i++){
+                    autoIMG_HTML(arrPic[i],arrMark[i]);
+                }
+
+                //item 模板重置
+                $("#item_html").find("img[name='the_img']").attr("src","");
+                $("#item_html").find("span[name='mark']").html("");
+
+                //展示数据
+                $("#search_show").show();
+            }
+        })
+    }
+
+    //自由组装二维码HTML
+    function autoIMG_HTML(imgUrl,mar) {
+        var item = $("#item_html");
+        $(item).find("img[name='the_img']").attr("src",imgUrl);
+        $(item).find("span[name='mark']").html(mar);
+        $("#search_show").append(item.html());
+    }
+
+    /**/
+</script>
+</html>

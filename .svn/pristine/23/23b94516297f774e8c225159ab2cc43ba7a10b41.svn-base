@@ -1,0 +1,115 @@
+package com.hniois.web.trace;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.*;
+import com.hniois.monitor.service.*;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.entity.Temp;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.OrderManage;
+import com.hniois.trace.service.QRcodeManage;
+import net.sf.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 首页扫描二维码显示信息内容
+ */
+@RestController
+@RequestMapping("/webService")
+public class queryTraceWeb extends BaseController{
+
+    //订单对象
+    @Resource(name="orderService")
+    private OrderManage orderService;
+    //包装批次信息
+    @Resource(name ="batchService")
+    private BatchManage batchService;
+
+    //二维码对象信息
+    @Resource(name="qRcodeService")
+    private QRcodeManage codeService;
+
+    //检验报告
+    @Resource(name="reportService")
+    private ReportManage reportService;
+
+    //采摘信息
+    @Resource(name="harvestService")
+    private HarvestManage harvestService;
+
+    //打药信息
+    @Resource(name="poisonService")
+    private PoisonManage poisonService;
+
+    //施肥信息
+    @Resource(name="chemicalService")
+    private ChemicalManage chemicalService;
+    //检验报告详情
+    @Resource(name="reportDetailService")
+    private ReportDetailManage detailService;
+
+    //农场信息
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    //播种信息
+    @Resource(name="seedService")
+    private SeedManage seedService;
+
+    //土地信息
+    @Resource(name="soilService")
+    private SoilManage soilService;
+
+    /**
+     * 扫描二维码获取对象信息
+     * @return
+     */
+    @RequestMapping("/query")
+    public String showPage(QRcode e)throws Exception{
+        List list=new ArrayList();
+        //根据扫描信息获取当前产品对应的批次号码
+        QRcode qRode = codeService.scanImg(e);
+       //根据扫描对象批次号获取检验信息
+        Report rpt=new Report();
+        rpt.setProduct_batch(qRode.getBatch());
+        Report report = reportService.find(rpt);
+        list.add(report);
+        //根据批次获取采摘信息
+        Harvest hv=new Harvest();
+        hv.setBatch(qRode.getBatch());
+        Harvest hart = harvestService.find(hv);
+        list.add(hart);
+        //根据采摘对象获取作物信息
+        Seed sd=new Seed();
+        sd.setS_id(hart.getS_id());
+        sd.setFarm_id(hart.getFarm_id());
+        Seed seed=seedService.find(sd);
+        list.add(seed);
+        //根据采摘信息获取土地编号信息
+        Soil sol=new Soil();
+        sol.setId(hart.getSoil_id());
+        sol.setFarm_id(hart.getFarm_id());
+        Soil soil=soilService.find(sol);
+        //根据作物和土地编号获取打药信息
+        Poison pson=new Poison();
+        pson.setS_name(hart.getS_name());
+        pson.setSoil_id(hart.getSoil_id());
+        pson.setFarm_id(hart.getFarm_id());
+        Poison poison=poisonService.find(pson);
+        list.add(poison);
+        //获取施肥信息
+        Chemical chl=new Chemical();
+        chl.setS_name(hart.getS_name());
+        chl.setSoil_id(hart.getSoil_id());
+        chl.setFarm_id(hart.getFarm_id());
+        Chemical chemical=chemicalService.find(chl);
+        list.add(chemical);
+        JSONObject js = JSONObject.fromObject(list);
+        return js.toString();
+    }
+}

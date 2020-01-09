@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>金明源农产品溯源公共信息服务平台-平台介绍</title>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/content.css" rel="stylesheet">
+</head>
+<body>
+<div class="header">
+    <div class="head-bg">
+        <div class="container">
+            <a class="navbar-brand" href="javascript:main.goback();">
+                <img class="navbar-logo hidden-xs" src="../imgs/pc/logo-2.png"/>
+                <h1 class="hidden-xs">金明源农产品溯源公共信息服务平台</h1>
+            </a>
+            <div class="navbar-right">
+                <div class="btn-group">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="index.html">首 页</a></li>
+                        <li><a href="company.html">企业查询</a></li>
+                        <li><a href="product.html">产品查询</a></li>
+                        <li><a href="consumption.html">监管巡查</a></li>
+                        <li><a href="complain.html">投诉建议</a></li>
+                        <li><a href="aboutUs.html">平台介绍</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="picCode hidden-xs">
+                <img src="../imgs/pc/appCode-2.jpg" alt="APP" class="small"/>
+                <div class="viewBox">
+                    <img src="../imgs/pc/appCode-2.jpg" alt="APP"/>
+                    <p>平顶山食安消费者版APP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content hidden-xs banner-menu">
+    <div class="row">
+        <div class="col-md-12 b-b">
+            <div class="container text-center">
+                <div class="tags">
+                    <a href="company.html">企业</a>
+                    <a href="product.html">产品</a>
+                    <a href="consumption.html">监管巡查</a>
+                    <a href="complain.html">投诉建议</a>
+                    <a href="aboutUs.html" class="on">平台介绍</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content aPart-1">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <h3>制度法规</h3>
+                <p style="text-align: left !important">“平顶山市食品安全信息追溯平台”（以下简称“平台”）是依据<b>《平顶山市食品安全信息追溯管理办法》（豫令33号）</b>要求，在整合有关食品和食用农产品信息追溯系统的基础上，由市食品药品监管部门负责建设和运行维护的
+                    <b>全市统一的食品安全信息追溯平台</b>。</p>
+                <img src="../imgs/pc/about-1.png" alt="平台介绍" class="img-responsive">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content aPart-1 End -->
+
+<div class="content aPart-2 bgImg">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <h3>技术标准</h3>
+                <p>平台以《食品和食用农产品信息追溯》平顶山市地方标准为技术标准建设运行</p>
+                <img src="../imgs/pc/about-2.png" alt="技术标准" class="img-responsive center-block">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content aPart-2 End -->
+
+<div class="content aPart-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <h3>平台服务</h3>
+                <p>为政府、企业、消费者、及第三方机构提供食品安全信息追溯相关服务。</p>
+            </div>
+            <div class="container">
+                <div class="col-sm-4">
+                    <div class="intro-mod">
+                        <div class="pic">
+                            <h4>公众需求</h4>
+                            <img src="../imgs/pc/about-3.png" alt="公众需求">
+                            <span>保障公众知情权</span>
+                        </div>
+                        <p>为消费者提供</p>
+                        <p>具有公信力的食品安全信息</p>
+                        <p>建立查询和交互机制</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="intro-mod">
+                        <div class="pic">
+                            <h4>企业责任</h4>
+                            <img src="../imgs/pc/about-4.png" alt="企业责任">
+                            <span>食品生产经营企业履行主体责任</span>
+                        </div>
+                        <p>提升食品安全管控水平</p>
+                        <p>规避企业经营风险</p>
+                        <p>提升企业及产品形象</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="intro-mod">
+                        <div class="pic">
+                            <h4>政府监管</h4>
+                            <img src="../imgs/pc/about-5.png" alt="政府监管">
+                            <span>社会治理智能化</span>
+                        </div>
+                        <p>提升监管能力和效率</p>
+                        <p>是想食品安全数据互联共享</p>
+                        <p>预警、报警、追责、健康度</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content aPart-3 End -->
+
+<div class="content aPart-4 bgImg">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <h3>建设模式</h3>
+                <p>平台通过“<a style="font-weight: bold; color: white; font-size: 20px;">1+X</a>”的建设运行管理模式，集成了市食药监局、市农委、市商务委、市教委、市粮食局等相关政府部门追溯系统及数据，同时接收来自食品生产经营企业及第三方机构的追溯数据，打通信息孤岛，形成食品安全追溯信息数据链、数据网，以平台为核心载体打造食品安全信息追溯体系，为实现食品安全共建、共治、共享，建设市民满意的食品安全城市提供重要支撑。
+                </p>
+                <img src="../imgs/pc/about-6.png" alt="1+X 模式" class="img-responsive center-block">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content aPart-4 End -->
+
+<div class="footer hidden-xs">
+    <div class="row">
+        <div class="container text-center">
+            <div class="col-md-12">
+                <p>Copyright © 2018 平顶山市食品安全信息追溯平台 All rights reserved. <!--<img src="../imgs/pc/icp.png" alt="ICP"/>-->
+                    <!--沪ICP备17011533号-1 <img src="../imgs/pc/police.png" alt="公网安备"/> 沪公网安备 31011502003499号</p>-->
+                <p>主办方：xxxxxxxxxxxxxxxxxxxxx | 技术支持：xxxxxxxxxxxxxxxxxxx</p>
+            </div>
+        </div>
+        <!-- container End -->
+    </div>
+    <!-- row End -->
+</div>
+<!-- footer End -->
+
+<a href="javaScript:void(0);" id="back-to-top" class="backTop"></a>
+
+<script src="../js/common/jquery-1.12.4.min.js"></script>
+<script src="../js/common/bootstrap.min.js"></script>
+<script src="../js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+WebService接口规范
+-------------------------------------------------------[以下描述均已Demo简称]
+1.DemoWebService继承
+        原始  DemoAction
+        接口  DemoWebService
+        统一使用Demo实体类,多出字段对应追加,做出注释
+2.RequestMapping配置
+        原始  DemoAction:     @RequestMapping(value="/demo")
+        接口  DemoWebService: @RequestMapping(value="/webService/demo")
+3.常规保留接口
+        /find
+        /findCount
+        /findList
+        /findListCount
+        /save
+        /update
+        /delete
+4.接口全部返回Json -> @ResponseBody

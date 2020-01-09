@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OutputMapper">
+	<!--分页查询-->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Output" resultType="com.hniois.monitor.entity.Output">
+		SELECT c.*,d.name AS outfit_name FROM
+		(SELECT a.*, b.crop_name AS crop_name,f.p_name AS provider_name
+		FROM db_quasi_output AS a JOIN r_farm_crop AS b JOIN r_provider AS f
+		ON a.crop_id = b.crop_id AND a.base_id=f.p_id)AS c
+		LEFT JOIN r_outfit AS d ON c.outfit_id = d.id
+		<where>
+			<if test="base_id != '' and base_id != null">base_id = #{base_id}</if>
+			<if test="crop_id != '' and crop_id != null">AND crop_id = #{crop_id}</if>
+			<if test="report_num != '' and report_num != null">AND report_num = #{report_num}</if>
+			<if test="outfit_id != '' and outfit_id != null">AND outfit_id = #{outfit_id}</if>
+			<if test="operator != '' and operator != null">AND operator = #{operator}</if>
+			<if test="apply_time != '' and apply_time != null">AND apply_time = #{apply_time}</if>
+			<if test="verify_time != '' and verify_time != null">AND verify_time = #{verify_time}</if>
+			<if test="verify_status != '' and verify_status != null">AND verify_status = #{verify_status}</if>
+			<if test="remarks != '' and remarks != null">AND remarks = #{remarks}</if>
+		</where>
+		limit #{offset},#{pageSize}
+	</select>
+	<!--分页查询count-->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Output" resultType="java.lang.Integer">
+		SELECT count(*) FROM db_quasi_output
+		<where>
+			<if test="base_id != '' and base_id != null">base_id = #{base_id}</if>
+			<if test="crop_id != '' and crop_id != null">AND crop_id = #{crop_id}</if>
+			<if test="report_num != '' and report_num != null">AND report_num = #{report_num}</if>
+			<if test="outfit_id != '' and outfit_id != null">AND outfit_id = #{outfit_id}</if>
+			<if test="operator != '' and operator != null">AND operator = #{operator}</if>
+			<if test="apply_time != '' and apply_time != null">AND apply_time = #{apply_time}</if>
+			<if test="verify_time != '' and verify_time != null">AND verify_time = #{verify_time}</if>
+			<if test="verify_status != '' and verify_status != null">AND verify_status = #{verify_status}</if>
+			<if test="remarks != '' and remarks != null">AND remarks = #{remarks}</if>
+		</where>
+	</select>
+	<!--查询count-->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Output" resultType="java.lang.Integer">
+		SELECT count(*) FROM db_quasi_output
+		<where>
+			<if test="base_id != '' and base_id != null">base_id = #{base_id}</if>
+			<if test="crop_id != '' and crop_id != null">AND crop_id = #{crop_id}</if>
+			<if test="report_num != '' and report_num != null">AND report_num = #{report_num}</if>
+			<if test="outfit_id != '' and outfit_id != null">AND outfit_id = #{outfit_id}</if>
+			<if test="operator != '' and operator != null">AND operator = #{operator}</if>
+			<if test="apply_time != '' and apply_time != null">AND apply_time = #{apply_time}</if>
+			<if test="verify_time != '' and verify_time != null">AND verify_time = #{verify_time}</if>
+			<if test="verify_status != '' and verify_status != null">AND verify_status = #{verify_status}</if>
+			<if test="remarks != '' and remarks != null">AND remarks = #{remarks}</if>
+		</where>
+	</select>
+	<!--单个查询-->
+	<select id="find" parameterType="com.hniois.monitor.entity.Output" resultType="com.hniois.monitor.entity.Output">
+		SELECT * FROM db_quasi_output WHERE id = #{id}
+	</select>
+
+	<!--新增-->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Output" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO db_quasi_output
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="base_id != null and base_id != ''" >base_id,</if>
+			<if test="crop_id != null and crop_id != ''" >crop_id,</if>
+			<if test="report_num != null and report_num != ''" >report_num,</if>
+			<if test="outfit_id != null and outfit_id != ''" >outfit_id,</if>
+			<if test="operator != null and operator != ''" >operator,</if>
+			apply_time,
+			<if test="verify_time != null and verify_time != ''" >verify_time,</if>
+			<if test="verify_status != null and verify_status != ''" >verify_status,</if>
+			<if test="remarks != null and remarks != ''" >remarks,</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="base_id != null and base_id != ''" >#{base_id},</if>
+			<if test="crop_id != null and crop_id != ''" >#{crop_id},</if>
+			<if test="report_num != null and report_num != ''" >#{report_num},</if>
+			<if test="outfit_id != null and outfit_id != ''" >#{outfit_id},</if>
+			<if test="operator != null and operator != ''" >#{operator},</if>
+			CURDATE(),
+			<if test="verify_time != null and verify_time != ''" >#{verify_time},</if>
+			<if test="verify_status != null and verify_status != ''" >#{verify_status},</if>
+			<if test="remarks != null and remarks != ''" >#{remarks},</if>
+		</trim>
+	</insert>
+	<!--修改-->
+	<update id="update" parameterType="com.hniois.monitor.entity.Output">
+		UPDATE db_quasi_output
+		<set>
+			<if test="base_id != null and base_id != ''" >base_id = #{base_id},</if>
+			<if test="crop_id != null and crop_id != ''" >crop_id = #{crop_id},</if>
+			<if test="report_num != null and report_num != ''" >report_num = #{report_num},</if>
+			<if test="outfit_id != null and outfit_id != ''" >outfit_id = #{outfit_id},</if>
+			<if test="operator != null and operator != ''" >operator = #{operator},</if>
+			<if test="apply_time != null and apply_time != ''" >apply_time = #{apply_time},</if>
+			<if test="verify_time != null and verify_time != ''" >verify_time = #{verify_time},</if>
+			<if test="verify_status != null and verify_status != ''" >verify_status = #{verify_status},</if>
+			<if test="remarks != null and remarks != ''" >remarks = #{remarks},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+	<!--单个删除-->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Output">
+		DELETE FROM db_quasi_output
+		WHERE id=#{id}
+	</delete>
+	<!--批量删除-->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		DELETE FROM db_quasi_output
+		WHERE id IN
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<select id="findList" parameterType="com.hniois.monitor.entity.Output" resultType="com.hniois.monitor.entity.Output">
+		SELECT * FROM db_quasi_output
+		<where>
+			<if test="base_id != '' and base_id != null">base_id = #{base_id}</if>
+			<if test="crop_id != '' and crop_id != null">AND crop_id = #{crop_id}</if>
+			<if test="report_num != '' and report_num != null">AND report_num = #{report_num}</if>
+			<if test="outfit_id != '' and outfit_id != null">AND outfit_id = #{outfit_id}</if>
+			<if test="operator != '' and operator != null">AND operator = #{operator}</if>
+			<if test="apply_time != '' and apply_time != null">AND apply_time = #{apply_time}</if>
+			<if test="verify_time != '' and verify_time != null">AND verify_time = #{verify_time}</if>
+			<if test="verify_status != '' and verify_status != null">AND verify_status = #{verify_status}</if>
+			<if test="remarks != '' and remarks != null">AND remarks = #{remarks}</if>
+		</where>
+	</select>
+</mapper>

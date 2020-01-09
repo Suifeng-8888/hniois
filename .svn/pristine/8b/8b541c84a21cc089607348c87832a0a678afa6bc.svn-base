@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>金明源农产品追溯</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/new_main.css">
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="http://www.zhuisuyun.com.cn/css/public.css">
+    <link rel="stylesheet" href="http://www.zhuisuyun.com.cn/model/qrcode/css/ny.css">
+    <script src="http://www.zhuisuyun.com.cn/script/plugin/jquery/1.11.3/jquery-1.11.3.min.js"></script>
+    <!-- 左右切换 -->
+    <script src="http://www.zhuisuyun.com.cn/model/qrcode/js/jquery.SuperSlide.2.1.1.js"></script>
+</head>
+
+<body>
+
+<!-- 头部 -->
+<div class="navbar ">
+    <div class="container w-100">
+        <div class="navbar-header ">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand pad-0" href="index.html">
+                <img alt="Brand" src="../imgs/logo.png">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right hidden-xm">
+                <li class="hidden-sm hidden-md">
+                    <a href="index.html" style="background-color: #1068be">首页</a>
+                </li>
+                <li>
+                    <a href="company.html">企业查询</a>
+                </li>
+                <li>
+                    <a href="product.html">产品查询</a>
+                </li>
+                <li>
+                    <a href="consumption.html">监管巡查</a>
+                </li>
+                <li>
+                    <a href="complain.html">投诉建议</a>
+                </li>
+                <li>
+                    <a href="aboutUs.html">关于我们</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div><!-- 头部end -->
+<!-- banner -->
+<div class="jumbotron">
+    <div class="container jum-box">
+        <!-- pc显示 banner字体 -->
+        <h2 class="white hidden-xs">来源可追查&nbsp;去向可查证 &nbsp;责任可追究</h2>
+        <p class="white hidden-xs">Source can be traced traceability can be verified<br /> responsibility can be
+            investigated</p>
+        <!-- 手机显示 banner字体 -->
+        <p class="white visible-xs-block xs-text xs-text-top">来源可追查&nbsp;去向可查证</p>
+        <p class="white visible-xs-block xs-text">责任可追究</p>
+        <p class="white visible-xs-block xs-text ">Source can be traced traceability </p>
+        <!-- end -->
+        <div class="banner-greens visible-lg-block visible-md-block"></div>
+        <div class="row search-box">
+            <div class="col-lg-4 col-md-5 col-sm-6 hidden-xs">
+                <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="search_code">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    <input type="text" class="form-control" placeholder="请输入17位产品追溯码" id="code">
+                </div><!-- /input-group -->
+            </div>
+        </div><!-- /.row -->
+    </div>
+</div> <!-- banner end -->
+<!--手机显示 搜索框-->
+<div class="container visible-xs-block m-b-20">
+    <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="mocing_btn">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+        <form action="#" id="moving_code">
+            <input type="text" class="form-control" placeholder="请输入17位产品追溯码">
+        </form>
+    </div><!-- /.row -->
+</div>
+
+    <div class="submain">
+        <div class="position">
+            <div class="wrapper">
+                <div class="position_tit"><span class="tit">追溯码查询信息</span>&nbsp;/&nbsp;Trace Code Query Information</div>
+                <div class="sub_position">
+                    您现在的位置：<a href="index.html">首页</a>&nbsp;&gt;&nbsp;追溯码查询信息
+                </div>
+            </div>
+        </div>
+        <div class="trace-cpxx productDiv">
+            <div class="tracing_code">追溯码：xs1452483804509</div>
+            <dl>
+                <dt>
+                    <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/f01b8efb-dc1e-4dd4-b436-1985fc7348b8.jpg"
+                        class="ns-pic">
+                </dt>
+                <dd>
+                    <p><b>产品名称：</b>户太8号冰葡萄</p>
+                    <p><b>采收日期：</b>2015-08-05</p>
+                    <p><b>生产企业：</b>驻马店市驿城区富强瓜果蔬菜种植合作社</p>
+                    <p><b>生产基地：</b>富强瓜果种植基地</p>
+                </dd>
+            </dl>
+        </div>
+        <div class="slideTxtBox">
+            <div class="hd">
+                <ul>
+                    <li class="">农事信息</li>
+                    <li class="on">质检信息</li>
+                    <li class="">包装信息</li>
+                    <li class="">销售信息</li>
+                </ul>
+            </div>
+            <div class="bd">
+                <div class="trace-ns" style="display: block;">
+                    <div class="bellows" id="activityDiv">
+                        <div class="bellows__item bellows--is-open" id="activityOutdc9f45ca-cf4b-4fde-9977-dd5ee327517a">
+                            <input type="hidden" name="farmValueId" value="dc9f45ca-cf4b-4fde-9977-dd5ee327517a">
+                            <input type="hidden" name="farmId" value="f80f42ce-33fd-4b7d-8f7b-41b1718d2a85">
+                            <div class="bellows__header">
+                                <div class="nshh">施药</div>
+                                <div class="open"></div>
+                                <div class="time">2015-03-22</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <span>开始时间:</span>
+                                            <span id="start_date">2015-03-22 08:29</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>结束时间:</span> <span id="end_date">2015-03-22 19:29</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>农药名称:</span> <span id="sy_pesticide_name">石硫合剂</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>用药均量:</span> <span id="sy_usage">30000</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施药方式:</span> <span id="sy_methods">喷施法</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>操作人员:</span> <span id="operator">沈振宇</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明:</span> <span id="remark">石灰/硫磺/水比例1：2：10,对多种霉菌均有较好的防治效果</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1 tpxx" align="center"> <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/8cb840b6-b88f-42dc-9480-4dbce09f9eb7.jpg"
+                                                        alt="" class="pic" style="width:500px;"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bellows__item bellows--is-open" id="activityOut4cfa9608-1a5e-41a3-96e1-f879892519f8">
+                            <input type="hidden" name="farmValueId" value="4cfa9608-1a5e-41a3-96e1-f879892519f8">
+                            <input type="hidden" name="farmId" value="df9fcd83-1f12-41c3-b53a-c18879a662c6">
+                            <div class="bellows__header">
+                                <div class="nshh">整形修剪</div>
+                                <div class="open"></div>
+                                <div class="time">2015-04-08</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>开始时间:</span> <span id="start_date">2015-04-08
+                                                07:09</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>结束时间:</span> <span id="end_date">2015-04-08 20:00</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>操作人员:</span> <span id="operator">梅园园</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明:</span> <span id="remark">选一个生长健壮的新梢向上引直线延伸，培养为主蔓，其余剪去</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1 tpxx" align="center"> <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/45e91cf0-63ea-41d7-96bb-0997da0bea46.jpg"
+                                                        alt="" class="pic" style="width:500px;"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bellows__item bellows--is-open" id="activityOut4bfd6a90-994f-4807-8604-95a34fdd8fc3">
+                            <input type="hidden" name="farmValueId" value="4bfd6a90-994f-4807-8604-95a34fdd8fc3">
+                            <input type="hidden" name="farmId" value="5cc87618-c393-4045-b864-3c8cfa142a19">
+                            <div class="bellows__header">
+                                <div class="nshh">浇灌</div>
+                                <div class="open"></div>
+                                <div class="time">2015-04-13</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>开始时间:</span> <span id="start_date">2015-04-13
+                                                09:00</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>结束时间:</span> <span id="end_date">2015-04-13 12:00</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>灌溉均量:</span> <span id="gg_usage">2.8</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>灌溉方式:</span> <span id="gg_methods">滴灌</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>操作人员:</span> <span id="operator">梅园园</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明:</span> <span id="remark">水不宜浇的过湿，保证土壤温度</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1 tpxx" align="center"> <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/3cd86867-108b-4c9c-bf31-0e94d6391bbd.jpg"
+                                                        alt="" class="pic" style="width:500px;"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOutf02cdfcd-e966-45c5-b268-08c32777f36a"> <input type="hidden"
+                                name="farmValueId" value="f02cdfcd-e966-45c5-b268-08c32777f36a"> <input type="hidden"
+                                name="farmId" value="136d4017-6b09-4782-a976-55dd62a4e0c6">
+                            <div class="bellows__header">
+                                <div class="nshh">施肥</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-04-20</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>开始时间:</span> <span id="start_date">2015-04-20
+                                                07:53</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>结束时间:</span> <span id="end_date">2015-04-20 17:53</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施肥种类:</span> <span id="sf_manure_type">有机肥料</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>肥料名称:</span> <span id="sf_manure_name">有机肥</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施用均量:</span> <span id="sf_usage">125</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施肥方式:</span> <span id="sf_methods">埋施法</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>操作人员:</span> <span id="operator">梅园园</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明:</span> <span id="remark">挖沟，将鸡粪埋入，填平；沟要去根系保持一定的距离</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1 tpxx" align="center"> <img src="http://tyzsy.oss-cn-hangzhou.aliyuncs.com/0b8854c34f0b46ecb38283470d0e6941/35f8bed8-51d8-499d-8391-69786a9575bd.jpg"
+                                                        alt="" class="pic" style="width:500px;"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut9804a6e9-41e0-4e14-b7b6-8ff34640329d"> <input type="hidden"
+                                name="farmValueId" value="9804a6e9-41e0-4e14-b7b6-8ff34640329d"> <input type="hidden"
+                                name="farmId" value="f80f42ce-33fd-4b7d-8f7b-41b1718d2a85">
+                            <div class="bellows__header">
+                                <div class="nshh">施药</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-04-30</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOutab455c4c-025a-43d9-901d-45f0ca19faab"> <input type="hidden"
+                                name="farmValueId" value="ab455c4c-025a-43d9-901d-45f0ca19faab"> <input type="hidden"
+                                name="farmId" value="136d4017-6b09-4782-a976-55dd62a4e0c6">
+                            <div class="bellows__header">
+                                <div class="nshh">施肥</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-05-22</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>开始时间:</span> <span id="start_date">2015-05-22
+                                                08:47</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>结束时间:</span> <span id="end_date">2015-05-22 21:47</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施肥种类:</span> <span id="sf_manure_type">其他</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>肥料名称:</span> <span id="sf_manure_name">豆浆</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施用均量:</span> <span id="sf_usage">320</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>施肥方式:</span> <span id="sf_methods">埋施法</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>操作人员:</span> <span id="operator">梅园园</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明:</span> <span id="remark">萃取豆浆中的雌激素，对葡萄的质量有非常好的促进作用</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xs-10 col-xs-offset-1 tpxx" align="center"> <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/257e957f-6ae3-471a-a73a-defeb3a02e0e.jpg"
+                                                        alt="" class="pic" style="width:500px;"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOuta1f2c83b-97f0-45bb-b8e9-d4c733f1c844"> <input type="hidden"
+                                name="farmValueId" value="a1f2c83b-97f0-45bb-b8e9-d4c733f1c844"> <input type="hidden"
+                                name="farmId" value="f80f42ce-33fd-4b7d-8f7b-41b1718d2a85">
+                            <div class="bellows__header">
+                                <div class="nshh">施药</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-05-27</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut9fd4b1aa-9425-404a-88ea-23ab632112fc"> <input type="hidden"
+                                name="farmValueId" value="9fd4b1aa-9425-404a-88ea-23ab632112fc"> <input type="hidden"
+                                name="farmId" value="136d4017-6b09-4782-a976-55dd62a4e0c6">
+                            <div class="bellows__header">
+                                <div class="nshh">施肥</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-06-15</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut4493d980-d53e-4508-a87a-4e1b83b9f3b4"> <input type="hidden"
+                                name="farmValueId" value="4493d980-d53e-4508-a87a-4e1b83b9f3b4"> <input type="hidden"
+                                name="farmId" value="f80f42ce-33fd-4b7d-8f7b-41b1718d2a85">
+                            <div class="bellows__header">
+                                <div class="nshh">施药</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-06-28</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOutafddd1de-3ccd-4173-a5e7-be848d26f032"> <input type="hidden"
+                                name="farmValueId" value="afddd1de-3ccd-4173-a5e7-be848d26f032"> <input type="hidden"
+                                name="farmId" value="136d4017-6b09-4782-a976-55dd62a4e0c6">
+                            <div class="bellows__header">
+                                <div class="nshh">施肥</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-07-05</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut3810bb79-c4ce-4613-a902-b2ef490c758a"> <input type="hidden"
+                                name="farmValueId" value="3810bb79-c4ce-4613-a902-b2ef490c758a"> <input type="hidden"
+                                name="farmId" value="5cc87618-c393-4045-b864-3c8cfa142a19">
+                            <div class="bellows__header">
+                                <div class="nshh">浇灌</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-07-08</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut653e12cc-c360-4f05-ad1a-2c11196b64da"> <input type="hidden"
+                                name="farmValueId" value="653e12cc-c360-4f05-ad1a-2c11196b64da"> <input type="hidden"
+                                name="farmId" value="f80f42ce-33fd-4b7d-8f7b-41b1718d2a85">
+                            <div class="bellows__header">
+                                <div class="nshh">施药</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-07-12</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut6976adca-2c3a-4378-b339-6eca5538212e"> <input type="hidden"
+                                name="farmValueId" value="6976adca-2c3a-4378-b339-6eca5538212e"> <input type="hidden"
+                                name="farmId" value="136d4017-6b09-4782-a976-55dd62a4e0c6">
+                            <div class="bellows__header">
+                                <div class="nshh">施肥</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-07-20</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOut3d038adf-1962-4ad1-b989-a02b16e29ab1"> <input type="hidden"
+                                name="farmValueId" value="3d038adf-1962-4ad1-b989-a02b16e29ab1"> <input type="hidden"
+                                name="farmId" value="f80f42ce-33fd-4b7d-8f7b-41b1718d2a85">
+                            <div class="bellows__header">
+                                <div class="nshh">施药</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-07-25</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOute8f6b2f5-4308-48e8-9e79-3464c6c424e6"> <input type="hidden"
+                                name="farmValueId" value="e8f6b2f5-4308-48e8-9e79-3464c6c424e6"> <input type="hidden"
+                                name="farmId" value="136d4017-6b09-4782-a976-55dd62a4e0c6">
+                            <div class="bellows__header">
+                                <div class="nshh">施肥</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-07-25</div>
+                            </div>
+                        </div>
+                        <div class="bellows__item" id="activityOutd3cbb2d5-65b0-43df-9239-e28cfefd0ed0"> <input type="hidden"
+                                name="farmValueId" value="d3cbb2d5-65b0-43df-9239-e28cfefd0ed0"> <input type="hidden"
+                                name="farmId" value="13484c9f-cb5c-4be2-be27-1e9c41de6a6c">
+                            <div class="bellows__header">
+                                <div class="nshh">采收</div>
+                                <div class="closeDiv"></div>
+                                <div class="time">2015-08-05</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trace-ns" style="display: none;">
+                    <div class="bellows" id="testDiv">
+                        <div class="bellows__item bellows--is-open" id="testOuta0c14fec-880b-48c5-864a-fe67afa2a9fc">
+                            <input type="hidden" value="a0c14fec-880b-48c5-864a-fe67afa2a9fc">
+                            <div class="bellows__header">
+                                <div class="nshh">农药残留检测</div>
+                                <div class="open"></div>
+                                <div class="time">2015-07-25</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>检测项目：</span> <span>农药残留检测</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>检测日期：</span> <span>2015-07-25 11:26</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>检测结果：</span> <span> 合格 </span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>详细描述：</span> <span>抽取葡萄样本60个，经驿城区农产品质检中心检测，全部合格。
+                                            </span> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trace-ns" style="display: none;">
+                    <div class="bellows">
+                        <div class="bellows__item bellows--is-open" id="packingDiv">
+                            <div class="bellows__header" id="packingOut464bf38f-e381-477c-bf5a-273f0a83ebb1"> <input
+                                    type="hidden" name="packingId" value="464bf38f-e381-477c-bf5a-273f0a83ebb1">
+                                <div class="nshh">总重1750公斤</div>
+                                <div class="open"></div>
+                                <div class="time">2015-08-06</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>包装日期：</span> <span>2015-08-06</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>包装数量：</span> <span>500箱</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>总重：</span> <span>1750公斤</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>记录人员：</span> <span>梅圆圆</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明：</span> <span>003地块葡萄包装，共500箱，1750公斤</span>
+                                        </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <p>标签信息：</p>
+                                            <div class="tpxx"> <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/3cb2556a-466d-4afb-8584-0ba266279ecb.png"
+                                                    alt="" class="pic"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="trace-ns" style="display: none;">
+                    <div class="bellows">
+                        <div class="bellows__item bellows--is-open" id="saleDiv">
+                            <div class="bellows__header" id="saleOut580acc58-e3ad-4c18-b462-78fc647f4547"><input type="hidden"
+                                    name="saleId" value="580acc58-e3ad-4c18-b462-78fc647f4547">
+                                <div class="nshh">百果园水果大卖场</div>
+                                <div class="open"></div>
+                                <div class="time">2015-08-07</div>
+                            </div>
+                            <div class="bellows__content">
+                                <div class="ncp_detail">
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>客户单位：</span> <span>百果园水果大卖场</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>销售日期：</span> <span>2015-08-07</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>销售数量：</span> <span>300箱</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>总重：</span> <span>1050公斤</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>单价(元)：</span> <span>138</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>总价(元)：</span> <span>41400</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>记录人员：</span> <span>梅圆圆</span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container"> <span>其他说明：</span> <span></span> </div>
+                                    </div>
+                                    <div class="style-ncp">
+                                        <div class="container">
+                                            <p>标签信息：</p>
+                                            <div class="tpxx"> <img src="http://zhuisuimg.zhuisuyun.com.cn/0b8854c34f0b46ecb38283470d0e6941/d05df2d1-92f1-473e-b289-76690d76c401.png"
+                                                    alt="" class="pic"> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer>
+    <div class="foot-info">
+        Copyright © 2018  金明源农产品溯源公共信息服务平台<br  >
+        <!--主办方：XXXXXXX&nbsp;|&nbsp;技术支持：XXX-->
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+        jQuery(".slideTxtBox").slide({
+            trigger: "click"
+        });
+    </script>
+    <!--农事信息点击展开的效果-->
+    <!-- velocity.js 是一个简单易用、高性能、功能丰富的轻量级JS动画库。-->
+    <script src="http://www.zhuisuyun.com.cn/model/qrcode/js/velocity.min.js"></script>
+    <!-- bellows.js 配合velocity.js 实现手风琴效果。-->
+    <script src="http://www.zhuisuyun.com.cn/model/qrcode/js/bellows.min.js"></script>
+    <script>
+        $(function () {
+            $('.bellows').bellows();
+        });
+    </script>
+</body>
+
+</html>

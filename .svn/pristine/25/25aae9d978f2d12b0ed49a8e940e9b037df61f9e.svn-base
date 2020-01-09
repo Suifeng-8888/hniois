@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BuyMapper">
+    <!-- 保存 -->
+    <insert id="save" parameterType="com.hniois.monitor.entity.Buy" useGeneratedKeys="true" keyProperty="id">
+        insert into r_buy(
+        <if test="b_name!='' and b_name!=null">`b_name`</if>
+        <if test="b_batch!='' and b_batch!=null">,`b_batch`</if>
+        <if test="b_number!='' and b_number!=null">,`b_number`</if>
+        <if test="b_category!='' and b_category!=null">,`b_category`</if>
+        <if test="b_spec!='' and b_spec!=null">,`b_spec`</if>
+        <if test="b_time!='' and b_time!=null">,`b_time`</if>
+        <if test="b_buyer!='' and b_buyer!=null">,`b_buyer`</if>
+        <if test="b_provider!='' and b_provider!=null">,`b_provider`</if>
+        <if test="b_remark!='' and b_remark!=null">,`b_remark`</if>
+        )
+        values (
+        <if test="b_name!='' and b_name!=null">#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">,#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">,#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">,#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">,#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">,#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">,#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">,#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">,#{b_remark}</if>
+        )
+    </insert>
+
+
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hniois.monitor.entity.Buy">
+        update r_buy
+        <set>
+            <if test="b_name!='' and b_name!=null">`b_name`=#{b_name},</if>
+            <if test="b_batch!='' and b_batch!=null">`b_batch`=#{b_batch},</if>
+            <if test="b_number!='' and b_number!=null">`b_number`=#{b_number},</if>
+            <if test="b_category!='' and b_category!=null">`b_category`=#{b_category},</if>
+            <if test="b_spec!='' and b_spec!=null">`b_spec`=#{b_spec},</if>
+            <if test="b_time!='' and b_time!=null">`b_time`=#{b_time},</if>
+            <if test="b_buyer!='' and b_buyer!=null">`b_buyer`=#{b_buyer},</if>
+            <if test="b_provider!='' and b_provider!=null">`b_provider`=#{b_provider},</if>
+            <if test="b_remark!='' and b_remark!=null">`b_remark`=#{b_remark},</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="com.hniois.monitor.entity.Buy">
+        delete from r_buy where 1=1
+        <if test="id!='' and id!=null">and `id`=#{id}</if>
+        <if test="b_name!='' and b_name!=null">and `b_name`=#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">and `b_batch`=#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">and `b_number`=#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">and `b_category`=#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">and `b_spec`=#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">and `b_time`=#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">and `b_buyer`=#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">and `b_provider`=#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">and `b_remark`=#{b_remark}</if>
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.ArrayList">
+        delete from r_buy
+        where id in
+        <foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询 -->
+    <select id="find" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        select	t.*
+        from r_buy t
+        where 1=1
+        <if test="id!='' and id!=null">and t.`id`=#{id}</if>
+        <if test="b_name!='' and b_name!=null">and t.`b_name`=#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">and t.`b_batch`=#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">and t.`b_number`=#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">and t.`b_category`=#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">and t.`b_spec`=#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">and t.`b_time`=#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">and t.`b_buyer`=#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">and t.`b_provider`=#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">and t.`b_remark`=#{b_remark}</if>
+    </select>
+
+    <!-- 查询List -->
+    <select id="findList" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        select	t.*
+        from r_buy t
+        where 1=1
+        <if test="id!='' and id!=null">and t.`id`=#{id}</if>
+        <if test="b_name!='' and b_name!=null">and t.`b_name`=#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">and t.`b_batch`=#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">and t.`b_number`=#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">and t.`b_category`=#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">and t.`b_spec`=#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">and t.`b_time`=#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">and t.`b_buyer`=#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">and t.`b_provider`=#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">and t.`b_remark`=#{b_remark}</if>
+        order by t.id
+    </select>
+
+    <!-- 查询Count -->
+    <select id="findCount" parameterType="com.hniois.monitor.entity.Buy" resultType="java.lang.Integer">
+        select count(*)
+        from r_buy t
+        where 1=1
+        <if test="id!='' and id!=null">and t.`id`=#{id}</if>
+        <if test="b_name!='' and b_name!=null">and t.`b_name`=#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">and t.`b_batch`=#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">and t.`b_number`=#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">and t.`b_category`=#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">and t.`b_spec`=#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">and t.`b_time`=#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">and t.`b_buyer`=#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">and t.`b_provider`=#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">and t.`b_remark`=#{b_remark}</if>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="findPage" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        select	t.*
+        from r_buy t
+        where 1=1
+        <if test="id!='' and id!=null">and t.`id`=#{id}</if>
+        <if test="b_name!='' and b_name!=null">and t.`b_name`=#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">and t.`b_batch`=#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">and t.`b_number`=#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">and t.`b_category`=#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">and t.`b_spec`=#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">and t.`b_time`=#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">and t.`b_buyer`=#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">and t.`b_provider`=#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">and t.`b_remark`=#{b_remark}</if>
+        order by t.id
+        limit #{offset},#{pageSize}
+    </select>
+
+    <!-- 分页查询Count -->
+    <select id="findPageCount" parameterType="com.hniois.monitor.entity.Buy" resultType="java.lang.Integer">
+        select count(*)
+        from r_buy t
+        where 1=1
+        <if test="id!='' and id!=null">and t.`id`=#{id}</if>
+        <if test="b_name!='' and b_name!=null">and t.`b_name`=#{b_name}</if>
+        <if test="b_batch!='' and b_batch!=null">and t.`b_batch`=#{b_batch}</if>
+        <if test="b_number!='' and b_number!=null">and t.`b_number`=#{b_number}</if>
+        <if test="b_category!='' and b_category!=null">and t.`b_category`=#{b_category}</if>
+        <if test="b_spec!='' and b_spec!=null">and t.`b_spec`=#{b_spec}</if>
+        <if test="b_time!='' and b_time!=null">and t.`b_time`=#{b_time}</if>
+        <if test="b_buyer!='' and b_buyer!=null">and t.`b_buyer`=#{b_buyer}</if>
+        <if test="b_provider!='' and b_provider!=null">and t.`b_provider`=#{b_provider}</if>
+        <if test="b_remark!='' and b_remark!=null">and t.`b_remark`=#{b_remark}</if>
+    </select>
+</mapper>

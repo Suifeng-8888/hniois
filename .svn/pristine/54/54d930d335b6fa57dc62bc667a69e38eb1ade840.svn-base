@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SoilMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Soil"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_soil(id
+		<if test="p_id!='' and p_id!=null">,p_id</if>
+		<if test="p_name!='' and p_name!=null">,p_name</if>
+		<if test="area!='' and area!=null">,area</if>
+		<if test="state!='' and state!=null">,state</if>
+		<if test="bz!='' and bz!=null">bz</if>
+		)
+		VALUES (id
+		<if test="p_id!='' and p_id!=null">,#{p_id}</if>
+		<if test="p_name!='' and p_name!=null">,#{p_name}</if>
+		<if test="area!='' and area!=null">,#{area}</if>
+		<if test="state!='' and state!=null">,#{state}</if>
+		<if test="bz!='' and bz!=null">,#{bz}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Soil">
+		insert into r_soil
+		(id,p_id,p_name,area,state,bz)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.id},
+			#{e.p_id},
+			#{e.p_name},
+			#{e.area},
+			#{e.state},
+			#{e.bz}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Soil">
+		update r_soil
+		<set>
+			<if test="id !=null and id !=''">id=#{id},</if>
+			<if test="p_id !=null and p_id !=''">p_id=#{p_id},</if>
+			<if test="p_name !=null and p_name !=''">p_name=#{p_name},</if>
+			<if test="area !=null and area !=''">area=#{area},</if>
+			<if test="state !=null and state !=''">state=#{state},</if>
+			<if test="bz !=null and bz !=''">bz=#{bz},</if>
+		</set>
+		where id=#{id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Soil">
+		update r_soil
+		<set>
+			<if test="id !=null and id !=''">id=#{id},</if>
+			<if test="p_id !=null and p_id !=''">p_id=#{p_id},</if>
+			<if test="p_name !=null and p_name !=''">p_name=#{p_name},</if>
+			<if test="area !=null and area !=''">area=#{area},</if>
+			<if test="state !=null and state !=''">state=#{state},</if>
+			<if test="bz !=null and bz !=''">bz=#{bz},</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Soil">
+		delete from r_soil where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="p_id !=null and p_id !=''">and p_id=#{p_id}</if>
+		<if test="p_name !=null and p_name !=''">and p_name=#{p_name}</if>
+		<if test="area !=null and area !=''">and area=#{area}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		<if test="bz !=null and bz !=''">and bz=#{bz}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_soil
+		where id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Soil" resultType="com.hniois.monitor.entity.Soil">
+		select *
+		from r_soil
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="p_id !=null and p_id !=''">and p_id=#{p_id}</if>
+		<if test="p_name !=null and p_name !=''">and p_name=#{p_name}</if>
+		<if test="area !=null and area !=''">and area=#{area}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		<if test="bz !=null and bz !=''">and bz=#{bz}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Soil" resultType="com.hniois.monitor.entity.Soil">
+		select t.*
+		from r_soil t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="p_id !=null and p_id !=''">and t.p_id=#{p_id}</if>
+		<if test="p_name !=null and p_name !=''">and t.p_name=#{p_name}</if>
+		<if test="area !=null and area !=''">and t.area=#{area}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+		<if test="bz !=null and bz !=''">and t.bz=#{bz}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Soil" resultType="java.lang.Integer">
+		select count(*)
+		from r_soil t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="p_id !=null and p_id !=''">and t.p_id=#{p_id}</if>
+		<if test="p_name !=null and p_name !=''">and t.p_name=#{p_name}</if>
+		<if test="area !=null and area !=''">and t.area=#{area}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+		<if test="bz !=null and bz !=''">and t.bz=#{bz}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Soil" resultType="com.hniois.monitor.entity.Soil">
+		select *
+		from r_soil
+		where 1=1
+		<if test="id !=null and id !=''">and id=#{id}</if>
+		<if test="p_id !=null and p_id !=''">and p_id=#{p_id}</if>
+		<if test="p_name !=null and p_name !=''">and p_name=#{p_name}</if>
+		<if test="area !=null and area !=''">and area=#{area}</if>
+		<if test="state !=null and state !=''">and state=#{state}</if>
+		<if test="bz !=null and bz !=''">and bz=#{bz}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Soil" resultType="java.lang.Integer">
+		select count(*)
+		from r_soil t
+		where 1=1
+		<if test="id !=null and id !=''">and t.id=#{id}</if>
+		<if test="p_id !=null and p_id !=''">and t.p_id=#{p_id}</if>
+		<if test="p_name !=null and p_name !=''">and t.p_name=#{p_name}</if>
+		<if test="area !=null and area !=''">and t.area=#{area}</if>
+		<if test="state !=null and state !=''">and t.state=#{state}</if>
+		<if test="bz !=null and bz !=''">and t.bz=#{bz}</if>
+	</select>
+</mapper>

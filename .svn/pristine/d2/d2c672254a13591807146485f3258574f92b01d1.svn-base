@@ -1,0 +1,102 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * Create By javaMan
+ * 2018/10/15  13:44
+ * 产品召回信息
+ */
+public class Recall extends Page {
+
+    private String name;// 产品名称
+    private String bar_code;// 产品条码
+    private String batch;// 产品生产批次
+    private String enterprise;// 生产企业
+    private String quantity;// 召回数量
+    private String cause;// 召回原因
+    private String organization;// 召回发布机构
+    private String time;// 召回发布时间
+    private Integer status;// 召回状态
+    private String remark;// 召回信息备注
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBar_code() {
+        return bar_code;
+    }
+
+    public void setBar_code(String bar_code) {
+        this.bar_code = bar_code;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(String enterprise) {
+        this.enterprise = enterprise;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getCause() {
+        return cause;
+    }
+
+    public void setCause(String cause) {
+        this.cause = cause;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+}

@@ -1,0 +1,55 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title>追溯信息</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <link href="static/login/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+<form class="layui-form layui-form-pane" action="" >
+    <input type="hidden" name="batch_id" id="key" value="${batch.batch_id}">
+
+    <div class="layui-form-item" style="text-align: center;padding: 30px 50px;">
+        <div id="download" class="" url="${batch.bat_img}" onclick="fileDownload(this)"
+            title="点击下载" >
+            <img id="user_img" name="user_img"  src="${batch.bat_img}"
+                 style="height: 180px;" >
+        </div>
+    </div>
+
+    </div>
+</form>
+
+
+<%--文件下载--%>
+<form id="file-form" action="file/download.do" method="post">
+    <input name="path" type="hidden">
+</form>
+
+</body>
+
+<script src="static/layui/layui.js"></script>
+<script src="static/login/js/jquery-1.7.2.js"></script>
+<script src="static/hniois/hniois.js"></script>
+<script>
+    //获取窗口索引
+    var index = parent.layer.getFrameIndex(window.name);
+
+    //关闭窗口
+    function closeWin(){
+        parent.layer.close(index);
+    }
+
+</script>
+</html>

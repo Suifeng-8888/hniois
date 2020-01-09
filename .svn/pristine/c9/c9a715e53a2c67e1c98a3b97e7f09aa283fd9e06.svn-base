@@ -1,0 +1,92 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, norm-scalable=no">
+    <link href="static/login/layui/css/layui.css" rel="stylesheet" />
+</head>
+<body>
+<div >
+    <form class="layui-form layui-form-pane" action="" >
+        <input type="hidden" name="id" id="key" value="${complain.id}">
+        <label class="layui-form-label">投诉人姓名:</label>
+        <div class="layui-input-block">
+            <input name="put_name" class="layui-input" type="text" autocomplete="off" value="${complain.put_name}">
+        </div>
+        <label class="layui-form-label">联系方式:</label>
+        <div class="layui-input-block">
+            <input name="put_phone" class="layui-input" type="text" autocomplete="off" value="${complain.put_phone}">
+        </div>
+        <label class="layui-form-label">邮箱:</label>
+        <div class="layui-input-block">
+            <input name="put_email" class="layui-input" type="text" autocomplete="off" value="${complain.put_email}">
+        </div>
+        <label class="layui-form-label">通讯地址:</label>
+        <div class="layui-input-block">
+            <input name="put_site" class="layui-input" type="text" autocomplete="off" value="${complain.put_site}">
+        </div>
+        <br />
+        <label class="layui-form-label">投诉标题:</label>
+        <div class="layui-input-block">
+            <input name="put_theme" class="layui-input" type="text" autocomplete="off" value="${complain.put_theme}">
+        </div>
+        <br />
+        <label class="layui-form-label">投诉内容:</label>
+        <div class="layui-input-block">
+            <input name="put_content" class="layui-input" type="text" autocomplete="off" value="${complain.put_content}" />
+        </div>
+        <label class="layui-form-label">提交时间:</label>
+        <div class="layui-input-block">
+            <input name="put_time" class="layui-input" type="text" autocomplete="off" value="${complain.put_time}" />
+        </div>
+        <label class="layui-form-label">回复人:</label>
+        <div class="layui-input-block">
+            <input name="reply_name" class="layui-input" type="text" autocomplete="off" value="${complain.reply_name}" />
+        </div>
+        <label class="layui-form-label">回复时间:</label>
+        <div class="layui-input-block">
+            <input name="reply_time" class="layui-input" type="text" autocomplete="off" value="${complain.reply_time}" />
+        </div>
+        <label class="layui-form-label">回复内容:</label>
+        <div class="layui-input-block">
+            <input name="reply_content" class="layui-input" type="text" autocomplete="off" value="${complain.reply_content}" />
+        </div>
+        <label class="layui-form-label">回复状态:</label>
+        <div class="layui-input-block">
+            <c:if test="${complain.status eq '1'}">
+                <input class="layui-input" type="text" autocomplete="off" value="未回复" />
+            </c:if>
+            <c:if test="${complain.status eq '2'}">
+                <input class="layui-input" type="text" autocomplete="off" value="已回复" />
+            </c:if>
+        </div>
+
+        <div class="layui-form-item" style="text-align: center; margin-top: 30px;" >
+            <button class="layui-btn layui-btn-warm" onclick="closeWin()">关闭</button>
+        </div>
+    </form>
+</div>
+</body>
+
+<script src="static/layui/layui.js"></script>
+<script src="static/login/js/jquery-1.7.2.js"></script>
+<script>
+    //获取窗口索引
+    var index = parent.layer.getFrameIndex(window.name);
+    function closeWin(){
+        parent.layer.close(index);
+    }
+</script>
+</html>

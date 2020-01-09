@@ -1,0 +1,11 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Breed;
+
+public interface BreedManage extends Service<Breed> {
+
+    public void newDelete(Breed e)throws Exception;
+
+    public void newDeleteBatch(Breed e) throws Exception;
+}

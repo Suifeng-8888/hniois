@@ -1,0 +1,10 @@
+package com.hniois.trace.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.trace.entity.BatchCode;
+
+public interface BatchCodeManage extends Service<BatchCode> {
+
+    //删除关联二维码时，要改变对象二维码表中的状态和批次关联
+    public void updateConnect(BatchCode e)throws Exception;
+}

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QRcodeMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.trace.entity.QRcode"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into trace_code(code_id
+		<if test="random_code!='' and random_code!=null">,random_code</if>
+		<if test="batch!='' and batch!=null">,batch</if>
+		<if test="rule_code!='' and rule_code!=null">,rule_code</if>
+		<if test="begin_code!='' and begin_code!=null">,begin_code</if>
+		<if test="end_code!='' and end_code!=null">,end_code</if>
+		<if test="qcode!='' and qcode!=null">,qcode</if>
+		<if test="mark!='' and mark!=null">,mark</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (code_id
+		<if test="random_code!='' and random_code!=null">,#{random_code}</if>
+		<if test="batch!='' and batch!=null">,#{batch}</if>
+		<if test="rule_code!='' and rule_code!=null">,#{rule_code}</if>
+		<if test="begin_code!='' and begin_code!=null">,#{begin_code}</if>
+		<if test="end_code!='' and end_code!=null">,#{end_code}</if>
+		<if test="qcode!='' and qcode!=null">,#{qcode}</if>
+		<if test="mark!='' and mark!=null">,#{mark}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.trace.entity.QRcode">
+		insert into trace_code
+		(code_id,random_code,batch,rule_code,begin_code,end_code,qcode,mark,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			{e.code_id},
+			{e.random_code},
+			{e.batch},
+			{e.rule_code},
+			{e.begin_code},
+			{e.end_code},
+			{e.qcode},
+			{e.mark},
+			{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.trace.entity.QRcode">
+		update trace_code
+		<set>
+			<if test="random_code !=null and random_code !=''">random_code=#{random_code},</if>
+			<if test="batch !=null and batch !=''">batch=if(#{batch}='0','',#{batch}),</if>
+			<if test="rule_code !=null and rule_code !=''">rule_code=#{rule_code},</if>
+			<if test="begin_code !=null and begin_code !=''">begin_code=#{begin_code},</if>
+			<if test="end_code !=null and end_code !=''">end_code=#{end_code},</if>
+			<if test="qcode !=null and qcode !=''">qcode=#{qcode},</if>
+			<if test="mark !=null and mark !=''"> mark= #{mark},</if>
+			<if test="farm_id !=null and farm_id !=''"> mark= #{farm_id},</if>
+		</set>
+		where code_id=#{code_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.trace.entity.QRcode">
+		update trace_code
+		<set>
+			<if test="code_id !=null and code_id !=''">code_id=#{code_id},</if>
+			<if test="random_code !=null and random_code !=''">random_code=#{random_code},</if>
+			<if test="batch !=null and batch !=''">batch=#{batch},</if>
+			<if test="rule_code !=null and rule_code !=''">rule_code=#{rule_code},</if>
+			<if test="begin_code !=null and begin_code !=''">begin_code=#{begin_code},</if>
+			<if test="end_code !=null and end_code !=''">end_code=#{end_code},</if>
+			<if test="qcode !=null and qcode !=''">qcode=#{qcode},</if>
+			<if test="mark !=null and mark !=''">mark=#{mark},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+
+		</set>
+		where code_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.trace.entity.QRcode">
+		delete from trace_code
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and code_id=#{code_id}</if>
+		<if test="random_code !=null and random_code !=''">and random_code=#{random_code}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and end_code=#{end_code}</if>
+		<if test="qcode !=null and qcode !=''">and qcode=#{qcode}</if>
+		<if test="mark !=null and mark !=''">and mark=#{mark}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from trace_code
+		where code_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.trace.entity.QRcode" resultType="com.hniois.trace.entity.QRcode">
+		select *
+		from trace_code
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and code_id=#{code_id}</if>
+		<if test="random_code !=null and random_code !=''">and random_code=#{random_code}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and end_code=#{end_code}</if>
+		<if test="qcode !=null and qcode !=''">and qcode=#{qcode}</if>
+		<if test="mark !=null and mark !=''">and mark=#{mark}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.trace.entity.QRcode" resultType="com.hniois.trace.entity.QRcode">
+		select t.*
+		from trace_code t
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and t.code_id=#{code_id}</if>
+		<if test="random_code !=null and random_code !=''">and t.random_code=#{random_code}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and t.begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and t.end_code=#{end_code}</if>
+		<if test="qcode !=null and qcode !=''">and t.qcode=#{qcode}</if>
+		<if test="mark !=null and mark !=''">and t.mark=#{mark}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.trace.entity.QRcode" resultType="java.lang.Integer">
+		select count(*)
+		from trace_code t
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and t.code_id=#{code_id}</if>
+		<if test="random_code !=null and random_code !=''">and t.random_code=#{random_code}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and t.begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and t.end_code=#{end_code}</if>
+		<if test="qcode !=null and qcode !=''">and t.qcode=#{qcode}</if>
+		<if test="mark !=null and mark !=''">and t.mark=#{mark}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.trace.entity.QRcode" resultType="com.hniois.trace.entity.QRcode">
+		select *
+		from trace_code
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and code_id=#{code_id}</if>
+		<if test="random_code !=null and random_code !=''">and random_code=#{random_code}</if>
+		<if test="batch !=null and batch !=''">and batch=#{batch}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and end_code=#{end_code}</if>
+		<if test="qcode !=null and qcode !=''">and qcode=#{qcode}</if>
+		<if test="mark !=null and mark !=''">and mark=#{mark}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.trace.entity.QRcode" resultType="java.lang.Integer">
+		select count(*)
+		from trace_code t
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and t.code_id=#{code_id}</if>
+		<if test="random_code !=null and random_code !=''">and t.random_code=#{random_code}</if>
+		<if test="batch !=null and batch !=''">and t.batch=#{batch}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="begin_code !=null and begin_code !=''">and t.begin_code=#{begin_code}</if>
+		<if test="end_code !=null and end_code !=''">and t.end_code=#{end_code}</if>
+		<if test="qcode !=null and qcode !=''">and t.qcode=#{qcode}</if>
+		<if test="mark !=null and mark !=''">and t.mark=#{mark}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!--根据二维码查询对应的批次号-->
+	<select id="findBatch" parameterType="com.hniois.trace.entity.QRcode" resultType="com.hniois.trace.entity.QRcode">
+		select * from trace_code  where #{random_code}=random_code AND #{rule_code}=rule_code AND #{qcode} between begin_code AND end_code
+	</select>
+</mapper>

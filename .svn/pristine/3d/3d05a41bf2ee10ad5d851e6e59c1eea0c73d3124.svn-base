@@ -1,0 +1,145 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+/**
+ *  Providers Bean
+ */
+public class Providers extends Page{
+    /**基础字段
+     ************************************************************/
+    private String p_id; //主体id
+    private String p_name; //主体名
+    private String p_form; //组织形式
+    private String p_industry; //所属行业
+    private String p_category; //主体类别
+    private String p_certificate; //证件类型
+    private String p_register; //企业工商注册号
+    private String p_time; //营业期限
+    private String p_address; //详细地址
+    private String p_remark; //备注
+    private String p_phone; //电话号码
+    private String p_longitude; //经度
+    private String p_latitude; //纬度
+    private String p_qualifications; //企业资质
+
+
+    public String getP_qualifications() {
+        return p_qualifications;
+    }
+
+    public void setP_qualifications(String p_qualifications) {
+        this.p_qualifications = p_qualifications;
+    }
+
+    public String getP_phone() {
+        return p_phone;
+    }
+
+    public void setP_phone(String p_phone) {
+        this.p_phone = p_phone;
+    }
+
+    public String getP_longitude() {
+        return p_longitude;
+    }
+
+    public void setP_longitude(String p_longitude) {
+        this.p_longitude = p_longitude;
+    }
+
+    public String getP_latitude() {
+        return p_latitude;
+    }
+
+    public void setP_latitude(String p_latitude) {
+        this.p_latitude = p_latitude;
+    }
+
+    /*************************************************************/
+
+
+
+    public String getP_id() {
+        return p_id;
+    }
+
+    public void setP_id(String p_id) {
+        this.p_id = p_id;
+    }
+
+    public String getP_name() {
+        return p_name;
+    }
+
+    public void setP_name(String p_name) {
+        this.p_name = p_name;
+    }
+
+    public String getP_form() {
+        return p_form;
+    }
+
+    public void setP_form(String p_form) {
+        this.p_form = p_form;
+    }
+
+    public String getP_industry() {
+        return p_industry;
+    }
+
+    public void setP_industry(String p_industry) {
+        this.p_industry = p_industry;
+    }
+
+    public String getP_category() {
+        return p_category;
+    }
+
+    public void setP_category(String p_category) {
+        this.p_category = p_category;
+    }
+
+    public String getP_certificate() {
+        return p_certificate;
+    }
+
+    public void setP_certificate(String p_certificate) {
+        this.p_certificate = p_certificate;
+    }
+
+    public String getP_register() {
+        return p_register;
+    }
+
+    public void setP_register(String p_register) {
+        this.p_register = p_register;
+    }
+
+    public String getP_time() {
+        return p_time;
+    }
+
+    public void setP_time(String p_time) {
+        this.p_time = p_time;
+    }
+
+    public String getP_address() {
+        return p_address;
+    }
+
+    public void setP_address(String p_address) {
+        this.p_address = p_address;
+    }
+
+    public String getP_remark() {
+        return p_remark;
+    }
+
+    public void setP_remark(String p_remark) {
+        this.p_remark = p_remark;
+    }
+
+
+
+
+}

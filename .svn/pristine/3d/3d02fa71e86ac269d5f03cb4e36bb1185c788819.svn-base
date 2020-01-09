@@ -1,0 +1,117 @@
+package com.hniois.web.monitor;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Handle;
+import com.hniois.monitor.service.HandleManage;
+import net.sf.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping("/webService/handle")
+public class HandleActionWeb extends BaseController {
+
+    @Resource(name = "handleService")
+    private HandleManage handleService;
+
+    /**
+     * 查询用过信息
+     * @param e
+     * @return
+     */
+    @RequestMapping("/findlist")
+    public String findlist(Handle e)throws Exception{
+
+        List<Handle> list = handleService.findList(e);
+        JSONObject js = JSONObject.fromObject(list);
+        return js.toString();
+    }
+
+    /**
+     * 查找对象
+     * http://localhost:8080/webService/batch/find?batch_id=1
+     * @param e
+     * @return
+     */
+    @RequestMapping("/find")
+    public String find(Handle e)throws Exception{
+
+        Handle handle=handleService.find(e);
+        JSONObject js = JSONObject.fromObject(handle);
+        return js.toString();
+    }
+
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    public String add(Handle e)throws  Exception{
+        JSONObject obj=getMsg();
+        //先判断数据库是否已经存在当前对象
+        Handle handle=new Handle();
+        handle.setId(e.getId());
+        if(handleService.findCount(handle)>0){
+            setMsg(obj,"error","当前对象已存在");
+        }else{
+            handleService.save(e);
+            //当完成收货是需要将相应农场的土地编号状态进行更改
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    public String update(Handle e)throws Exception{
+        JSONObject obj=getMsg();
+        if(handleService.findCount(e)>0){
+            handleService.update(e);
+        }else{
+            setMsg(obj,"error","编辑失败");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    public String delete(Handle e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getId()!=null) {
+            handleService.delete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    public String deletes(Handle e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            handleService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+}

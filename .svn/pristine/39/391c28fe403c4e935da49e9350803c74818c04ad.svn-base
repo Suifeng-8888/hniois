@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QRcodeNewMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.trace.entity.QRcodeNew"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into trace_qcode(
+		<if test="code_id!='' and code_id!=null">code_id</if>
+		<if test="source_code!='' and source_code!=null">,source_code</if>
+		<if test="crop!='' and crop!=null">,crop</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="c_random!='' and c_random!=null">,c_random</if>
+		<if test="q_code!='' and q_code!=null">,q_code</if>
+		<if test="rule_code!='' and rule_code!=null">,rule_code</if>
+		<if test="c_nums!='' and c_nums!=null">,c_nums</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		<if test="farm_name!='' and farm_name!=null">,farm_name</if>
+		)
+		VALUES (
+		<if test="code_id!='' and code_id!=null">#{code_id}</if>
+		<if test="source_code!='' and source_code!=null">,#{source_code}</if>
+		<if test="crop!='' and crop!=null">,#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="c_random!='' and c_random!=null">,#{c_random}</if>
+		<if test="q_code!='' and q_code!=null">,#{q_code}</if>
+		<if test="rule_code!='' and rule_code!=null">,#{rule_code}</if>
+		<if test="c_nums!='' and c_nums!=null">,#{c_nums}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		<if test="farm_name!='' and farm_name!=null">,#{farm_name}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.trace.entity.QRcodeNew">
+		insert into trace_qcode
+		(code_id,source_code,crop,crop_id,c_random,q_code,rule_code,c_nums,farm_id,farm_name)
+		values
+		<foreach collection="list" index="index" item="e" separator="," >
+			(
+			#{e.code_id},
+			#{e.source_code},
+			#{e.crop},
+			#{e.crop_id},
+			#{e.c_random},
+			#{e.q_code},
+			#{e.rule_code},
+			#{e.c_nums},
+			#{e.farm_id},
+			#{e.farm_name}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.trace.entity.QRcodeNew">
+		update trace_qcode
+		<set>
+			<if test="source_code !=null and source_code !=''">source_code=#{source_code},</if>
+			<if test="crop !=null and crop !=''">crop=if(#{crop}='0','',#{crop}),</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="c_random !=null and c_random !=''">c_random=#{c_random},</if>
+			<if test="q_code !=null and q_code !=''">q_code=#{q_code},</if>
+			<if test="rule_code !=null and rule_code !=''"> rule_code= #{rule_code},</if>
+			<if test="c_nums !=null and c_nums !=''"> c_nums= #{c_nums},</if>
+			<if test="farm_id !=null and farm_id !=''"> farm_id= #{farm_id},</if>
+			<if test="farm_name !=null and farm_name !=''"> farm_name= #{farm_name},</if>
+		</set>
+		where code_id=#{code_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.trace.entity.QRcodeNew">
+		update trace_qcode
+		<set>
+			<if test="code_id !=null and code_id !=''">code_id=#{code_id},</if>
+			<if test="source_code !=null and source_code !=''">source_code=#{source_code},</if>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="c_random !=null and c_random !=''">c_random=#{c_random},</if>
+			<if test="q_code !=null and q_code !=''">q_code=#{q_code},</if>
+			<if test="rule_code !=null and rule_code !=''">rule_code=#{rule_code},</if>
+			<if test="c_nums !=null and c_nums !=''">c_nums=#{c_nums},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+			<if test="farm_name !=null and farm_name !=''">farm_name=#{farm_name},</if>
+
+		</set>
+		where code_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.trace.entity.QRcodeNew">
+		delete from trace_qcode
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and code_id=#{code_id}</if>
+		<if test="source_code !=null and source_code !=''">and source_code=#{source_code}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="c_random !=null and c_random !=''">and c_random=#{c_random}</if>
+		<if test="q_code !=null and q_code !=''">and q_code=#{q_code}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="c_nums !=null and c_nums !=''">and c_nums=#{c_nums}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from trace_qcode
+		where code_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.trace.entity.QRcodeNew" resultType="com.hniois.trace.entity.QRcodeNew">
+		select *
+		from trace_qcode
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and code_id=#{code_id}</if>
+		<if test="source_code !=null and source_code !=''">and source_code=#{source_code}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="c_random !=null and c_random !=''">and c_random=#{c_random}</if>
+		<if test="q_code !=null and q_code !=''">and q_code=#{q_code}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="c_nums !=null and c_nums !=''">and c_nums=#{c_nums}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.trace.entity.QRcodeNew" resultType="com.hniois.trace.entity.QRcodeNew">
+		select t.*
+		from trace_qcode t
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and t.code_id=#{code_id}</if>
+		<if test="source_code !=null and source_code !=''">and t.source_code=#{source_code}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="c_random !=null and c_random !=''">and t.c_random=#{c_random}</if>
+		<if test="q_code !=null and q_code !=''">and t.q_code=#{q_code}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="c_nums !=null and c_nums !=''">and t.c_nums=#{c_nums}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+		ORDER BY t.source_code DESC,t.q_code ASC
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.trace.entity.QRcodeNew" resultType="java.lang.Integer">
+		select count(*)
+		from trace_qcode t
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and t.code_id=#{code_id}</if>
+		<if test="source_code !=null and source_code !=''">and t.source_code=#{source_code}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="c_random !=null and c_random !=''">and t.c_random=#{c_random}</if>
+		<if test="q_code !=null and q_code !=''">and t.q_code=#{q_code}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="c_nums !=null and c_nums !=''">and t.c_nums=#{c_nums}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.trace.entity.QRcodeNew" resultType="com.hniois.trace.entity.QRcodeNew">
+		select *
+		from trace_qcode
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and code_id=#{code_id}</if>
+		<if test="source_code !=null and source_code !=''">and source_code=#{source_code}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="c_random !=null and c_random !=''">and c_random=#{c_random}</if>
+		<if test="q_code !=null and q_code !=''">and q_code=#{q_code}</if>
+		<if test="rule_code !=null and rule_code !=''">and rule_code=#{rule_code}</if>
+		<if test="c_nums !=null and c_nums !=''">and c_nums=#{c_nums}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and farm_name=#{farm_name}</if>
+        <if test="ck_select !=null and ck_select !=''">
+            and instr(concat(',',#{ck_select},','),concat(',',code_id ,','))>0
+        </if>
+		ORDER BY source_code DESC,q_code ASC
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.trace.entity.QRcodeNew" resultType="java.lang.Integer">
+		select count(*)
+		from trace_qcode t
+		where 1=1
+		<if test="code_id !=null and code_id !=''">and t.code_id=#{code_id}</if>
+		<if test="source_code !=null and source_code !=''">and t.source_code=#{source_code}</if>
+		<if test="crop !=null and crop !=''">and t.crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="c_random !=null and c_random !=''">and t.c_random=#{c_random}</if>
+		<if test="q_code !=null and q_code !=''">and t.q_code=#{q_code}</if>
+		<if test="rule_code !=null and rule_code !=''">and t.rule_code=#{rule_code}</if>
+		<if test="c_nums !=null and c_nums !=''">and t.c_nums=#{c_nums}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+		<if test="farm_name !=null and farm_name !=''">and t.farm_name=#{farm_name}</if>
+	</select>
+
+
+</mapper>

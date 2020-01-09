@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>金明源农产品追溯</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/new_main.css">
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/work.css">
+</head>
+
+<body>
+<!-- 头部 -->
+<div class="navbar ">
+    <div class="container w-100">
+        <div class="navbar-header ">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand pad-0" href="index.html">
+                <img alt="Brand" src="../imgs/logo.png">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right hidden-xm">
+                <li class="hidden-sm hidden-md">
+                    <a href="index.html" style="background-color: #1068be">首页</a>
+                </li>
+                <li>
+                    <a href="company.html">企业查询</a>
+                </li>
+                <li>
+                    <a href="product.html">产品查询</a>
+                </li>
+                <li>
+                    <a href="consumption.html">监管巡查</a>
+                </li>
+                <li>
+                    <a href="complain.html">投诉建议</a>
+                </li>
+                <li>
+                    <a href="aboutUs.html">关于我们</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div><!-- 头部end -->
+<!-- banner -->
+<div class="jumbotron">
+    <div class="container jum-box">
+        <!-- pc显示 banner字体 -->
+        <h2 class="white hidden-xs">来源可追查&nbsp;去向可查证 &nbsp;责任可追究</h2>
+        <p class="white hidden-xs">Source can be traced traceability can be verified<br /> responsibility can be
+            investigated</p>
+        <!-- 手机显示 banner字体 -->
+        <p class="white visible-xs-block xs-text xs-text-top">来源可追查&nbsp;去向可查证</p>
+        <p class="white visible-xs-block xs-text">责任可追究</p>
+        <p class="white visible-xs-block xs-text ">Source can be traced traceability </p>
+        <!-- end -->
+        <div class="banner-greens visible-lg-block visible-md-block"></div>
+        <div class="row search-box">
+            <div class="col-lg-4 col-md-5 col-sm-6 hidden-xs">
+                <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="search_code">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    <input type="text" class="form-control" placeholder="请输入17位产品追溯码" id="code">
+                </div><!-- /input-group -->
+            </div>
+        </div><!-- /.row -->
+    </div>
+</div> <!-- banner end -->
+<!--手机显示 搜索框-->
+<div class="container visible-xs-block m-b-20">
+    <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="mocing_btn">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+        <form action="#" id="moving_code">
+            <input type="text" class="form-control" placeholder="18792934000000711">
+        </form>
+    </div><!-- /.row -->
+</div>
+    <div class="submain" id="hydtxqDiv">
+        <div class="position">
+            <div class="wrapper">
+                <div class="position_tit"><span class="tit">新闻公告</span> / News Affiche</div>
+                <div class="sub_position">
+                    您现在的位置：<a href="index.html">首页</a> >
+                    <a href="work.html">新闻公告</a> >
+                    农村假冒伪劣食品专项整治工作开展情况
+                </div>
+            </div>
+        </div>
+        <div class="news_detail">
+            <div class="news_detail_tit">
+                <h2>农村假冒伪劣食品专项整治工作开展情况</h2>
+                <div class="issuer">发布者：超级管理员 发布日期：2019-01-11</div>
+            </div>
+            <div class="news_detail_con">
+                <p style="text-align:center;">
+                    <span style="font-size:14px;font-family:FangSong_GB2312;"><strong>国家农村假冒伪劣食品专项整治第二督导组督导检查我省农村假冒伪劣食品专项整治工作开展情况</strong></span>
+                </p>
+                <p>
+                    <span style="font-size:14px;font-family:FangSong_GB2312;">
+                        &nbsp;1月9日-10日，由农业农村部副巡视员黄修柱带队，农业农村部、商务部、市场监管总局和国家知识产权局等部门组成的国家农村假冒食品专项整治第二督导组一行7人，深入我省新密市、叶县开展督导检查工作。省农业农村厅副厅长刘保仓、省农业农村厅、省商务厅、省市场监管局和省知识产权局等部门人员陪同。郑州市、平顶山市政府分管领导及市、县有关人员参与检查。</span>
+                </p>
+                <p style="text-align:center;">
+                    <span style="font-size:14px;"><img src="http://image.zhuisuyun.com.cn/govmanage/xxglkineditor/FI1WGO0P2W0.png"
+                            alt=""><br>
+                    </span>
+                </p>
+                <p>
+                    <span style="font-size:14px;"><br>
+                    </span>
+                </p>
+                <p style="text-align:center;">
+                    <span style="font-size:14px;"><img src="http://image.zhuisuyun.com.cn/govmanage/xxglkineditor/WSS9HXTU8W0.png"
+                            alt=""><br>
+                    </span>
+                </p>
+                <p>
+                    <span style="font-size:14px;font-family:FangSong_GB2312;">
+                        督导组一行在新密市查看了虎记牛肉加工厂、大隗荷叶饼厂、利万家超市、兴隆超市、餐饮店等，在叶县查看了银杏食品批发市场、刘村乡土农情饭店、福合兴超市、阳光快餐、建民购物中心，村小学周边的超市、蛋糕店、餐馆、熟食店、购物广场等门店，查看内容涉及方便食品、休闲食品、酒水饮料、食用油、调味品、奶及奶制品、肉及肉制品等食品，重点检查健康证、经营销售录、索票索证、卫生状况、是否无证经营及营业执照是否过期、产品是否过期、产品商标是否涉嫌假冒等关键环节。</span>
+                </p>
+                <p style="text-align:center;">
+                    <span style="font-size:14px;"><img src="http://image.zhuisuyun.com.cn/govmanage/xxglkineditor/QLQYUU4WKG0.png"
+                            alt=""></span>
+                </p>
+                <p>
+                    <br>
+                </p>
+                <div>
+                    <span style="font-family:FangSong_GB2312;font-size:14px;">
+                        &nbsp;现场检查结束后，国家督导组在叶县听取了省、市、县三级农村假冒伪劣食品专项整治工作开展</span><span style="font-family:FangSong_GB2312;font-size:14px;">情况汇报，黄修柱副司长对我省的工作予以充分肯定，他强调，农村假冒伪劣食品专项整治是贯</span><span
+                        style="font-family:FangSong_GB2312;font-size:14px;">彻落实习近平总书记重要指示而开展的具体工作，按照去年全国电视电话会议部署要求，这次专</span><span
+                        style="font-family:FangSong_GB2312;font-size:14px;">程来河南检查，了解工作进展情况。他表示，河南省各级领导高度重视农村假冒伪劣食品专项整</span><span
+                        style="font-family:FangSong_GB2312;font-size:14px;">治工作，措施很实，成立了组织，制定了方案，采取的分片包干措施是个亮点，督促落实工作比</span><span
+                        style="font-family:FangSong_GB2312;font-size:14px;">较到位，案件查办成效比较明显。新密市标语都能上墙，宣传已经深入到乡村。叶县的明厨亮灶</span>
+                </div>
+                <span style="font-family:FangSong_GB2312;font-size:14px;">、二维码监管、三个“一个样”等措施很新颖，有创意，是很好的典型，值得在全国推广。这次检查的目的就是找问题，农村假冒伪劣食品问题在全国是普遍的，不能因为这次发现的问题少，就误以为没有问题或没有风险，事实上也发现了个别问题，比如某饼干和某奶糖存在傍名牌的嫌疑，一家茶饮店采购记录本是空白等。最后，黄修柱副司长并对下步工作提出了三点要求：一是进一步落实属地管理责任，落实党政同责；二是部门各司其责，建立协作机制；三是进一步健全完善长效机制，充分发挥基层党组织作用。</span>
+                <p style="text-align:center;">
+                    <img src="http://image.zhuisuyun.com.cn/govmanage/xxglkineditor/V6K7LVULZ60.png" alt="">
+                </p>
+                <p>
+                    <span style="font-family:FangSong_GB2312;font-size:14px;">
+                        &nbsp;省农业农村厅监管局孟凤美局长在作表态发言时指出，各级各部门要高度重视督导组反馈问题，</span><span style="font-family:FangSong_GB2312;font-size:14px;">积极行动，认真整改，举一反三，持续推进农村假冒伪劣食品专项整治行动向纵深发展；农业农</span><span
+                        style="font-family:FangSong_GB2312;font-size:14px;">村部门要发挥好牵头作用，各成员单位要密切配合，形成工作合力；要强化工作措施，严厉打击</span><span
+                        style="font-family:FangSong_GB2312;font-size:14px;">农村食品制假售假、商标侵权等各类违法行为，确保春节期间农村食品安全。</span>
+                </p>
+                <p>
+                    <br>
+                </p>
+                <p>
+                    <br>
+                </p>
+            </div>
+        </div>
+    </div>
+<footer>
+    <div class="foot-info">
+        Copyright © 2018  金明源农产品溯源公共信息服务平台<br  >
+        <!--主办方：XXXXXXX&nbsp;|&nbsp;技术支持：XXX-->
+    </div>
+</footer>
+</body>
+
+</html>

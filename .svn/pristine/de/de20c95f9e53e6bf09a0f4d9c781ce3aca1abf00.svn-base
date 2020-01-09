@@ -1,0 +1,21 @@
+package com.hniois.monitor.dao;
+
+import com.hniois.common.dao.Dao;
+import com.hniois.monitor.entity.Scan;
+
+import java.util.List;
+import java.util.Map;
+
+public interface ScanDao extends Dao<Scan> {
+
+    //扫码区域分布接口
+    public List<Scan> areaNum(Scan e)throws Exception;
+
+    //产品扫码量前四位统计
+    public List<Scan> cropNum(Scan e) throws Exception;
+
+    //产品扫码量其他统计
+    public Scan others(Scan e)throws Exception;
+
+    List<Map<String,Object>> scanHot() throws Exception;
+}

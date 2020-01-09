@@ -1,0 +1,48 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * Create By javaMan
+ * 2018/8/30  15:36
+ * 监管巡查记录
+ */
+public class Note extends Page{
+
+    private String task_name;//监管任务名称
+    private String execute_time;//执行日期
+    private String task_target;//监管巡查对象
+    private String task_epilog;//结论
+
+    public String getTask_name() {
+        return task_name;
+    }
+
+    public void setTask_name(String task_name) {
+        this.task_name = task_name;
+    }
+
+    public String getExecute_time() {
+        return execute_time;
+    }
+
+    public void setExecute_time(String execute_time) {
+        this.execute_time = execute_time;
+    }
+
+    public String getTask_target() {
+        return task_target;
+    }
+
+    public void setTask_target(String task_target) {
+        this.task_target = task_target;
+    }
+
+    public String getTask_epilog() {
+        return task_epilog;
+    }
+
+    public void setTask_epilog(String task_epilog) {
+        this.task_epilog = task_epilog;
+    }
+}

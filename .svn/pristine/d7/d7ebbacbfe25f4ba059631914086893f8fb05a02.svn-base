@@ -1,0 +1,105 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class Buy extends Page {
+    private String b_name;//物品名
+    private String b_batch;//采购批次
+    private String b_number;//采购数量
+    private String b_spec;//物品规格
+    private String b_time;//采购时间
+    private String b_category;//采购类别
+    private String b_buyer;//采购厂家
+    private String b_provider;//采购厂家
+    private String b_remark;//备注
+    private String endTime;//当前时间
+    private String farm_id;//生产基地ID
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getB_number() {
+        return b_number;
+    }
+
+    public void setB_number(String b_number) {
+        this.b_number = b_number;
+    }
+
+    public String getB_buyer() {
+        return b_buyer;
+    }
+
+    public void setB_buyer(String b_buyer) {
+        this.b_buyer = b_buyer;
+    }
+
+    public String getB_category() {
+        return b_category;
+    }
+
+    public void setB_category(String b_category) {
+        this.b_category = b_category;
+    }
+
+    public String getB_name() {
+        return b_name;
+    }
+
+    public void setB_name(String b_name) {
+        this.b_name = b_name;
+    }
+
+    public String getB_batch() {
+        return b_batch;
+    }
+
+    public void setB_batch(String b_batch) {
+        this.b_batch = b_batch;
+    }
+
+    public String getB_spec() {
+        return b_spec;
+    }
+
+    public void setB_spec(String b_spec) {
+        this.b_spec = b_spec;
+    }
+
+    public String getB_time() {
+        return b_time;
+    }
+
+    public void setB_time(String b_time) {
+        this.b_time = b_time;
+    }
+
+    public String getB_provider() {
+        return b_provider;
+    }
+
+    public void setB_provider(String b_provider) {
+        this.b_provider = b_provider;
+    }
+
+    public String getB_remark() {
+        return b_remark;
+    }
+
+    public void setB_remark(String b_remark) {
+        this.b_remark = b_remark;
+    }
+}

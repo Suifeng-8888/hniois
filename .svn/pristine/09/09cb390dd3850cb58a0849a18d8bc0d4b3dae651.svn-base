@@ -1,0 +1,124 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class Seed extends Page {
+    //s_id,s_name,s_time,state,nums,sup_id,tool,people,soil_id,bz
+    private String s_id;//播种编号
+    private String s_name;//种子名称
+    private String s_time;//播种时间
+    private String state;//种子状态 0 良好 1作废
+    private String nums;//种子数量
+    private String sup_id;//种子供应商id
+    private String tool;//所用工具 0 机器 1人工
+    private String people;//播种人
+    private String farm_id;//农场编号
+    private String farm_name;//农场名
+    private String soil_id;//土地编号
+    private String fa_id;//生产基地ID
+    private String bz;//备注
+
+    public String getFa_id() {
+        return fa_id;
+    }
+
+    public void setFa_id(String fa_id) {
+        this.fa_id = fa_id;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+
+    public String getFarm_name() {
+        return farm_name;
+    }
+
+    public void setFarm_name(String farm_name) {
+        this.farm_name = farm_name;
+    }
+
+    public String getS_id() {
+        return s_id;
+    }
+
+    public void setS_id(String s_id) {
+        this.s_id = s_id;
+    }
+
+    public String getS_name() {
+        return s_name;
+    }
+
+    public void setS_name(String s_name) {
+        this.s_name = s_name;
+    }
+
+    public String getS_time() {
+        return s_time;
+    }
+
+    public void setS_time(String s_time) {
+        this.s_time = s_time;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getNums() {
+        return nums;
+    }
+
+    public void setNums(String nums) {
+        this.nums = nums;
+    }
+
+    public String getSup_id() {
+        return sup_id;
+    }
+
+    public void setSup_id(String sup_id) {
+        this.sup_id = sup_id;
+    }
+
+    public String getTool() {
+        return tool;
+    }
+
+    public void setTool(String tool) {
+        this.tool = tool;
+    }
+
+    public String getPeople() {
+        return people;
+    }
+
+    public void setPeople(String people) {
+        this.people = people;
+    }
+
+    public String getSoil_id() {
+        return soil_id;
+    }
+
+    public void setSoil_id(String soil_id) {
+        this.soil_id = soil_id;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
+    }
+}

@@ -1,0 +1,122 @@
+package com.hniois.monitor.dao.impl;
+
+import com.hniois.common.dao.DaoSupport;
+import com.hniois.common.page.Page;
+import com.hniois.monitor.dao.ComplainDao;
+import com.hniois.monitor.entity.Complain;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * Create By javaMan
+ * 2018/8/28  12:03
+ */
+@Repository(value = "complainDao")
+public class ComplainDaoImpl implements ComplainDao {
+
+    @Autowired
+    private DaoSupport dao;
+
+    private String mapper = "ComplainMapper";
+    /**
+     * 保存对象
+     *
+     * @param complain
+     */
+    @Override
+    public void save(Complain complain) throws Exception {
+        dao.save(mapper + ".save", complain);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param e
+     */
+    @Override
+    public void saveBatch(List<Complain> e) throws Exception {
+
+    }
+
+    /**
+     * 删除对象
+     *
+     * @param complain
+     */
+    @Override
+    public void delete(Complain complain) throws Exception {
+        dao.delete(mapper + ".delete", complain);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param complain
+     */
+    @Override
+    public void deleteBatch(Complain complain) throws Exception {
+        dao.delete(mapper + ".deleteBatch", complain);
+    }
+
+    /**
+     * 修改对象
+     *
+     * @param complain
+     */
+    @Override
+    public void update(Complain complain) throws Exception {
+        dao.update(mapper + ".reply", complain);
+    }
+
+    /**
+     * 批量更新
+     *
+     * @param complain
+     */
+    @Override
+    public void updateBatch(Complain complain) throws Exception {
+
+    }
+
+    /**
+     * 查找对象
+     *
+     * @param complain
+     */
+    @Override
+    public Complain find(Complain complain) throws Exception {
+        return (Complain) dao.find(mapper + ".find", complain);
+    }
+
+    /**
+     * 查找List
+     *
+     * @param complain
+     */
+    @Override
+    public List<Complain> findList(Complain complain) throws Exception {
+        return null;
+    }
+
+    /**
+     * 数量查询
+     *
+     * @param complain
+     */
+    @Override
+    public int findCount(Complain complain) throws Exception {
+        return 0;
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param complain
+     */
+    @Override
+    public Page findPage(Complain complain) throws Exception {
+        return dao.findPage(mapper + ".findPage", mapper + ".findPageCount", complain);
+    }
+}

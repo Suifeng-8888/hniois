@@ -1,0 +1,119 @@
+package com.hniois.web.monitor;
+
+
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Seed;
+import com.hniois.monitor.service.SeedManage;
+import com.hniois.util.DateUtil;
+import com.hniois.util.ExportExcelUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/webService/seed")
+public class SeedActionWeb extends BaseController{
+    //Seed
+    @Resource(name="seedService")
+    private SeedManage seedService;
+
+    /**
+     * 查询List
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/findList")
+    @ResponseBody
+    public String findList(Seed e) throws Exception {
+        List<Seed> list = seedService.findList(e);
+        JSONArray arr = JSONArray.fromObject(list);
+        return arr.toString();
+    }
+
+    /**
+     * 查询
+     * @param s_name          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/find/{s_name}")
+    @ResponseBody
+    public String find(@PathVariable("s_name") String s_name) throws Exception {
+        Seed p = new Seed();
+        p.setS_name(s_name);
+        Seed m = seedService.find(p);
+        JSONObject obj = JSONObject.fromObject(m);
+        return obj.toString();
+    }
+
+    /**
+     * 保存
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/add")
+    @ResponseBody
+    public String add(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        try {
+            seedService.save(e);
+            setMsg(obj, "ok", "添加成功!");
+        } catch (Exception c) {
+            setMsg(obj, "error", "添加失败!");
+            c.printStackTrace();
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/update")
+    @ResponseBody
+    public String update(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        Seed p = new Seed();
+        p.setS_id(e.getS_id());
+        //条件判断
+        if(seedService.findCount(p)>0){
+            seedService.update(e);
+            setMsg(obj,"ok","更新成功!");
+        }else{
+            setMsg(obj,"error","更新失败!");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param s_id          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete/{s_id}")
+    @ResponseBody
+    public String delete(@PathVariable("s_id") Integer s_id) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if (s_id == null) {
+            setMsg(obj, "error", "删除失败!");
+            return obj.toString();
+        } else {
+            Seed p = new Seed();
+            p.setS_id(s_id.toString());
+            seedService.delete(p);
+            setMsg(obj, "ok", "删除成功!");
+            return obj.toString();
+        }
+    }
+}

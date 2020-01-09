@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ArticleMapper">
+	<!--分页查询-->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Article" resultType="com.hniois.monitor.entity.Article">
+		SELECT * FROM r_article
+		<where>
+			<if test="type != '' and type != null">type = #{type}</if>
+			<if test="title != '' and title != null">AND title LIKE '%${title}%'</if>
+			<if test="subtitle != '' and subtitle != null">AND subtitle = #{subtitle}</if>
+			<if test="picture != '' and picture != null">AND picture = #{picture}</if>
+			<if test="content != '' and content != null">AND content = #{content}</if>
+			<if test="time != '' and time != null">AND time = #{time}</if>
+			<if test="org_id != '' and org_id != null">AND org_id = #{org_id}</if>
+			<if test="org_name != '' and org_name != null">AND org_name = #{org_name}</if>
+		</where>
+		limit #{offset},#{pageSize}
+	</select>
+	<!--分页查询count-->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Article" resultType="java.lang.Integer">
+		SELECT count(*) FROM r_article
+		<where>
+			<if test="type != '' and type != null">type = #{type}</if>
+			<if test="title != '' and title != null">AND title LIKE '%${title}%'</if>
+			<if test="subtitle != '' and subtitle != null">AND subtitle = #{subtitle}</if>
+			<if test="picture != '' and picture != null">AND picture = #{picture}</if>
+			<if test="content != '' and content != null">AND content = #{content}</if>
+			<if test="time != '' and time != null">AND time = #{time}</if>
+			<if test="org_id != '' and org_id != null">AND org_id = #{org_id}</if>
+			<if test="org_name != '' and org_name != null">AND org_name = #{org_name}</if>
+		</where>
+	</select>
+
+	<select id="find" parameterType="com.hniois.monitor.entity.Article" resultType="com.hniois.monitor.entity.Article">
+		SELECT * FROM r_article WHERE id=#{id}
+	</select>
+
+	<select id="findList" parameterType="com.hniois.monitor.entity.Article" resultType="com.hniois.monitor.entity.Article">
+		SELECT * FROM r_article
+		<where>
+			<if test="type != '' and type != null">type = #{type}</if>
+			<if test="title != '' and title != null">AND title = #{title}</if>
+			<if test="subtitle != '' and subtitle != null">AND subtitle = #{subtitle}</if>
+			<if test="picture != '' and picture != null">AND picture = #{picture}</if>
+			<if test="content != '' and content != null">AND content = #{content}</if>
+			<if test="time != '' and time != null">AND time = #{time}</if>
+			<if test="org_id != '' and org_id != null">AND org_id = #{org_id}</if>
+			<if test="org_name != '' and org_name != null">AND org_name = #{org_name}</if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.hniois.monitor.entity.Article" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO r_article
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="type != null and type != ''" >type,</if>
+			<if test="title != null and title != ''" >title,</if>
+			<if test="subtitle != null and subtitle != ''" >subtitle,</if>
+			<if test="picture != null and picture != ''" >picture,</if>
+			<if test="content != null and content != ''" >content,</if>
+			<if test="time != null and time != ''" >time,</if>
+			<if test="org_id != null and org_id != ''" >org_id,</if>
+			<if test="org_name != null and org_name != ''" >org_name,</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="type != null and type != ''" >#{type},</if>
+			<if test="title != null and title != ''" >#{title},</if>
+			<if test="subtitle != null and subtitle != ''" >#{subtitle},</if>
+			<if test="picture != null and picture != ''" >#{picture},</if>
+			<if test="content != null and content != ''" >#{content},</if>
+			<if test="time != null and time != ''" >#{time},</if>
+			<if test="org_id != null and org_id != ''" >#{org_id},</if>
+			<if test="org_name != null and org_name != ''" >#{org_name},</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="com.hniois.monitor.entity.Article">
+		UPDATE r_article
+		<set>
+			<if test="type != null and type != ''" >type = #{type},</if>
+			<if test="title != null and title != ''" >title = #{title},</if>
+			<if test="subtitle != null and subtitle != ''" >subtitle = #{subtitle},</if>
+			<if test="picture != null and picture != ''" >picture = #{picture},</if>
+			<if test="content != null and content != ''" >content = #{content},</if>
+			<if test="time != null and time != ''" >time = #{time},</if>
+			<if test="org_id != null and org_id != ''" >org_id = #{org_id},</if>
+			<if test="org_name != null and org_name != ''" >org_name = #{org_name},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Article">
+		DELETE FROM r_article WHERE id = #{id}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="com.hniois.monitor.entity.Article">
+		DELETE FROM r_article
+		WHERE id IN
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!--web 端文章前三条-->
+	<select id="findArticle" parameterType="com.hniois.monitor.entity.Article" resultType="com.hniois.monitor.entity.Article">
+		SELECT * FROM r_article ORDER BY `time` DESC LIMIT 3
+	</select>
+</mapper>

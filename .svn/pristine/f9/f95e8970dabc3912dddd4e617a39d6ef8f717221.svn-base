@@ -1,0 +1,128 @@
+package com.hniois.trace.service.impl;
+
+import com.hniois.common.page.Page;
+import com.hniois.common.service.ServiceSupport;
+import com.hniois.trace.dao.QRcodeDao;
+import com.hniois.trace.entity.Batch_Material;
+import com.hniois.trace.entity.QRcode;
+import com.hniois.trace.service.BatchManage;
+import com.hniois.trace.service.QRcodeManage;
+import com.hniois.util.DateUtil;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+@Service("qRcodeService")
+public class QRcodeService extends ServiceSupport<QRcode,QRcodeDao> implements QRcodeManage {
+
+    @Resource(name="qRcodeDaoImpl")
+
+    @Override
+    public void setDao(QRcodeDao dao) {
+        this.dao=dao;
+    }
+
+    @Resource(name ="batchService")
+    private BatchManage batchService;
+
+
+
+    @Override
+    public String getRuleCode() {
+        //获取当前时间毫秒值
+        return DateUtil.getSecondTimes();
+    }
+
+    @Override
+    public String getRandomCode() {
+        //获取100到1000之间的随机数
+        String random=String.valueOf ((int)(Math.random()*1000+100));
+        if(random.length()<4){//不够四位的前面补0
+            random=0+random;
+        }
+        return random;
+    }
+
+    @Override
+    public String getQRcode(String num) {
+        //判断当前字符串是否是七位数,不是的话前面补0
+       switch(num.length()){
+           case 1:num="000000"+num;
+           break;
+           case 2:num="00000"+num;
+           break;
+           case 3:num="0000"+num;
+           break;
+           case 4:num="000"+num;
+           break;
+           case 5:num="00"+num;
+           break;
+           case 6:num="0"+num;
+           break;
+           default:num=num;
+           break;
+       }
+        return num;
+    }
+
+    /**
+     * 去掉数字0000234之前的0
+     * @param str
+     * @return
+     */
+    @Override
+    public String getNew(String str) {
+        String newStr=null;
+        for(int i=0;i<str.length();i++){
+            String first=String.valueOf(str.charAt(0));
+            if(first.equals("0")){
+                str= str.substring(1);
+            }else{
+                break;
+            }
+            newStr=str;
+        }
+        return newStr;
+    }
+
+
+
+    /**
+     * 关联二维码
+     * @param e1
+     * @param e2
+     */
+    @Override
+    public void connect(QRcode e1, Batch_Material e2) throws Exception{
+        dao.update(e1);
+        batchService.update(e2);
+    }
+
+    /**
+     * 更改关联分页时调用的方法
+     * @param e
+     * @return
+     * @throws Exception
+     */
+    public Page findConnectPage(QRcode e) throws Exception{
+        return (Page) dao.findConnectPage(e);
+    }
+    /**
+     * 更改完新的关联后分别更改对象的后台数据
+     * @param e1
+     * @param e2
+     * @param e3
+     * @return
+     */
+    @Override
+    public void updateAandBandC(QRcode e1, QRcode e2, Batch_Material e3) throws Exception{
+            dao.update(e1);
+            dao.update(e2);
+            dao.update(e2);
+            batchService.update(e3);
+    }
+
+
+}

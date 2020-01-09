@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ScanMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Scan" useGeneratedKeys="true" keyProperty="id">
+		insert into r_scan(
+		<if test="scan_id!='' and scan_id!=null">scan_id</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="crop_name!='' and crop_name!=null">,crop_name</if>
+		<if test="user_long!='' and user_long!=null">,user_long</if>
+		<if test="user_lat!='' and user_lat!=null">,user_lat</if>
+		<if test="scan_time!='' and scan_time!=null">,scan_time</if>
+		<if test="user_city!='' and user_city!=null">,user_city</if>
+		)
+		values (
+		<if test="scan_id!='' and scan_id!=null">#{scan_id}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="crop_name!='' and crop_name!=null">,#{crop_name}</if>
+		<if test="user_long!='' and user_long!=null">,#{user_long}</if>
+		<if test="user_lat!='' and user_lat!=null">,#{user_lat}</if>
+		<if test="scan_time!='' and scan_time!=null">,#{scan_time}</if>
+		<if test="user_city!='' and user_city!=null">,#{user_city}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Scan">
+		insert into r_scan
+		(scan_id,crop_id,crop_name,user_long,user_lat,scan_time,user_city)
+		values
+		<foreach collection="data" item="e" index="index" separator=",">
+			(
+			#{e.scan_id},
+			#{e.crop_id},
+			#{e.crop_name},
+			#{e.user_long},
+			#{e.user_lat},
+			#{e.scan_time},
+			#{e.user_city}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Scan">
+		update r_scan
+		<set>
+			<if test="scan_id!='' and scan_id!=null">scan_id=#{scan_id},</if>
+			<if test="crop_id!='' and crop_id!=null">crop_id=#{crop_id},</if>
+			<if test="crop_name!='' and crop_name!=null">crop_name=#{crop_name},</if>
+			<if test="user_long!='' and user_long!=null">user_long=#{user_long},</if>
+			<if test="user_lat!='' and user_lat!=null">user_lat=#{user_lat},</if>
+			<if test="scan_time!='' and scan_time!=null">scan_time=#{scan_time},</if>
+			<if test="user_city!='' and user_city!=null">user_city=#{user_city},</if>
+		</set>
+		where scan_id=#{scan_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Scan">
+		update r_scan
+		<set>
+			<if test="scan_id!='' and scan_id!=null">scan_id=#{scan_id},</if>
+			<if test="crop_id!='' and crop_id!=null">crop_id=#{crop_id},</if>
+			<if test="crop_name!='' and crop_name!=null">crop_name=#{crop_name},</if>
+			<if test="user_long!='' and user_long!=null">user_long=#{user_long},</if>
+			<if test="user_lat!='' and user_lat!=null">user_lat=#{user_lat},</if>
+			<if test="scan_time!='' and scan_time!=null">scan_time=#{scan_time},</if>
+			<if test="user_city!='' and user_city!=null">user_city=#{user_city},</if>
+		</set>
+		where scan_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Scan">
+		delete from r_scan where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="user_long !=null and user_long !=''">and user_long=#{user_long}</if>
+		<if test="user_lat !=null and user_lat !=''">and user_lat=#{user_lat}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="user_city !=null and user_city !=''">and user_city=#{user_city}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_scan
+		where scan_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		select	*
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="user_long !=null and user_long !=''">and user_long=#{user_long}</if>
+		<if test="user_lat !=null and user_lat !=''">and user_lat=#{user_lat}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="user_city !=null and user_city !=''">and user_city=#{user_city}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		select	*
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="user_long !=null and user_long !=''">and user_long=#{user_long}</if>
+		<if test="user_lat !=null and user_lat !=''">and user_lat=#{user_lat}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="user_city !=null and user_city !=''">and user_city=#{user_city}</if>
+		order by crop_name
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Scan" resultType="java.lang.Integer">
+		select count(*)
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="user_long !=null and user_long !=''">and user_long=#{user_long}</if>
+		<if test="user_lat !=null and user_lat !=''">and user_lat=#{user_lat}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="user_city !=null and user_city !=''">and user_city=#{user_city}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		select	*
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="user_long !=null and user_long !=''">and user_long=#{user_long}</if>
+		<if test="user_lat !=null and user_lat !=''">and user_lat=#{user_lat}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="user_city !=null and user_city !=''">and user_city=#{user_city}</if>
+		order by crop_name
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Scan" resultType="java.lang.Integer">
+		select count(*)
+		from r_scan
+		where 1=1
+		<if test="scan_id !=null and scan_id !=''">and scan_id=#{scan_id}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="user_long !=null and user_long !=''">and crop_name=#{user_long}</if>
+		<if test="user_lat !=null and user_lat !=''">and user_lat=#{user_lat}</if>
+		<if test="scan_time !=null and scan_time !=''">and scan_time=#{scan_time}</if>
+		<if test="user_city !=null and user_city !=''">and user_city=#{user_city}</if>
+	</select>
+
+	<!--扫码区域分布-->
+	<select id="areaNum" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		SELECT * from
+		(
+		SELECT COUNT(user_city)as 'code',user_city,scan_time from r_scan
+		GROUP BY user_city
+		HAVING scan_time
+		BETWEEN DATE_ADD(CURDATE(),INTERVAL -5 MONTH)
+		AND CURDATE()
+		ORDER BY code DESC
+		) as a limit 5
+
+		UNION ALL
+		select sum(ff.one-ff.two) as 'code','其他','scan_time' FROM
+		(
+		select bb.one,aa.two FROM
+		(
+		SELECT sum(b.code) as 'one' from (
+		SELECT COUNT(user_city)as 'code',user_city,scan_time from r_scan
+		GROUP BY user_city
+		HAVING scan_time
+		BETWEEN DATE_ADD(CURDATE(),INTERVAL -5 MONTH)
+		AND CURDATE()
+		ORDER BY code DESC
+		) AS b
+		) as bb,
+		(
+		SELECT SUM(a.code) as 'two' from
+		(
+		SELECT COUNT(user_city)as 'code',user_city,scan_time from r_scan
+		GROUP BY user_city
+		HAVING scan_time
+		BETWEEN DATE_ADD(CURDATE(),INTERVAL -5 MONTH)
+		AND CURDATE()
+		ORDER BY code DESC
+		limit 5
+		) as a
+		) as aa
+
+		) as ff
+	</select>
+
+	<!--产品扫码量分布-->
+	<!--前四位产品扫码量-->
+	<select id="cropNum" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		SELECT count(crop_name)as 'code',crop_name,scan_time FROM r_scan
+		GROUP BY crop_name
+		HAVING scan_time
+		BETWEEN DATE_ADD(CURDATE(),INTERVAL -6 MONTH)
+		AND CURDATE()
+		ORDER BY code DESC
+		limit 5
+	</select>
+	<!--其他产品数量-->
+	<select id="otherNum" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		SELECT sum(ff.one-ff.two) as 'code','other','scan_time' FROM
+		(
+		select aa.one,bb.two FROM
+		(
+		select SUM(a.code) as 'one' from
+		(
+		SELECT count(crop_name)as 'code',crop_name,scan_time FROM r_scan
+		GROUP BY crop_name
+		HAVING scan_time
+		BETWEEN DATE_ADD(CURDATE(),INTERVAL -5 MONTH)
+		AND CURDATE()
+		ORDER BY code DESC
+		) as a
+		) AS aa ,
+
+		(
+		select SUM(b.code) as 'two' from
+		(
+		SELECT count(crop_name)as 'code',crop_name,scan_time FROM r_scan
+		GROUP BY crop_name
+		HAVING scan_time
+		BETWEEN DATE_ADD(CURDATE(),INTERVAL -5 MONTH)
+		AND CURDATE()
+		ORDER BY code DESC
+		limit 5
+		) as b
+		) as bb
+
+		) as ff
+	</select>
+	<select id="scanHot" resultType="java.util.Map">
+		SELECT count(crop_name) AS 'number',crop_name,scan_time
+		FROM
+		r_scan
+		GROUP BY
+		crop_name
+		HAVING
+		scan_time BETWEEN DATE_ADD(CURDATE(), INTERVAL - 6 MONTH)
+		AND CURDATE()
+	</select>
+
+	<!--产品分类扫码量占比-->
+	<select id="typeNum" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		SELECT b.crop_type as 'msg',SUM(b.code) as 'count' FROM
+		(
+		SELECT s.crop_name,SUM(s.num)AS 'code',c.crop_type FROM
+		(
+		SELECT crop_id,crop_name,COUNT(crop_id)as 'num' from r_scan GROUP BY crop_id
+		) as s,
+		r_farm_crop c
+		WHERE s.crop_id=c.crop_id GROUP BY s.crop_id
+		) as b GROUP BY b.crop_type
+	</select>
+
+	<!--最近半年月度扫码总量走势-->
+	<select id="scanNum" parameterType="com.hniois.monitor.entity.Scan" resultType="com.hniois.monitor.entity.Scan">
+		SELECT COUNT(crop_name)AS 'count',DATE_FORMAT(scan_time,'%Y-%m')as 'msg' FROM r_scan
+		GROUP BY msg
+		HAVING msg BETWEEN
+		DATE_FORMAT(DATE_ADD(CURDATE(),INTERVAL -5 MONTH),'%Y-%m')
+		AND DATE_FORMAT(CURDATE(),'%Y-%m');
+	</select>
+</mapper>

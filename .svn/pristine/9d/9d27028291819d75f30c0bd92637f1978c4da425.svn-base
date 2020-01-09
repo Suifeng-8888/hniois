@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CropMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Crops"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_farm_crop(
+		<if test="crop_id!='' and crop_id!=null">crop_id</if>
+		<if test="crop_name!='' and crop_id!=null">,crop_name</if>
+		<if test="crop_type!='' and crop_type!=null">,crop_type</if>
+		<if test="type_img!='' and type_img!=null">,type_img</if>
+		<if test="crop_img!='' and crop_img!=null">,crop_img</if>
+		<if test="crop_desc!='' and crop_desc!=null">,crop_desc</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (
+		<if test="crop_id!='' and crop_id!=null">#{crop_id}</if>
+		<if test="crop_name!='' and crop_name!=null">,#{crop_name}</if>
+		<if test="crop_type!='' and crop_type!=null">,#{crop_type}</if>
+		<if test="type_img!='' and type_img!=null">,#{type_img}</if>
+		<if test="crop_img!='' and crop_img!=null">,#{crop_img}</if>
+		<if test="crop_desc!='' and crop_desc!=null">,#{crop_desc}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Crops">
+		insert into r_farm_crop
+		(crop_id,crop_name,crop_type,type_img,crop_img,crop_desc,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.crop_id},
+			#{e.crop_name},
+			#{e.crop_type},
+			#{e.type_img},
+			#{e.crop_img},
+			#{e.crop_desc},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Crops">
+		update r_farm_crop
+		<set>
+			<if test="crop_name !=null and crop_name !=''">crop_name=#{crop_name},</if>
+			<if test="crop_type !=null and crop_type !=''">crop_type=#{crop_type},</if>
+			<if test="type_img !=null and type_img !=''">type_img=#{type_img},</if>
+			<if test="type_path !=null and type_path !=''">
+				`type_img`= REPLACE(`type_img`,CONCAT(#{type_path},','),''),
+			</if>
+			<if test="crop_img !=null and crop_img !=''">crop_img=#{crop_img},</if>
+			<if test="crop_path !=null and crop_path !=''">
+				`crop_img`= REPLACE(`crop_img`,CONCAT(#{crop_path},','),''),
+			</if>
+			<if test="crop_desc !=null and crop_desc !=''">crop_desc=#{crop_desc},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where crop_id=#{crop_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Crops">
+		update r_farm_crop
+		<set>
+			<if test="crop_name !=null and crop_name !=''">crop_name=#{crop_name},</if>
+			<if test="crop_type !=null and crop_type !=''">crop_type=#{crop_type},</if>
+			<if test="type_img !=null and type_img !=''">type_img=#{type_img},</if>
+			<if test="crop_img !=null and crop_img !=''">crop_img=#{crop_img},</if>
+			<if test="crop_desc !=null and crop_desc !=''">crop_desc=#{crop_desc},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where crop_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Crops">
+		delete from r_farm_crop where 1=1
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_farm_crop
+		where crop_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Crops" resultType="com.hniois.monitor.entity.Crops">
+		select *
+		from r_farm_crop
+		where 1=1
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_type !=null and crop_type !=''">and crop_type=#{crop_type}</if>
+		<if test="type_img !=null and type_img !=''">and type_img=#{type_img}</if>
+		<if test="crop_img !=null and crop_img !=''">and crop_img=#{crop_img}</if>
+		<if test="crop_desc !=null and crop_desc !=''">and crop_desc=#{crop_desc}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Crops" resultType="com.hniois.monitor.entity.Crops">
+		select *
+		from r_farm_crop
+		where 1=1
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_type !=null and crop_type !=''">and crop_type=#{crop_type}</if>
+		<if test="type_img !=null and type_img !=''">and type_img=#{type_img}</if>
+		<if test="crop_img !=null and crop_img !=''">and crop_img=#{crop_img}</if>
+		<if test="crop_desc !=null and crop_desc !=''">and crop_desc=#{crop_desc}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Crops" resultType="java.lang.Integer">
+		select count(*)
+		from r_farm_crop t
+		where 1=1
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_type !=null and crop_type !=''">and t.crop_type=#{crop_type}</if>
+		<if test="type_img !=null and type_img !=''">and t.type_img=#{type_img}</if>
+		<if test="crop_img !=null and crop_img !=''">and t.crop_img=#{crop_img}</if>
+		<if test="crop_desc !=null and crop_desc !=''">and t.crop_desc=#{crop_desc}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Crops" resultType="com.hniois.monitor.entity.Crops">
+		select *
+		from r_farm_crop
+		where 1=1
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_type !=null and crop_type !=''">and crop_type=#{crop_type}</if>
+		<if test="type_img !=null and type_img !=''">and type_img=#{type_img}</if>
+		<if test="crop_img !=null and crop_img !=''">and crop_img=#{crop_img}</if>
+		<if test="crop_desc !=null and crop_desc !=''">and crop_desc=#{crop_desc}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Crops" resultType="java.lang.Integer">
+		select count(*)
+		from r_farm_crop t
+		where 1=1
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_type !=null and crop_type !=''">and t.crop_type=#{crop_type}</if>
+		<if test="type_img !=null and type_img !=''">and t.type_img=#{type_img}</if>
+		<if test="crop_img !=null and crop_img !=''">and t.crop_img=#{crop_img}</if>
+		<if test="crop_desc !=null and crop_desc !=''">and t.crop_desc=#{crop_desc}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+</mapper>

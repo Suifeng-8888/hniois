@@ -1,0 +1,141 @@
+package com.hniois.web.monitor;
+
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Providers;
+import com.hniois.monitor.service.ProvidersManage;
+import com.hniois.util.Const;
+import com.hniois.web.Message;
+import com.hniois.web.TokenProving;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping(value="/webService/providers")
+public class ProvidersActionWeb extends BaseController{
+    //Providers  企业基地service
+    @Resource(name="providersService")
+    private ProvidersManage providersService;
+
+    /**
+     * 企业基地新增
+     * @param providers
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public Message add(Providers providers, String token) throws Exception {
+        Message message = new Message();
+//        验证  token  超级管理员  监管部门管理员有权限
+        String userBZ = TokenProving.verifyToken(token);
+        if(Const.ADMINISTRATOR.equals(userBZ) || Const.OUTFIT_ADMIN.equals(userBZ)) {
+            // TODO: 2018/12/20 企业基地重名验证
+            providersService.save(providers);
+            message.setCode(0);
+            message.setMsg("新增成功!");
+        } else {
+            message.setCode(1);
+            message.setMsg("未知错误！！！");
+        }
+        return message;
+    }
+    /**
+     * 删除
+     * @param p_id          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete/{p_id}/{token}", method = RequestMethod.GET)
+    public Message delete(@PathVariable(value = "p_id") String p_id,
+                          @PathVariable(value = "token") String token) throws Exception {
+        Message message = new Message();
+        if(StringUtils.isNotEmpty(p_id) && StringUtils.isNotEmpty(token)) {
+            String userBZ = TokenProving.verifyToken(token);
+            if(Const.ADMINISTRATOR.equals(userBZ) || Const.OUTFIT_ADMIN.equals(userBZ)) {
+                Providers p = new Providers();
+                p.setP_id(p_id);
+                providersService.delete(p);
+                message.setCode(0);
+                message.setMsg("删除成功!");
+            } else {
+                message.setCode(1);
+                message.setMsg("未知错误!");
+            }
+        } else {
+            message.setCode(1);
+            message.setMsg("参数不能为空!");
+        }
+        return message;
+    }
+
+    /**
+     * 分页查询
+     * @param providers
+     * @return
+     * */
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    public Page list(Providers providers) throws Exception{
+        // 当前页
+        int currPage = getThisPage(providers.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(providers.getLimit());
+
+        providers.setOffset((currPage-1)*limit);
+        providers.setPageSize(limit);
+        Page page = providersService.findPage(providers);
+        return page;
+    }
+
+    /**
+     * 查询List
+     * @param providers
+     * @return
+     * */
+    @RequestMapping(value="/findList", method = RequestMethod.POST)
+    public List<Providers> findList(Providers providers, String dept_id) throws Exception {
+//        生产基地用户登录 传入 dept_id 看到自己的信息
+        if(StringUtils.isNotEmpty(dept_id)) {
+            providers.setP_id(dept_id);
+            List<Providers> list = providersService.findList(providers);
+            return list;
+        } else {
+            // TODO: 2018/12/24 未传入  dept_id  看到全部的  生产基地信息  缺少验证
+            return providersService.findList(providers);
+        }
+    }
+
+    /**
+     * 查询
+     * @param p_id
+     * @return
+     * */
+    @RequestMapping(value="/find/{p_id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Providers find(@PathVariable("p_id") String p_id) throws Exception {
+        Providers providers = new Providers();
+        providers.setP_id(p_id);
+        Providers m = providersService.find(providers);
+        return m;
+    }
+
+    /**
+     * 修改
+     * @param providers
+     * @return
+     * */
+    @RequestMapping(value="/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Message update(Providers providers) throws Exception {
+        Message message = new Message();
+        if(StringUtils.isNotEmpty(providers.getP_id())) {
+            providersService.update(providers);
+            message.setCode(0);
+            message.setMsg("更新成功!");
+        } else {
+            message.setCode(1);
+            message.setMsg("参数不能为空！");
+        }
+        return message;
+    }
+}

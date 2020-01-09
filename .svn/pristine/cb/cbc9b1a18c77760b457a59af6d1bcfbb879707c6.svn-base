@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OutputMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Output"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into db_quasi_output(p_id
+		<if test="crop_name!='' and crop_name!=null">,crop_name</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="report_num!='' and report_num!=null">,report_num</if>
+		<if test="outfit_id!='' and outfit_id!=null">,outfit_id</if>
+		<if test="outfit_name!='' and outfit_name!=null">,outfit_name</if>
+		<if test="applyer!='' and applyer!=null">,applyer</if>
+		<if test="apply_time!='' and apply_time!=null">,apply_time</if>
+		<if test="p_status!='' and p_status!=null">,p_status</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+		)
+		VALUES (p_id
+		<if test="crop_name!='' and crop_name!=null">,#{crop_name}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="report_num!='' and report_num!=null">,#{report_num}</if>
+		<if test="outfit_id!='' and outfit_id!=null">,#{outfit_id}</if>
+		<if test="outfit_name!='' and outfit_name!=null">,#{outfit_name}</if>
+		<if test="applyer!='' and applyer!=null">,#{applyer}</if>
+		<if test="apply_time!='' and apply_time!=null">,#{apply_time}</if>
+		<if test="p_status!='' and p_status!=null">,#{p_status}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Output">
+		insert into db_quasi_output
+		(p_id,crop_name,crop_id,report_num,outfit_id,outfit_name,applyer,apply_time,p_status,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.p_id},
+			#{e.crop_name},
+			#{e.crop_id},
+			#{e.report_num},
+			#{e.outfit_id},
+			#{e.outfit_name},
+			#{e.applyer},
+			#{e.apply_time},
+			#{e.p_status},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Output">
+		update db_quasi_output
+		<set>
+			<if test="crop_name !=null and crop_name !=''">crop_name=#{crop_name},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="report_num !=null and report_num !=''">report_num=#{report_num},</if>
+			<if test="outfit_id !=null and outfit_id !=''">outfit_id=#{outfit_id},</if>
+			<if test="outfit_name !=null and outfit_name !=''">outfit_name=#{outfit_name},</if>
+			<if test="applyer !=null and applyer !=''">applyer=#{applyer},</if>
+			<if test="apply_time !=null and apply_time !=''">apply_time=#{apply_time},</if>
+			<if test="p_status !=null and p_status !=''">p_status=#{p_status},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where p_id=#{p_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Output">
+		update db_quasi_output
+		<set>
+			<if test="crop_name !=null and crop_name !=''">crop_name=#{crop_name},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="report_num !=null and report_num !=''">report_num=#{report_num},</if>
+			<if test="outfit_id !=null and outfit_id !=''">outfit_id=#{outfit_id},</if>
+			<if test="outfit_name !=null and outfit_name !=''">outfit_name=#{outfit_name},</if>
+			<if test="applyer !=null and applyer !=''">applyer=#{applyer},</if>
+			<if test="apply_time !=null and apply_time !=''">apply_time=#{apply_time},</if>
+			<if test="p_status !=null and p_status !=''">p_status=#{p_status},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where p_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Output">
+		delete from db_quasi_output where 1=1
+		<if test="p_id !=null and p_id !=''">and p_id=#{p_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="outfit_id !=null and outfit_id !=''">and outfit_id=#{outfit_id}</if>
+		<if test="outfit_name !=null and outfit_name !=''">and outfit_name=#{outfit_name}</if>
+		<if test="applyer !=null and applyer !=''">and applyer=#{applyer}</if>
+		<if test="apply_time !=null and apply_time !=''">and apply_time=#{apply_time}</if>
+		<if test="p_status !=null and p_status !=''">and p_status=#{p_status}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from db_quasi_output
+		where p_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Output" resultType="com.hniois.monitor.entity.Output">
+		select *
+		from db_quasi_output
+		where 1=1
+		<if test="p_id !=null and p_id !=''">and p_id=#{p_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="outfit_id !=null and outfit_id !=''">and outfit_id=#{outfit_id}</if>
+		<if test="outfit_name !=null and outfit_name !=''">and outfit_name=#{outfit_name}</if>
+		<if test="applyer !=null and applyer !=''">and applyer=#{applyer}</if>
+		<if test="apply_time !=null and apply_time !=''">and apply_time=#{apply_time}</if>
+		<if test="p_status !=null and p_status !=''">and p_status=#{p_status}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Output" resultType="com.hniois.monitor.entity.Output">
+		select t.*
+		from db_quasi_output t
+		where 1=1
+		<if test="p_id !=null and p_id !=''">and t.p_id=#{p_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="report_num !=null and report_num !=''">and t.report_num=#{report_num}</if>
+		<if test="outfit_id !=null and outfit_id !=''">and t.outfit_id=#{outfit_id}</if>
+		<if test="outfit_name !=null and outfit_name !=''">and t.outfit_name=#{outfit_name}</if>
+		<if test="applyer !=null and applyer !=''">and t.applyer=#{applyer}</if>
+		<if test="apply_time !=null and apply_time !=''">and t.apply_time=#{apply_time}</if>
+		<if test="p_status !=null and p_status !=''">and t.p_status=#{p_status}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Output" resultType="java.lang.Integer">
+		select count(*)
+		from db_quasi_output t
+		where 1=1
+		<if test="p_id !=null and p_id !=''">and t.p_id=#{p_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="report_num !=null and report_num !=''">and t.report_num=#{report_num}</if>
+		<if test="outfit_id !=null and outfit_id !=''">and t.outfit_id=#{outfit_id}</if>
+		<if test="outfit_name !=null and outfit_name !=''">and t.outfit_name=#{outfit_name}</if>
+		<if test="applyer !=null and applyer !=''">and t.applyer=#{applyer}</if>
+		<if test="apply_time !=null and apply_time !=''">and t.apply_time=#{apply_time}</if>
+		<if test="p_status !=null and p_status !=''">and t.p_status=#{p_status}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Output" resultType="com.hniois.monitor.entity.Output">
+		select *
+		from db_quasi_output
+		where 1=1
+		<if test="p_id !=null and p_id !=''">and p_id=#{p_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="outfit_id !=null and outfit_id !=''">and outfit_id=#{outfit_id}</if>
+		<if test="outfit_name !=null and outfit_name !=''">and outfit_name=#{outfit_name}</if>
+		<if test="applyer !=null and applyer !=''">and applyer=#{applyer}</if>
+		<if test="apply_time !=null and apply_time !=''">and apply_time=#{apply_time}</if>
+		<if test="p_status !=null and p_status !=''">and p_status=#{p_status}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		ORDER BY apply_time
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Output" resultType="java.lang.Integer">
+		select count(*)
+		from db_quasi_output t
+		where 1=1
+		<if test="p_id !=null and p_id !=''">and t.p_id=#{p_id}</if>
+		<if test="crop_name !=null and crop_name !=''">and t.crop_name=#{crop_name}</if>
+		<if test="crop_id !=null and crop_id !=''">and t.crop_id=#{crop_id}</if>
+		<if test="report_num !=null and report_num !=''">and t.report_num=#{report_num}</if>
+		<if test="outfit_id !=null and outfit_id !=''">and t.outfit_id=#{outfit_id}</if>
+		<if test="outfit_name !=null and outfit_name !=''">and t.outfit_name=#{outfit_name}</if>
+		<if test="applyer !=null and applyer !=''">and t.applyer=#{applyer}</if>
+		<if test="apply_time !=null and apply_time !=''">and t.apply_time=#{apply_time}</if>
+		<if test="p_status !=null and p_status !=''">and t.p_status=#{p_status}</if>
+		<if test="farm_id !=null and farm_id !=''">and t.farm_id=#{farm_id}</if>
+	</select>
+</mapper>

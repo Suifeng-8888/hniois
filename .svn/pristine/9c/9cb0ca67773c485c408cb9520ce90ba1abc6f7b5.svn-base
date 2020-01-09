@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>金明源农产品追溯</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/new_main.css">
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="../css/public.css">
+    <link rel="stylesheet" href="../css/ny.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+</head>
+
+<body>
+
+<!-- 头部 -->
+<div class="navbar ">
+    <div class="container w-100">
+        <div class="navbar-header ">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand pad-0" href="index.html">
+                <img alt="Brand" src="../imgs/logo.png">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" role="navigation">
+            <ul class="nav navbar-nav navbar-right hidden-xm">
+                <li class="hidden-sm hidden-md">
+                    <a href="index.html" style="background-color: #1068be">首页</a>
+                </li>
+                <li>
+                    <a href="company.html">企业查询</a>
+                </li>
+                <li>
+                    <a href="product.html">产品查询</a>
+                </li>
+                <li>
+                    <a href="consumption.html">监管巡查</a>
+                </li>
+                <li>
+                    <a href="complain.html">投诉建议</a>
+                </li>
+                <li>
+                    <a href="aboutUs.html">关于我们</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div><!-- 头部end -->
+<!-- banner -->
+<div class="jumbotron">
+    <div class="container jum-box">
+        <!-- pc显示 banner字体 -->
+        <h2 class="white hidden-xs">来源可追查&nbsp;去向可查证 &nbsp;责任可追究</h2>
+        <p class="white hidden-xs">Source can be traced traceability can be verified<br /> responsibility can be
+            investigated</p>
+        <!-- 手机显示 banner字体 -->
+        <p class="white visible-xs-block xs-text xs-text-top">来源可追查&nbsp;去向可查证</p>
+        <p class="white visible-xs-block xs-text">责任可追究</p>
+        <p class="white visible-xs-block xs-text ">Source can be traced traceability </p>
+        <!-- end -->
+        <div class="banner-greens visible-lg-block visible-md-block"></div>
+        <div class="row search-box">
+            <div class="col-lg-4 col-md-5 col-sm-6 hidden-xs">
+                <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="search_code">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    <input type="text" class="form-control" placeholder="请输入17位产品追溯码" id="code">
+                </div><!-- /input-group -->
+            </div>
+        </div><!-- /.row -->
+    </div>
+</div> <!-- banner end -->
+<!--手机显示 搜索框-->
+<div class="container visible-xs-block m-b-20">
+    <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" id="mocing_btn">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+        <form action="#" id="moving_code">
+            <input type="text" class="form-control" placeholder="18792934000000711">
+        </form>
+    </div><!-- /.row -->
+</div>
+
+<div class="submain" id='app'>
+    <div class="position">
+        <div class="wrapper">
+            <div class="position_tit"><span class="tit">追溯码查询信息</span>&nbsp;/&nbsp;Trace Code Query Information</div>
+            <div class="sub_position">
+                您现在的位置：<a href="index.html">首页</a>&nbsp;&gt;&nbsp;追溯码查询信息
+            </div>
+        </div>
+    </div>
+    <div class="trace-cpxx productDiv" style="height:135px;">
+        <dl>
+            <dt>
+                <img :src= b_img class="ns-pic">
+            </dt>
+            <dd>
+                <p><b>产品名称：</b>{{name}}</p>
+                <p><b>采摘时间：</b>{{time}}</p>
+                <p><b>生产基地：</b>{{p_name}}</p>
+                <p><b>企业地址：</b>{{p_address}}</p>
+                <p><b></b></p>
+            </dd>
+        </dl>
+    </div>
+    <!-- Tab按钮 -->
+    <div class="slideTxtBox">
+        <div class="hd">
+            <ul>
+                <li v-for="(item, index) in tabList" :class="{'on':index == action_index}" @click=" action_index=index ">{{item}}</li>
+            </ul>
+        </div>
+        <div class="bd">
+            <!-- 农事信息 -->
+            <div class="trace-ns" v-show='action_index==0'>
+                <div class="bellows" id="activityDiv">
+                    <div class="bellows__item" :class="{'bellows--is-open':item.show}" v-for="(item,index) in nsData">
+                        <div class="bellows__header" @click='bellowHeade(item,index)'>
+                            <div class="nshh">{{item.name}}</div>
+                            <div :class="item.show? 'open': 'closeDiv' "></div>
+                            <div class="time">{{item.time}}</div>
+                        </div>
+                        <div class="bellows__content">
+                            <div class="ncp_detail">
+                                <div class="style-ncp" v-for="(list,index) in item.list">
+                                    <div class="container">
+                                        <div class="row" v-if=" item.list.length-1===index">
+                                            <div class="col-xs-10 col-xs-offset-1 tpxx" v-if="list.img">
+                                                <img :src="list.img" alt="" class="pic" style="width:500px;">
+                                            </div>
+                                            <div v-else>
+                                                <span>{{list.key}}：</span>
+                                                <span>{{list.val}}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span>{{list.key}}：</span>
+                                            <span>{{list.val}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 区域信息 -->
+            <div class="trace-ns" v-show='action_index==1'>
+                <div class="bellows" id="testDiv">
+                    <div class="bellows__item" :class="{'bellows--is-open':item.show}" v-for="(item,index) in qyData">
+                        <div class="bellows__header" @click='bellowHeade(item,index)'>
+                            <div class="nshh">{{item.name}}</div>
+                            <div :class="item.show? 'open': 'closeDiv' "></div>
+                            <div class="time">{{item.time}}</div>
+                        </div>
+                        <div class="bellows__content">
+                            <div class="ncp_detail">
+                                <div class="style-ncp" v-for="(list,index) in item.list">
+                                    <div class="container">
+                                        <div class="row" v-if=" item.list.length-1===index">
+                                            <div class="col-xs-10 col-xs-offset-1 tpxx" v-if="list.img">
+                                                <img :src="list.img" alt="" class="pic" style="width:500px;">
+                                            </div>
+                                            <div v-else>
+                                                <span>{{list.key}}:</span>
+                                                <span>{{list.val}}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span>{{list.key}}:</span>
+                                            <span>{{list.val}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 检测报告 -->
+            <div class="trace-ns" v-show='action_index==2'>
+                <div class="bellows">
+                    <div class="bellows__item" :class="{'bellows--is-open':item.show}" v-for="(item,index) in jcData">
+                        <div class="bellows__header" @click='bellowHeade(item,index)'>
+                            <div class="nshh">{{item.name}}</div>
+                            <div :class="item.show? 'open': 'closeDiv' "></div>
+                            <div class="time">{{item.time}}</div>
+                        </div>
+                        <div class="bellows__content">
+                            <div class="ncp_detail">
+                                <div class="style-ncp" v-for="(list,index) in item.list">
+                                    <div class="container">
+                                        <div v-if=" item.list.length-1===index">
+                                            <div class="col-xs-10 col-xs-offset-1" v-if="list.img">
+                                                <p>标签信息： </p>
+                                                <img :src="list.img" alt="" class="pic">
+                                            </div>
+                                            <div v-else>
+                                                <span>{{list.key}}：</span>
+                                                <span>{{list.val}}</span>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span>{{list.key}}：</span>
+                                            <span>{{list.val}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="foot-info">
+        Copyright © 2018  金明源农产品溯源公共信息服务平台<br  >
+        <!--主办方：XXXXXXX&nbsp;|&nbsp;技术支持：XXX-->
+    </div>
+</footer>
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script src="../js/jquery.params.js"></script>
+<script src="../js/config.js"></script>
+<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+<script>
+    var code = localStorage.getItem("code");
+    // var code = $.query.get("reviewCode");
+    $("#code").val(code);
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            b_img:"",
+            name:"",
+            p_name:"",
+            time:"",
+            p_address:"",
+            action_index: 0,
+            tabList: ['农事信息', '区域信息', '检测报告'],
+            nsData: [],
+            qyData: [],
+            jcData: []
+        },
+        mounted: function(){
+            this.getData()
+        },
+        methods: {
+            getData: function(){
+                var that = this;
+                $.ajax({
+                    url: BaseUrl + "query",
+                    data: {"source_code":code},
+                    type: "post",
+                    dataType: 'json',
+                    success: function (rest) {
+                        console.log(rest)
+                        var report = rest.report;
+                        var farm = rest.farm;
+                        var harvest = rest.harvest;
+                        var chemical = rest.chemical;
+                        var seed = rest.seed;
+                        var poison = rest.poison;
+
+                        that.b_img = that.checkImgFn(rest.chemical.c_img)[0];
+                        that.name =  chemical.crop
+                        that.time =  harvest.h_time
+                        that.p_address =  farm.p_address
+                        that.p_name =  farm.p_name
+
+                        that.nsData = [{
+                            show: true,
+                            name: '播种',
+                            time: seed.s_time,
+                            list: [{key: '播种人', val: seed.people},
+                                {key: '种子名称', val: seed.s_name},
+                                {key: '播种时间', val: seed.s_time},
+                                {img:that.checkImgFn(seed.s_img)[0]}]
+                        }, {
+                            show: false,
+                            name: '施肥',
+                            time: chemical.c_time,
+                            list: [{key: '施肥人', val: chemical.person},
+                                {key: '肥料名称', val: chemical.cname},
+                                {key: '施肥时间', val: chemical.c_time},
+                                {img:that.checkImgFn(chemical.c_img)[0]}]
+                        }, {
+                            show: false,
+                            name: '打药',
+                            time: poison.p_time,
+                            list: [{key: '打药人', val: poison.person},
+                                {key: '农药名称', val: poison.pname},
+                                {key: '打药时间', val: poison.p_time},
+                                {img:that.checkImgFn(poison.p_img)[0]}]
+                        }, {
+                            show: false,
+                            name: '采摘',
+                            time: harvest.h_time,
+                            list: [{key: '采摘作物', val: harvest.crop},
+                                {key: '采摘人', val: harvest.person},
+                                {key: '采摘时间', val: harvest.h_time},
+                                {img: that.checkImgFn(harvest.h_img)[0]}
+                            ]
+                        }]
+
+                        // 区域信息
+                        that.qyData=[{
+                            name: '区域信息',
+                            time: '2015-03-22',
+                            show: true,
+                            list: [{key: '生产基地', val: farm.p_name},
+                                {key: '所属行业', val: farm.p_industry},
+                                {key: '负责人', val: farm.p_person},
+                                {key: '联系电话', val: farm.p_phone},
+                                {key: '基地地址', val: farm.p_address}
+                            ]
+                        }];
+
+                        that.jcData = [{
+                            show: true,
+                            name: '检测报告',
+                            time: report.ck_time,
+                            list: [{
+                                key: '检测编号',
+                                val: report.report_num
+                            }, {
+                                key: '报告名称',
+                                val: report.report_name
+                            }, {
+                                key: '检测机构',
+                                val: report.office
+                            },{
+                                key: '产品名称',
+                                val: report.crop
+                            },{
+                                key: '检测时间',
+                                val: report.ck_time
+                            },{
+                                key: '检测结果',
+                                val: report.result?"合格":"不合格"
+                            },
+                            {
+                                img: that.checkImgFn(report.report_img)[0]
+                            }
+                            ]
+                        }]
+                    },
+                    error: function () {
+                        alert("数据查询异常.")
+                    }
+                });
+
+            },
+            // 控制列表显示隐藏
+            bellowHeade: function (item, index) {
+                item.show = !item.show;
+            },
+            // 处理后台返回的图片  =》 Arr
+            handleImg:function (resImg) {
+                let imgArr = resImg.split(',')
+                imgArr.pop()
+                return imgArr
+            },
+            // 处理后台返回的图片加 前缀
+            checkImgFn:function(resImg){
+                var  that = this;
+                var imgArr = this.handleImg(resImg);
+                var imgCheckArr = [];
+                imgArr.forEach(function(item){
+                    imgCheckArr.push(imgPath + item)
+                })
+                return imgCheckArr
+            }
+        }
+    })
+</script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+package com.hniois.trace.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.entity.statistics.OrderCount;
+import com.hniois.trace.entity.Order;
+
+import java.util.List;
+
+public interface OrderManage extends Service<Order> {
+    List<OrderCount> countWeek(Order e) throws Exception;
+
+    List<OrderCount> countMonth(Order e) throws Exception;
+}

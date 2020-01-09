@@ -1,0 +1,73 @@
+package com.hniois.trace.entity;
+
+import com.hniois.common.page.Page;
+
+/**
+ * 追溯二维码
+ */
+public class QRcode extends Page {
+    //code_id,random_code,batch,rule_code,begin_code,end_code,code_img
+    private String code_id;//注释码ID
+    private String random_code;//随机防伪码
+    private String batch;//产品批次
+    private String rule_code;//国家编制码
+    private String begin_code;//开始条码
+    private String end_code;//结束条码
+    private String code_img;//条码图片 自己打印二维码时可能会用到
+
+    public String getCode_id() {
+        return code_id;
+    }
+
+    public void setCode_id(String code_id) {
+        this.code_id = code_id;
+    }
+
+    public String getRandom_code() {
+        return random_code;
+    }
+
+    public void setRandom_code(String random_code) {
+        this.random_code = random_code;
+    }
+
+    public String getBatch() {
+        return batch;
+    }
+
+    public void setBatch(String batch) {
+        this.batch = batch;
+    }
+
+    public String getRule_code() {
+        return rule_code;
+    }
+
+    public void setRule_code(String rule_code) {
+        this.rule_code = rule_code;
+    }
+
+    public String getBegin_code() {
+        return begin_code;
+    }
+
+    public void setBegin_code(String begin_code) {
+        this.begin_code = begin_code;
+    }
+
+    public String getEnd_code() {
+        return end_code;
+    }
+
+    public void setEnd_code(String end_code) {
+        this.end_code = end_code;
+    }
+
+    public String getCode_img() {
+        return code_img;
+    }
+
+    public void setCode_img(String code_img) {
+        this.code_img = code_img;
+    }
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NoteMapper">
+	<!--分页查询-->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Note" resultType="com.hniois.monitor.entity.Note">
+		SELECT * FROM r_note
+		<where>
+			<if test="task_name != '' and task_name != null">task_name LIKE '%${task_name}%'</if>
+			<if test="execute_time != '' and execute_time != null">AND execute_time = #{execute_time}</if>
+			<if test="task_target != '' and task_target != null">AND task_target = #{task_target}</if>
+			<if test="task_epilog != '' and task_epilog != null">AND task_epilog = #{task_epilog}</if>
+		</where>
+		limit #{offset},#{pageSize}
+	</select>
+	<!--分页查询count-->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Note" resultType="java.lang.Integer">
+		SELECT count(*) FROM r_note
+		<where>
+            <if test="task_name != '' and task_name != null">task_name LIKE '%${task_name}%'</if>
+			<if test="execute_time != '' and execute_time != null">AND execute_time = #{execute_time}</if>
+			<if test="task_target != '' and task_target != null">AND task_target = #{task_target}</if>
+			<if test="task_epilog != '' and task_epilog != null">AND task_epilog = #{task_epilog}</if>
+		</where>
+	</select>
+	<!--单个查询-->
+	<select id="find" parameterType="com.hniois.monitor.entity.Note" resultType="com.hniois.monitor.entity.Note">
+		SELECT * FROM r_note WHERE id = #{id}
+	</select>
+
+	<select id="findList" parameterType="com.hniois.monitor.entity.Note" resultType="com.hniois.monitor.entity.Note">
+		SELECT * FROM r_note
+		<where>
+			<if test="task_name != '' and task_name != null">task_name = ${task_name}</if>
+			<if test="execute_time != '' and execute_time != null">AND execute_time = #{execute_time}</if>
+			<if test="task_target != '' and task_target != null">AND task_target = #{task_target}</if>
+			<if test="task_epilog != '' and task_epilog != null">AND task_epilog = #{task_epilog}</if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.hniois.monitor.entity.Note" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO r_note
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="task_name != null and task_name != ''" >task_name,</if>
+			<if test="execute_time != null and execute_time != ''" >execute_time,</if>
+			<if test="task_target != null and task_target != ''" >task_target,</if>
+			<if test="task_epilog != null and task_epilog != ''" >task_epilog,</if>
+		</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="task_name != null and task_name != ''" >#{task_name},</if>
+			<if test="execute_time != null and execute_time != ''" >#{execute_time},</if>
+			<if test="task_target != null and task_target != ''" >#{task_target},</if>
+			<if test="task_epilog != null and task_epilog != ''" >#{task_epilog},</if>
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="com.hniois.monitor.entity.Note">
+		UPDATE r_note
+		<set>
+			<if test="task_name != null and task_name != ''" >task_name = #{task_name},</if>
+			<if test="execute_time != null and execute_time != ''" >execute_time = #{execute_time},</if>
+			<if test="task_target != null and task_target != ''" >task_target = #{task_target},</if>
+			<if test="task_epilog != null and task_epilog != ''" >task_epilog = #{task_epilog},</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Note">
+		DELETE FROM r_note WHERE id = #{id}
+	</delete>
+
+	<delete id="deleteBatch" parameterType="com.hniois.monitor.entity.Note">
+		DELETE FROM r_note
+		WHERE id IN
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

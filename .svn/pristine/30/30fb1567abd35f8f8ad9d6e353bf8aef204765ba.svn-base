@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Report"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_report(
+		<if test="report_id!='' and report_id!=null">report_id</if>
+		<if test="report_name!='' and report_name!=null">,report_name</if>
+		<if test="product_name!='' and product_name!=null">,product_name</if>
+		<if test="product_batch!='' and product_batch!=null">,product_batch</if>
+		<if test="result!='' and result!=null">,result</if>
+		<if test="clerker!='' and clerker!=null">,clerker</if>
+		<if test="ck_time!='' and ck_time!=null">,ck_time</if>
+		<if test="operator!='' and operator!=null">,operator</if>
+		<if test="create_time!='' and create_time!=null">,create_time</if>
+		<if test="report_img!='' and report_img!=null">,report_img</if>
+
+		)
+		VALUES (
+		<if test="report_id!='' and report_id!=null">#{report_id}</if>
+		<if test="report_name!='' and report_name!=null">,#{report_name}</if>
+		<if test="product_name!='' and product_name!=null">,#{product_name}</if>
+		<if test="product_batch!='' and product_batch!=null">,#{product_batch}</if>
+		<if test="result!='' and result!=null">,#{result}</if>
+		<if test="clerker!='' and clerker!=null">,#{clerker}</if>
+		<if test="ck_time!='' and ck_time!=null">,#{ck_time}</if>
+		<if test="operator!='' and operator!=null">,#{operator}</if>
+		<if test="create_time!='' and create_time!=null">,#{create_time}</if>
+		<if test="report_img!='' and report_img!=null">,#{report_img}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Report">
+		insert into r_report
+		(report_id,report_name,product_name,product_batch,result,clerker,ck_time,operator,create_time,report_img)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.report_id},
+			#{e.report_name},
+			#{e.product_name},
+			#{e.product_batch},
+			#{e.result},
+			#{e.clerker},
+			#{e.ck_time},
+			#{e.operator},
+			#{e.create_time},
+			#{e.report_img}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Report">
+		update r_report
+		<set>
+			<if test="report_id !=null and report_id !=''">report_id=#{report_id},</if>
+			<if test="report_name !=null and report_name !=''">report_name=#{report_name},</if>
+			<if test="product_name !=null and product_name !=''">product_name=#{product_name},</if>
+			<if test="product_batch !=null and product_batch !=''">product_batch=#{product_batch},</if>
+			<if test="result !=null and result !=''">result=#{result},</if>
+			<if test="clerker !=null and clerker !=''">clerker=#{clerker},</if>
+			<if test="ck_time !=null and ck_time !=''">ck_time=#{ck_time},</if>
+			<if test="operator !=null and operator !=''">operator=#{operator},</if>
+			<if test="create_time !=null and create_time !=''">create_time=#{create_time},</if>
+			<if test="report_img !=null and report_img !=''">report_img=#{report_img},</if>
+			<if test="report_path!='' and report_path!=null">
+				`report_img`= REPLACE(`report_img`,CONCAT(#{report_path},','),''),
+			</if>
+		</set>
+		where report_id=#{report_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Report">
+		update r_report
+		<set>
+			<if test="report_id !=null and report_id !=''">report_id=#{report_id},</if>
+			<if test="report_name !=null and report_name !=''">report_name=#{report_name},</if>
+			<if test="product_name !=null and product_name !=''">product_name=#{product_name},</if>
+			<if test="product_batch !=null and product_batch !=''">product_batch=#{product_batch},</if>
+			<if test="result !=null and result !=''">result=#{result},</if>
+			<if test="clerker !=null and clerker !=''">clerker=#{clerker},</if>
+			<if test="ck_time !=null and ck_time !=''">ck_time=#{ck_time},</if>
+			<if test="operator !=null and operator !=''">operator=#{operator},</if>
+			<if test="create_time !=null and create_time !=''">create_time=#{create_time},</if>
+			<if test="report_img !=null and report_img !=''">report_img=#{report_img},</if>
+		</set>
+		where report_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Report">
+		delete from r_report where 1=1
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="product_name !=null and product_name !=''">and product_name=#{product_name}</if>
+		<if test="product_batch !=null and product_batch !=''">and product_batch=#{product_batch}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="clerker !=null and clerker !=''">and clerker=#{clerker}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="operator !=null and operator !=''">and operator=#{operator}</if>
+		<if test="create_time !=null and create_time !=''">and create_time=#{create_time}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_report
+		where report_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Report" resultType="com.hniois.monitor.entity.Report">
+		select *
+		from r_report
+		where 1=1
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="product_name !=null and product_name !=''">and product_name=#{product_name}</if>
+		<if test="product_batch !=null and product_batch !=''">and product_batch=#{product_batch}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="clerker !=null and clerker !=''">and clerker=#{clerker}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="operator !=null and operator !=''">and operator=#{operator}</if>
+		<if test="create_time !=null and create_time !=''">and create_time=#{create_time}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Report" resultType="com.hniois.monitor.entity.Report">
+		select *
+		from r_report
+		where 1=1
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="product_name !=null and product_name !=''">and product_name=#{product_name}</if>
+		<if test="product_batch !=null and product_batch !=''">and product_batch=#{product_batch}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="clerker !=null and clerker !=''">and clerker=#{clerker}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="operator !=null and operator !=''">and operator=#{operator}</if>
+		<if test="create_time !=null and create_time !=''">and create_time=#{create_time}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Report" resultType="java.lang.Integer">
+		select count(*)
+		from r_report
+		where 1=1
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="product_name !=null and product_name !=''">and product_name=#{product_name}</if>
+		<if test="product_batch !=null and product_batch !=''">and product_batch=#{product_batch}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="clerker !=null and clerker !=''">and clerker=#{clerker}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="operator !=null and operator !=''">and operator=#{operator}</if>
+		<if test="create_time !=null and create_time !=''">and create_time=#{create_time}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Report" resultType="com.hniois.monitor.entity.Report">
+		select *
+		from r_report
+		where 1=1
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="product_name !=null and product_name !=''">and product_name=#{product_name}</if>
+		<if test="product_batch !=null and product_batch !=''">and product_batch=#{product_batch}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="clerker !=null and clerker !=''">and clerker=#{clerker}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="operator !=null and operator !=''">and operator=#{operator}</if>
+		<if test="create_time !=null and create_time !=''">and create_time=#{create_time}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Report" resultType="java.lang.Integer">
+		select count(*)
+		from r_report
+		where 1=1
+		<if test="report_id !=null and report_id !=''">and report_id=#{report_id}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="product_name !=null and product_name !=''">and product_name=#{product_name}</if>
+		<if test="product_batch !=null and product_batch !=''">and product_batch=#{product_batch}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="clerker !=null and clerker !=''">and clerker=#{clerker}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="operator !=null and operator !=''">and operator=#{operator}</if>
+		<if test="create_time !=null and create_time !=''">and create_time=#{create_time}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+	</select>
+</mapper>

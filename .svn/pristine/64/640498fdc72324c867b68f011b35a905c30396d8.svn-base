@@ -1,0 +1,24 @@
+layui.use(["form"], function () {
+    var form = layui.form;
+    form.on("submit(formSave)", function (data) {
+        var url = BaseUrl + "complain/save";
+        $.ajax({
+            url: url,
+            data: data.field,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                if(result.code == 0){
+                    alert("添加成功...");
+                    window.location.href = "index.html";
+                } else {
+                    alert("添加失败....");
+                }
+            },
+            error: function () {
+                alert("系统异常....");
+            }
+        });
+        return false;
+    });
+});

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VaccineMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Vaccine"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_bred_vaccine(va_id
+		<if test="var_name!='' and var_name!=null">,var_name</if>
+		<if test="var_num!='' and var_num!=null">,var_num</if>
+		<if test="var_time!='' and var_time!=null">,var_time</if>
+		<if test="var_doctor!='' and var_doctor!=null">,var_doctor</if>
+		<if test="breed_id!='' and breed_id!=null">,breed_id</if>
+		)
+		VALUES (va_id
+		<if test="var_name!='' and var_name!=null">,#{var_name}</if>
+		<if test="var_num!='' and var_num!=null">,#{var_num}</if>
+		<if test="var_time!='' and var_time!=null">,#{var_time}</if>
+		<if test="var_doctor!='' and var_doctor!=null">,#{var_doctor}</if>
+		<if test="breed_id!='' and breed_id!=null">,#{breed_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Vaccine">
+		insert into r_bred_vaccine
+		(va_id,var_name,var_num,var_time,var_doctor,breed_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.va_id},
+			#{e.var_name},
+			#{e.var_num},
+			#{e.var_time},
+			#{e.var_doctor},
+			#{e.breed_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Vaccine">
+		update r_bred_vaccine
+		<set>
+			<if test="va_id !=null and va_id !=''">va_id=#{va_id},</if>
+			<if test="var_name !=null and var_name !=''">var_name=#{var_name},</if>
+			<if test="var_num !=null and var_num !=''">var_num=#{var_num},</if>
+			<if test="var_time !=null and var_time !=''">var_time=#{var_time},</if>
+			<if test="var_doctor !=null and var_doctor !=''">var_doctor=#{var_doctor},</if>
+			<if test="breed_id !=null and breed_id !=''">breed_id=#{breed_id},</if>
+		</set>
+		where va_id=#{va_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Vaccine">
+		update r_bred_vaccine
+		<set>
+			<if test="va_id !=null and va_id !=''">va_id=#{va_id},</if>
+			<if test="var_name !=null and var_name !=''">var_name=#{var_name},</if>
+			<if test="var_num !=null and var_num !=''">var_num=#{var_num},</if>
+			<if test="var_time !=null and var_time !=''">var_time=#{var_time},</if>
+			<if test="var_doctor !=null and var_doctor !=''">var_doctor=#{var_doctor},</if>
+			<if test="breed_id !=null and breed_id !=''">breed_id=#{breed_id},</if>
+		</set>
+		where va_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Vaccine">
+		delete from r_bred_vaccine where 1=1
+		<if test="va_id !=null and va_id !=''">and va_id=#{va_id}</if>
+		<if test="var_name !=null and var_name !=''">and var_name=#{var_name}</if>
+		<if test="var_num !=null and var_num !=''">and var_num=#{var_num}</if>
+		<if test="var_time !=null and var_time !=''">and var_time=#{var_time}</if>
+		<if test="var_doctor !=null and var_doctor !=''">and var_doctor=#{var_doctor}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_bred_vaccine
+		where va_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Vaccine" resultType="com.hniois.monitor.entity.Vaccine">
+		select *
+		from r_bred_vaccine
+		where 1=1
+		<if test="va_id !=null and va_id !=''">and va_id=#{va_id}</if>
+		<if test="var_name !=null and var_name !=''">and var_name=#{var_name}</if>
+		<if test="var_num !=null and var_num !=''">and var_num=#{var_num}</if>
+		<if test="var_time !=null and var_time !=''">and var_time=#{var_time}</if>
+		<if test="var_doctor !=null and var_doctor !=''">and var_doctor=#{var_doctor}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Vaccine" resultType="com.hniois.monitor.entity.Vaccine">
+		select t.*
+		from r_bred_vaccine t
+		where 1=1
+		<if test="va_id !=null and va_id !=''">and t.va_id=#{va_id}</if>
+		<if test="var_name !=null and var_name !=''">and t.var_name=#{var_name}</if>
+		<if test="var_num !=null and var_num !=''">and t.var_num=#{var_num}</if>
+		<if test="var_time !=null and var_time !=''">and t.var_time=#{var_time}</if>
+		<if test="var_doctor !=null and var_doctor !=''">and t.var_doctor=#{var_doctor}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Vaccine" resultType="java.lang.Integer">
+		select count(*)
+		from r_bred_vaccine t
+		where 1=1
+		<if test="va_id !=null and va_id !=''">and t.va_id=#{va_id}</if>
+		<if test="var_name !=null and var_name !=''">and t.var_name=#{var_name}</if>
+		<if test="var_num !=null and var_num !=''">and t.var_num=#{var_num}</if>
+		<if test="var_time !=null and var_time !=''">and t.var_time=#{var_time}</if>
+		<if test="var_doctor !=null and var_doctor !=''">and t.var_doctor=#{var_doctor}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Vaccine" resultType="com.hniois.monitor.entity.Vaccine">
+		select *
+		from r_bred_vaccine
+		where 1=1
+		<if test="va_id !=null and va_id !=''">and va_id=#{va_id}</if>
+		<if test="var_name !=null and var_name !=''">and var_name=#{var_name}</if>
+		<if test="var_num !=null and var_num !=''">and var_num=#{var_num}</if>
+		<if test="var_time !=null and var_time !=''">and var_time=#{var_time}</if>
+		<if test="var_doctor !=null and var_doctor !=''">and var_doctor=#{var_doctor}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Vaccine" resultType="java.lang.Integer">
+		select count(*)
+		from r_bred_vaccine t
+		where 1=1
+		<if test="va_id !=null and va_id !=''">and t.va_id=#{va_id}</if>
+		<if test="var_name !=null and var_name !=''">and t.var_name=#{var_name}</if>
+		<if test="var_num !=null and var_num !=''">and t.var_num=#{var_num}</if>
+		<if test="var_time !=null and var_time !=''">and t.var_time=#{var_time}</if>
+		<if test="var_doctor !=null and var_doctor !=''">and t.var_doctor=#{var_doctor}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+	</select>
+</mapper>

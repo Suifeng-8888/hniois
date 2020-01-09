@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReportMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Report"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_report(
+		<if test="rid!='' and rid!=null">rid</if>
+		<if test="report_num!='' and report_num!=null">,report_num</if>
+		<if test="report_name!='' and report_name!=null">,report_name</if>
+		<if test="crop!='' and crop!=null">,crop</if>
+		<if test="crop_id!='' and crop_id!=null">,crop_id</if>
+		<if test="office!='' and office!=null">,office</if>
+		<if test="ck_time!='' and ck_time!=null">,ck_time</if>
+		<if test="result!='' and result!=null">,result</if>
+		<if test="report_img!='' and report_img!=null">,report_img</if>
+		<if test="farm_id!='' and farm_id!=null">,farm_id</if>
+
+		)
+		VALUES (
+		<if test="rid!='' and rid!=null">#{rid}</if>
+		<if test="report_num!='' and report_num!=null">,#{report_num}</if>
+		<if test="report_name!='' and report_name!=null">,#{report_name}</if>
+		<if test="crop!='' and crop!=null">,#{crop}</if>
+		<if test="crop_id!='' and crop_id!=null">,#{crop_id}</if>
+		<if test="office!='' and office!=null">,#{office}</if>
+		<if test="ck_time!='' and ck_time!=null">,#{ck_time}</if>
+		<if test="result!='' and result!=null">,#{result}</if>
+		<if test="report_img!='' and report_img!=null">,#{report_img}</if>
+		<if test="farm_id!='' and farm_id!=null">,#{farm_id}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Report">
+		insert into r_report
+		(rid,report_num,report_name,crop,crop_id,office,ck_time,result,report_img,farm_id)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.rid},
+			#{e.report_num},
+			#{e.report_name},
+			#{e.crop},
+			#{e.crop_id},
+			#{e.office},
+			#{e.ck_time},
+			#{e.result},
+			#{e.report_img},
+			#{e.farm_id}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Report">
+		update r_report
+		<set>
+			<if test="rid !=null and rid !=''">rid=#{rid},</if>
+			<if test="report_num !=null and report_num !=''">report_num=#{report_num},</if>
+			<if test="report_name !=null and report_name !=''">report_name=#{report_name},</if>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="office !=null and office !=''">office=#{office},</if>
+			<if test="ck_time !=null and ck_time !=''">ck_time=#{ck_time},</if>
+			<if test="result !=null and result !=''">result=#{result},</if>
+			<if test="report_img !=null and report_img !=''">report_img=#{report_img},</if>
+			<if test="report_path!='' and report_path!=null">
+				`report_img`= REPLACE(`report_img`,CONCAT(#{report_path},','),''),
+			</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where rid=#{rid}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Report">
+		update r_report
+		<set>
+			<if test="rid !=null and rid !=''">rid=#{rid},</if>
+			<if test="report_num !=null and report_num !=''">report_num=#{report_num},</if>
+			<if test="report_name !=null and report_name !=''">report_name=#{report_name},</if>
+			<if test="crop !=null and crop !=''">crop=#{crop},</if>
+			<if test="crop_id !=null and crop_id !=''">crop_id=#{crop_id},</if>
+			<if test="office !=null and office !=''">office=#{office},</if>
+			<if test="ck_time !=null and ck_time !=''">ck_time=#{ck_time},</if>
+			<if test="result !=null and result !=''">result=#{result},</if>
+			<if test="report_img !=null and report_img !=''">report_img=#{report_img},</if>
+			<if test="farm_id !=null and farm_id !=''">farm_id=#{farm_id},</if>
+		</set>
+		where rid in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Report">
+		delete from r_report where 1=1
+		<if test="rid !=null and rid !=''">and rid=#{rid}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="office !=null and office !=''">and office=#{office}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_report
+		where rid in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Report" resultType="com.hniois.monitor.entity.Report">
+		select *
+		from r_report
+		where 1=1
+		<if test="rid !=null and rid !=''">and rid=#{rid}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="office !=null and office !=''">and office=#{office}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Report"  resultType="com.hniois.monitor.entity.Report">
+		select *
+		from r_report
+		where 1=1
+		<if test="rid !=null and rid !=''">and rid=#{rid}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="office !=null and office !=''">and office=#{office}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Report" resultType="java.lang.Integer">
+		select count(*)
+		from r_report
+		where 1=1
+		<if test="rid !=null and rid !=''">and rid=#{rid}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="office !=null and office !=''">and office=#{office}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Report" resultType="com.hniois.monitor.entity.Report">
+		select *
+		from r_report
+		where 1=1
+		<if test="rid !=null and rid !=''">and rid=#{rid}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="office !=null and office !=''">and office=#{office}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Report" resultType="java.lang.Integer">
+		select count(*)
+		from r_report
+		where 1=1
+		<if test="rid !=null and rid !=''">and rid=#{rid}</if>
+		<if test="report_num !=null and report_num !=''">and report_num=#{report_num}</if>
+		<if test="report_name !=null and report_name !=''">and report_name=#{report_name}</if>
+		<if test="crop !=null and crop !=''">and crop=#{crop}</if>
+		<if test="crop_id !=null and crop_id !=''">and crop_id=#{crop_id}</if>
+		<if test="office !=null and office !=''">and office=#{office}</if>
+		<if test="ck_time !=null and ck_time !=''">and ck_time=#{ck_time}</if>
+		<if test="result !=null and result !=''">and result=#{result}</if>
+		<if test="report_img !=null and report_img !=''">and report_img=#{report_img}</if>
+		<if test="farm_id !=null and farm_id !=''">and farm_id=#{farm_id}</if>
+	</select>
+</mapper>

@@ -1,0 +1,140 @@
+package com.hniois.web.h5;
+
+import com.hniois.monitor.entity.*;
+import com.hniois.monitor.service.impl.*;
+//import com.hniois.trace.entity.Im_Porduct;
+import com.hniois.trace.entity.Order;
+//import com.hniois.trace.service.ImportManage;
+import com.hniois.trace.service.OrderManage;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Create By javaMan
+ * 2018/10/18  17:39
+ *
+ * H5 扫一扫 接口
+ */
+@RestController
+@RequestMapping("/webService/h5")
+public class SweepCodeWebService {
+
+    @Resource(name = "seedService")
+    private SeedService seedService;// 播种
+
+    @Resource(name = "chemicalService")
+    private ChemicalService chemicalService;// 施肥
+
+    @Resource(name = "poisonService")
+    private PoisonService poisonService;//  打药
+
+    @Resource(name = "harvestService")
+    private HarvestService harvestService;//    采摘
+
+//    @Resource(name = "handleService")
+//    private HandleService handleService;//  其它操作
+
+    @Resource(name = "reportService")
+    private ReportService reportService; // 检测报告
+
+    @Resource(name = "reportDetailService")
+    private ReportDetailService reportDetailService;// 检测报告详情
+
+//    @Resource(name = "importService")
+//    private ImportManage importManage; // 进货管理
+
+    @Resource(name = "providersService")
+    private ProvidersService providersService; // 经营主体(生产基地)
+
+    @Resource(name="orderService")
+    private OrderManage orderService; // 订单信息
+
+    /**
+     * h5 产品查询接口
+     * @param batch 产品批次号
+     * @return
+     */
+    @RequestMapping(value = "/sweep", method = RequestMethod.GET)
+    public Map<String,Object> sweep(String batch) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        if(StringUtils.isNotEmpty(batch)) {
+//            Im_Porduct im_porduct = new Im_Porduct();
+//            im_porduct.setIm_patch(batch);
+//            im_porduct = importManage.find(im_porduct);
+//            map.put("im_porduct", im_porduct); // 进货信息
+
+            Providers providers = new Providers();
+//            providers.setP_name(im_porduct.getSup_name());  //  产品生产企业名
+            providers = providersService.find(providers); // 企业信息
+            map.put("providers", providers);
+
+            Order order = new Order();
+            order.setBatch(batch);
+            List<Order> orders = orderService.findList(order);// 订单信息
+            map.put("orders", orders);
+        }
+        return map;
+    }
+
+    /**
+     * h5 生产日志
+     * @param crop 产品名称
+     * @return
+     */
+    @RequestMapping(value = "/log")
+    public Map<String,Object> produceLog(String crop) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(StringUtils.isNotEmpty(crop)) {
+            Seed seed = new Seed();
+            seed.setS_name(crop);
+            map.put("seeds", seedService.findList(seed)); // 播种
+
+            Chemical chemical = new Chemical();
+            chemical.setS_name(crop);
+            map.put("chemicals",chemicalService.findList(chemical)); // 施肥
+
+            Poison poison = new Poison();
+            poison.setS_name(crop);
+            map.put("poisons", poisonService.findList(poison));  // 打药
+
+            Harvest harvest = new Harvest();
+            harvest.setS_name(crop);
+            map.put("harvests", harvestService.findList(harvest));  //  采摘
+
+//            Handle handle = new Handle();
+//            handle.setS_name(crop);
+//            map.put("handles", handleService.findList(handle));
+        }
+        return map;
+    }
+
+    /**
+     *  产品检测报告
+     * @param batch 产品批次号
+     * @return
+     */
+    @RequestMapping(value = "/report", method = RequestMethod.GET)
+    public Map<String,Object> getReport(String batch) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(StringUtils.isNotEmpty(batch)) {
+            Report report = new Report();
+            report.setProduct_batch(batch);
+            report = reportService.find(report); // 检测报告
+
+            ReportDetail reportDetail = new ReportDetail();
+            reportDetail.setReport_id(report.getReport_id());
+            List<ReportDetail> reportDetails = reportDetailService.findList(reportDetail); // 检测报告详情
+
+            map.put("report", report);
+            map.put("reportDetails", reportDetails);
+        }
+        return map;
+    }
+}

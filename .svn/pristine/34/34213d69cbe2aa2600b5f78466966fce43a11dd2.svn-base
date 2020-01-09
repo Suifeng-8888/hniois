@@ -1,0 +1,125 @@
+package com.hniois.web.monitor;
+
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Poison;
+import com.hniois.monitor.service.PoisonManage;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping("/webService/poison")
+public class PoisonActionWeb extends BaseController {
+
+    @Resource(name="poisonService")
+    private PoisonManage poisonService;
+
+
+    /**
+     * 查询用过信息
+     * @param e
+     * @return
+     */
+    @RequestMapping("/findList")
+    public String findlist(Poison e)throws Exception{
+
+        List<Poison> list = poisonService.findList(e);
+        JSONArray js = JSONArray.fromObject(list);
+        return js.toString();
+    }
+
+    /**
+     * 查找对象
+     * http://localhost:8080/webService/batch/find?batch_id=1
+     * @param e
+     * @return
+     */
+    @RequestMapping("/find")
+    public String find(Poison e)throws Exception{
+
+        JSONObject json = getMsg();
+        if(StringUtils.isNotEmpty(e.getId())){
+            Poison poison=poisonService.find(e);
+            JSONObject js = JSONObject.fromObject(poison);
+            return js.toString();
+        }else{
+            setMsg(json,"error","无此对象");
+            return json.toString();
+        }
+    }
+
+    /**
+     * 保存新增
+     * @param e
+     * @return
+     */
+    @RequestMapping("/add")
+    public String add(Poison e)throws  Exception{
+        JSONObject obj=getMsg();
+        //先判断数据库是否已经存在当前对象
+        Poison p=new Poison();
+        p.setId(e.getId());
+        if(poisonService.findCount(p)>0){
+            setMsg(obj,"error","当前对象已存在");
+        }else{
+            poisonService.save(e);
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 编辑保存
+     * @param e
+     * @return
+     */
+    @RequestMapping("/update")
+    public String update(Poison e)throws Exception{
+        JSONObject obj=getMsg();
+        if(poisonService.findCount(e)>0){
+            poisonService.update(e);
+        }else{
+            setMsg(obj,"error","编辑失败");
+        }
+        return obj.toString();
+    }
+
+
+    /**
+     * 单个删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/delete")
+    public String delete(Poison e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getId()!=null) {
+            poisonService.delete(e);
+        }else {
+            setMsg(obj, "error", "删除失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 批量删除
+     * @param e
+     * @return
+     */
+    @RequestMapping("/deletes")
+    public String deletes(Poison e)throws Exception{
+        JSONObject obj=getMsg();
+        if(e.getData().size()>0){
+            poisonService.deleteBatch(e);
+        }else{
+            setMsg(obj,"error","删除失败");
+        }
+        return obj.toString();
+    }
+
+
+}

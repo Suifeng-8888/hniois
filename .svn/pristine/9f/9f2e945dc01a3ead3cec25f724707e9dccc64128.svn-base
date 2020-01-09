@@ -1,0 +1,11 @@
+package com.hniois.monitor.service;
+
+import com.hniois.common.service.Service;
+import com.hniois.monitor.entity.Chemical;
+
+/**
+ *  Chemical Manage
+ */
+public interface ChemicalManage extends Service<Chemical>{
+
+}

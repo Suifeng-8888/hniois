@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ButcherMapper">
+	<!-- 保存 -->
+	<insert id="save" parameterType="com.hniois.monitor.entity.Butcher"
+			useGeneratedKeys="true" keyProperty="id">
+		insert into r_butcher(but_id
+		<if test="bred_name!='' and bred_name!=null">,bred_name</if>
+		<if test="bred_age!='' and bred_age!=null">,bred_age</if>
+		<if test="breed_id!='' and breed_id!=null">,breed_id</if>
+		<if test="but_time!='' and but_time!=null">,but_time</if>
+		<if test="but_person!='' and but_person!=null">,but_person</if>
+		)
+		VALUES (but_id
+		<if test="bred_name!='' and bred_name!=null">,#{bred_name}</if>
+		<if test="bred_age!='' and bred_age!=null">,#{bred_age}</if>
+		<if test="breed_id!='' and breed_id!=null">,#{breed_id}</if>
+		<if test="but_time!='' and but_time!=null">,#{but_time}</if>
+		<if test="but_person!='' and but_person!=null">,#{but_person}</if>
+		)
+	</insert>
+
+	<!-- 批量保存 -->
+	<insert id="saveBatch" parameterType="com.hniois.monitor.entity.Butcher">
+		insert into r_butcher
+		(but_id,bred_name,bred_age,breed_id,but_time,but_person)
+		values
+		<foreach collection="list" item="e" index="index" separator=",">
+			(
+			#{e.but_id},
+			#{e.bred_name},
+			#{e.bred_age},
+			#{e.breed_id},
+			#{e.but_time},
+			#{e.but_person}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hniois.monitor.entity.Butcher">
+		update r_butcher
+		<set>
+			<if test="but_id !=null and but_id !=''">but_id=#{but_id},</if>
+			<if test="bred_name !=null and bred_name !=''">bred_name=#{bred_name},</if>
+			<if test="bred_age !=null and bred_age !=''">bred_age=#{bred_age},</if>
+			<if test="breed_id !=null and breed_id !=''">breed_id=#{breed_id},</if>
+			<if test="but_time !=null and but_time !=''">but_time=#{but_time},</if>
+			<if test="but_person !=null and but_person !=''">but_person=#{but_person},</if>
+		</set>
+		where but_id=#{but_id}
+	</update>
+
+	<!-- 批量修改 -->
+	<update id="updateBatch" parameterType="com.hniois.monitor.entity.Butcher">
+		update r_butcher
+		<set>
+			<if test="but_id !=null and but_id !=''">but_id=#{but_id},</if>
+			<if test="bred_name !=null and bred_name !=''">bred_name=#{bred_name},</if>
+			<if test="bred_age !=null and bred_age !=''">bred_age=#{bred_age},</if>
+			<if test="breed_id !=null and breed_id !=''">breed_id=#{breed_id},</if>
+			<if test="but_time !=null and but_time !=''">but_time=#{but_time},</if>
+			<if test="but_person !=null and but_person !=''">but_person=#{but_person},</if>
+		</set>
+		where but_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 删除 -->
+	<delete id="delete" parameterType="com.hniois.monitor.entity.Butcher">
+		delete from r_butcher where 1=1
+		<if test="but_id !=null and but_id !=''">and but_id=#{but_id}</if>
+		<if test="bred_name !=null and bred_name !=''">and bred_name=#{bred_name}</if>
+		<if test="bred_age !=null and bred_age !=''">and bred_age=#{bred_age}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="but_time !=null and but_time !=''">and but_time=#{but_time}</if>
+		<if test="but_person !=null and but_person !=''">and but_person=#{but_person}</if>
+	</delete>
+
+	<!-- 批量删除 -->
+	<delete id="deleteBatch" parameterType="java.util.ArrayList">
+		delete from r_butcher
+		where but_id in
+		<foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 查询 -->
+	<select id="find" parameterType="com.hniois.monitor.entity.Butcher" resultType="com.hniois.monitor.entity.Butcher">
+		select *
+		from r_butcher
+		where 1=1
+		<if test="but_id !=null and but_id !=''">and but_id=#{but_id}</if>
+		<if test="bred_name !=null and bred_name !=''">and bred_name=#{bred_name}</if>
+		<if test="bred_age !=null and bred_age !=''">and bred_age=#{bred_age}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="but_time !=null and but_time !=''">and but_time=#{but_time}</if>
+		<if test="but_person !=null and but_person !=''">and but_person=#{but_person}</if>
+	</select>
+
+	<!-- 查询List -->
+	<select id="findList" parameterType="com.hniois.monitor.entity.Butcher" resultType="com.hniois.monitor.entity.Butcher">
+		select t.*
+		from r_butcher t
+		where 1=1
+		<if test="but_id !=null and but_id !=''">and t.but_id=#{but_id}</if>
+		<if test="bred_name !=null and bred_name !=''">and t.bred_name=#{bred_name}</if>
+		<if test="bred_age !=null and bred_age !=''">and t.bred_age=#{bred_age}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="but_time !=null and but_time !=''">and t.but_time=#{but_time}</if>
+		<if test="but_person !=null and but_person !=''">and t.but_person=#{but_person}</if>
+	</select>
+
+	<!-- 查询Count -->
+	<select id="findCount" parameterType="com.hniois.monitor.entity.Butcher" resultType="java.lang.Integer">
+		select count(*)
+		from r_butcher t
+		where 1=1
+		<if test="but_id !=null and but_id !=''">and t.but_id=#{but_id}</if>
+		<if test="bred_name !=null and bred_name !=''">and t.bred_name=#{bred_name}</if>
+		<if test="bred_age !=null and bred_age !=''">and t.bred_age=#{bred_age}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="but_time !=null and but_time !=''">and t.but_time=#{but_time}</if>
+		<if test="but_person !=null and but_person !=''">and t.but_person=#{but_person}</if>
+	</select>
+
+	<!-- 分页查询 -->
+	<select id="findPage" parameterType="com.hniois.monitor.entity.Butcher" resultType="com.hniois.monitor.entity.Butcher">
+		select *
+		from r_butcher
+		where 1=1
+		<if test="but_id !=null and but_id !=''">and but_id=#{but_id}</if>
+		<if test="bred_name !=null and bred_name !=''">and bred_name=#{bred_name}</if>
+		<if test="bred_age !=null and bred_age !=''">and bred_age=#{bred_age}</if>
+		<if test="breed_id !=null and breed_id !=''">and breed_id=#{breed_id}</if>
+		<if test="but_time !=null and but_time !=''">and but_time=#{but_time}</if>
+		<if test="but_person !=null and but_person !=''">and but_person=#{but_person}</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<!-- 分页查询Count -->
+	<select id="findPageCount" parameterType="com.hniois.monitor.entity.Butcher" resultType="java.lang.Integer">
+		select count(*)
+		from r_butcher t
+		where 1=1
+		<if test="but_id !=null and but_id !=''">and t.but_id=#{but_id}</if>
+		<if test="bred_name !=null and bred_name !=''">and t.bred_name=#{bred_name}</if>
+		<if test="bred_age !=null and bred_age !=''">and t.bred_age=#{bred_age}</if>
+		<if test="breed_id !=null and breed_id !=''">and t.breed_id=#{breed_id}</if>
+		<if test="but_time !=null and but_time !=''">and t.but_time=#{but_time}</if>
+		<if test="but_person !=null and but_person !=''">and t.but_person=#{but_person}</if>
+	</select>
+</mapper>

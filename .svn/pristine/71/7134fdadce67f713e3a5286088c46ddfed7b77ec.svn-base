@@ -1,0 +1,61 @@
+package com.hniois.monitor.entity;
+
+import com.hniois.common.page.Page;
+
+public class ReportDetail extends Page {
+    //detail_id,report_id,detail_name,detail_num,result
+    private String detail_id;//检测项ID 自增长
+    private String report_id;//检测报告编号
+    private String detail_name;//检测项名称
+    private String detail_num;//检测值
+    private String result;//检测结果 0合格 1不合格
+    private String farm_id;//农场编号
+
+    public String getDetail_id() {
+        return detail_id;
+    }
+
+    public void setDetail_id(String detail_id) {
+        this.detail_id = detail_id;
+    }
+
+    public String getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(String report_id) {
+        this.report_id = report_id;
+    }
+
+    public String getDetail_name() {
+        return detail_name;
+    }
+
+    public void setDetail_name(String detail_name) {
+        this.detail_name = detail_name;
+    }
+
+    public String getDetail_num() {
+        return detail_num;
+    }
+
+    public void setDetail_num(String detail_num) {
+        this.detail_num = detail_num;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getFarm_id() {
+        return farm_id;
+    }
+
+    public void setFarm_id(String farm_id) {
+        this.farm_id = farm_id;
+    }
+}

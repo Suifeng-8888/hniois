@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BuyMapper">
+    <!-- 保存 -->
+    <insert id="save" parameterType="com.hniois.monitor.entity.Buy" useGeneratedKeys="true" keyProperty="id">
+        insert into r_buy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farm_id!='' and farm_id!=null">farm_id,</if>
+            <if test="b_category!='' and b_category!=null">b_category,</if>
+            <if test="provide_id!='' and provide_id!=null">provide_id,</if>
+            <if test="b_provider!='' and b_provider!=null">b_provider,</if>
+            <if test="b_name!='' and b_name!=null">b_name,</if>
+            <if test="b_spec!='' and b_spec!=null">b_spec,</if>
+            <if test="b_number!='' and b_number!=null">b_number,</if>
+            <if test="b_price!='' and b_price!=null">b_price,</if>
+            <if test="b_time!='' and b_time!=null">b_time,</if>
+            <if test="b_buyer!='' and b_buyer!=null">b_buyer,</if>
+            <if test="total_cost!='' and total_cost!=null">total_cost,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farm_id!='' and farm_id!=null">#{farm_id},</if>
+            <if test="b_category!='' and b_category!=null">#{b_category},</if>
+            <if test="provide_id!='' and provide_id!=null">#{provide_id},</if>
+            <if test="b_provider!='' and b_provider!=null">#{b_provider},</if>
+            <if test="b_name!='' and b_name!=null">#{b_name},</if>
+            <if test="b_spec!='' and b_spec!=null">#{b_spec},</if>
+            <if test="b_number!='' and b_number!=null">#{b_number},</if>
+            <if test="b_price!='' and b_price!=null">#{b_price},</if>
+            <if test="b_time!='' and b_time!=null">#{b_time},</if>
+            <if test="b_buyer!='' and b_buyer!=null">#{b_buyer},</if>
+            <if test="total_cost!='' and total_cost!=null">#{total_cost},</if>
+        </trim>
+    </insert>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hniois.monitor.entity.Buy">
+        update r_buy
+        <set>
+            <if test="b_name!='' and b_name!=null">b_name=#{b_name},</if>
+            <if test="total_cost!='' and total_cost!=null">total_cost=#{total_cost},</if>
+            <if test="b_number!='' and b_number!=null">b_number=#{b_number},</if>
+            <if test="b_category!='' and b_category!=null">b_category=#{b_category},</if>
+            <if test="b_spec!='' and b_spec!=null">b_spec=#{b_spec},</if>
+            <if test="b_time!='' and b_time!=null">b_time=#{b_time},</if>
+            <if test="b_buyer!='' and b_buyer!=null">b_buyer=#{b_buyer},</if>
+            <if test="provide_id!='' and provide_id!=null">provide_id=#{provide_id},</if>
+            <if test="b_provider!='' and b_provider!=null">b_provider=#{b_provider},</if>
+            <if test="b_price!='' and b_price!=null">b_price=#{b_price},</if>
+            <if test="farm_id!='' and farm_id!=null">farm_id=#{farm_id}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id="delete" parameterType="com.hniois.monitor.entity.Buy">
+        delete from r_buy where id=#{id}
+    </delete>
+
+    <!-- 批量删除 -->
+    <delete id="deleteBatch" parameterType="java.util.ArrayList">
+        delete from r_buy
+        where id in
+        <foreach item="item" index="index" collection="data" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询 -->
+    <select id="find" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        SELECT * FROM r_buy WHERE id = #{id}
+    </select>
+
+    <!-- 查询List -->
+    <select id="findList" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        SELECT * FROM r_buy
+        <where>
+            <if test="b_name!='' and b_name!=null">b_name=#{b_name}</if>
+            <if test="total_cost!='' and total_cost!=null">and total_cost=#{total_cost}</if>
+            <if test="b_number!='' and b_number!=null">and b_number=#{b_number}</if>
+            <if test="b_category!='' and b_category!=null">and b_category=#{b_category}</if>
+            <if test="b_spec!='' and b_spec!=null">and b_spec=#{b_spec}</if>
+            <if test="b_time!='' and b_time!=null">and b_time=#{b_time}</if>
+            <if test="b_buyer!='' and b_buyer!=null">and b_buyer=#{b_buyer}</if>
+            <if test="provide_id!='' and provide_id!=null">and provide_id=#{provide_id}</if>
+            <if test="b_provider!='' and b_provider!=null">and b_provider=#{b_provider}</if>
+            <if test="b_price!='' and b_price!=null">and b_price=#{b_price}</if>
+            <if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+        </where>
+    </select>
+
+    <!-- 查询Count -->
+    <select id="findCount" parameterType="com.hniois.monitor.entity.Buy" resultType="java.lang.Integer">
+        select count(*) from r_buy 
+        <where>
+            <if test="id!='' and id!=null">id=#{id}</if>
+            <if test="b_name!='' and b_name!=null">and b_name=#{b_name}</if>
+            <if test="total_cost!='' and total_cost!=null">and total_cost=#{total_cost}</if>
+            <if test="b_number!='' and b_number!=null">and b_number=#{b_number}</if>
+            <if test="b_category!='' and b_category!=null">and b_category=#{b_category}</if>
+            <if test="b_spec!='' and b_spec!=null">and b_spec=#{b_spec}</if>
+            <if test="b_time!='' and b_time!=null">and b_time=#{b_time}</if>
+            <if test="b_buyer!='' and b_buyer!=null">and b_buyer=#{b_buyer}</if>
+            <if test="provide_id!='' and provide_id!=null">and provide_id=#{provide_id}</if>
+            <if test="b_provider!='' and b_provider!=null">and b_provider=#{b_provider}</if>
+            <if test="b_price!='' and b_price!=null">and b_price=#{b_price}</if>
+            <if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="findPage" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        select	* from r_buy
+        <where>
+            <if test="b_name!='' and b_name!=null">b_name LIKE '%${b_name}%'</if>
+            <if test="total_cost!='' and total_cost!=null">and total_cost=#{total_cost}</if>
+            <if test="b_number!='' and b_number!=null">and b_number=#{b_number}</if>
+            <if test="b_category!='' and b_category!=null">and b_category=#{b_category}</if>
+            <if test="b_spec!='' and b_spec!=null">and b_spec=#{b_spec}</if>
+            <if test="b_time!='' and b_time!=null">and b_time=#{b_time}</if>
+            <if test="b_buyer!='' and b_buyer!=null">and b_buyer=#{b_buyer}</if>
+            <if test="b_provider!='' and b_provider!=null">and b_provider=#{b_provider}</if>
+            <if test="provide_id!='' and provide_id!=null">and provide_id=#{provide_id}</if>
+            <if test="b_price!='' and b_price!=null">and b_price=#{b_price}</if>
+            <if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+        </where>
+        order by id, b_provider
+        limit #{offset},#{pageSize}
+    </select>
+
+    <!-- 分页查询Count -->
+    <select id="findPageCount" parameterType="com.hniois.monitor.entity.Buy" resultType="java.lang.Integer">
+        select count(*) from r_buy
+        <where>
+            <if test="b_name!='' and b_name!=null">b_name LIKE '%${b_name}%'</if>
+            <if test="total_cost!='' and total_cost!=null">and total_cost=#{total_cost}</if>
+            <if test="b_number!='' and b_number!=null">and b_number=#{b_number}</if>
+            <if test="b_category!='' and b_category!=null">and b_category=#{b_category}</if>
+            <if test="b_spec!='' and b_spec!=null">and b_spec=#{b_spec}</if>
+            <if test="b_time!='' and b_time!=null">and b_time=#{b_time}</if>
+            <if test="b_buyer!='' and b_buyer!=null">and b_buyer=#{b_buyer}</if>
+            <if test="provide_id!='' and provide_id!=null">and provide_id=#{provide_id}</if>
+            <if test="b_provider!='' and b_provider!=null">and b_provider=#{b_provider}</if>
+            <if test="b_price!='' and b_price!=null">and b_price=#{b_price}</if>
+            <if test="farm_id!='' and farm_id!=null">and farm_id=#{farm_id}</if>
+        </where>
+    </select>
+
+    <!-- 报告周统计 -->
+    <select id="countWeek" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.entity.statistics.StatisicsCount">
+        select dd.b_time,IFNULL(r.num,0) as 'num' from(
+        select
+        ADDDATE(#{endTime},INTERVAL -d.id+1 day) as 'b_time'
+        from t_demo_count d
+        order by d.id desc
+        ) dd
+        left join (
+        select b_time,count(id) as 'num'
+        from r_buy t
+        where b_time &gt; ADDDATE(#{endTime},INTERVAL -7 day)
+        and b_time &lt; ADDDATE(#{endTime},INTERVAL 1 day)
+
+        GROUP BY b_time
+        ) r on r.b_time=dd.b_time
+    </select>
+
+    <!-- 报告月统计 -->
+    <select id="countMonth" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.entity.statistics.StatisicsCount">
+        select dd.create_time,IFNULL(r.num,0) as num from(
+        SELECT
+        DATE_FORMAT(DATE_ADD(DATE_ADD(#{endTime},INTERVAL -day(#{endTime})+1 day),INTERVAL -d.id+1 MONTH),'%Y-%m') AS create_time
+        FROM t_demo_count d
+        WHERE d.id &lt;= 6
+        ORDER BY d.id DESC
+        ) dd
+        left join (
+        SELECT DATE_FORMAT(b_time,'%Y-%m') AS b_time,COUNT(*) AS num
+        FROM r_buy
+        GROUP BY DATE_FORMAT(b_time,'%Y-%m')
+        ) r on r.b_time=dd.b_time
+    </select>
+
+    <!--以采购物品分页显示-->
+    <select id="findAmonutPage" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        SELECT b_name,SUM(b_number)as 'b_number',ROUND(SUM(b_number*b_price),2) as 'cost',b_category,b_time
+        FROM r_buy
+        where farm_id=#{farm_id}
+		GROUP BY b_name HAVING b_time
+		BETWEEN IFNULL(#{btime},DATE_ADD(CURDATE(),INTERVAL -6 MONTH))
+		AND IFNULL(#{etime},CURDATE())
+		ORDER BY b_time
+        limit #{offset},#{pageSize}
+    </select>
+
+    <!--采购物品总数-->
+    <select id="findAmonutCount" parameterType="com.hniois.monitor.entity.Buy" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM
+        (SELECT b_name,SUM(b_number)as 'b_number',ROUND(SUM(b_number*b_price),2) as 'cost',b_category,b_time
+        FROM r_buy
+        where farm_id=#{farm_id}
+        GROUP BY b_name HAVING b_time
+        BETWEEN IFNULL(#{btime},DATE_ADD(CURDATE(),INTERVAL -6 MONTH))
+        AND IFNULL(#{etime},CURDATE())
+        ORDER BY b_time
+       ) as tempForm
+    </select>
+
+    <!--以采购供应商分页显示-->
+    <select id="findSalePage" parameterType="com.hniois.monitor.entity.Buy" resultType="com.hniois.monitor.entity.Buy">
+        select b_provider,GROUP_CONCAT(b_name SEPARATOR ',') as 'b_name',ROUND(SUM(b_number*b_price),2) as 'cost',b_time FROM r_buy
+        where farm_id=#{farm_id}
+        GROUP BY b_provider HAVING b_time
+        BETWEEN IFNULL(#{btime},DATE_ADD(CURDATE(),INTERVAL -6 MONTH))
+        AND IFNULL(#{etime},CURDATE())
+        ORDER BY b_time
+        limit #{offset},#{pageSize}
+    </select>
+
+    <!--采购供应商总数-->
+    <select id="findSaleCount" parameterType="com.hniois.monitor.entity.Buy" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM
+        ( select b_provider,GROUP_CONCAT(b_name SEPARATOR ',') as 'b_name',ROUND(SUM(b_number*b_price),2) as 'cost',b_time FROM r_buy
+        where farm_id=#{farm_id}
+        GROUP BY b_provider HAVING b_time
+        BETWEEN IFNULL(#{btime},DATE_ADD(CURDATE(),INTERVAL -6 MONTH))
+        AND IFNULL(#{etime},CURDATE())
+        ORDER BY b_time
+        ) as tempForm
+    </select>
+</mapper>

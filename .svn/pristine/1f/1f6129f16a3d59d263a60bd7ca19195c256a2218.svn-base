@@ -1,0 +1,70 @@
+package com.hniois.monitor.dao.impl;
+
+import com.hniois.common.dao.DaoSupport;
+import com.hniois.common.page.Page;
+import com.hniois.monitor.dao.ReportDetailDao;
+import com.hniois.monitor.entity.ReportDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository("reportDetailDaoImpl")
+public class ReportDetailDaoImpl implements ReportDetailDao {
+
+    @Autowired
+    private DaoSupport dao;
+
+    private String mapper = "ReportDetailMapper";
+
+    @Override
+    public void save(ReportDetail e) throws Exception {
+        dao.save(mapper+".save",e);
+    }
+
+    @Override
+    public void saveBatch(List<ReportDetail> e) throws Exception {
+        dao.save(mapper+".saveBatch",e);
+    }
+
+    @Override
+    public void delete(ReportDetail e) throws Exception {
+        dao.delete(mapper+".delete",e);
+    }
+
+    @Override
+    public void deleteBatch(ReportDetail e) throws Exception {
+        dao.delete(mapper+".deleteBatch",e);
+    }
+
+    @Override
+    public void update(ReportDetail e) throws Exception {
+        dao.update(mapper+".update",e);
+    }
+
+    @Override
+    public void updateBatch(ReportDetail e) throws Exception {
+        dao.update(mapper+".updateBatch",e);
+    }
+
+    @Override
+    public ReportDetail find(ReportDetail e) throws Exception {
+        return (ReportDetail)dao.find(mapper+".find",e);
+    }
+
+    @Override
+    public List<ReportDetail> findList(ReportDetail e) throws Exception {
+        return  (List<ReportDetail> )dao.findList(mapper+".findList",e);
+    }
+
+    @Override
+    public int findCount(ReportDetail e) throws Exception {
+        return  (Integer)dao.find(mapper+".findCount",e);
+    }
+
+    @Override
+    public Page findPage(ReportDetail e) throws Exception {
+        return (Page)dao.findPage(mapper+".findPage",mapper+".findPageCount",e);
+    }
+
+}

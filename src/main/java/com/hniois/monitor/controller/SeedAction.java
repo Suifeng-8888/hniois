@@ -1,0 +1,263 @@
+package com.hniois.monitor.controller;
+
+
+import com.alibaba.fastjson.JSON;
+import com.hniois.common.page.Page;
+import com.hniois.controller.base.BaseController;
+import com.hniois.monitor.entity.Seed;
+import com.hniois.monitor.entity.Soil;
+import com.hniois.monitor.service.SeedManage;
+import com.hniois.monitor.service.SoilManage;
+import com.hniois.util.*;
+import com.sun.corba.se.spi.presentation.rmi.IDLNameTranslator;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import sun.plugin.util.UIUtil;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+@RequestMapping(value="/seed")
+public class SeedAction extends BaseController{
+    //Seed
+    @Resource(name="seedService")
+    private SeedManage seedService;
+    // 土地管理
+    @Resource(name = "soilService")
+    private SoilManage soilService;
+
+    private String seed_list = "monitor/seed/seed_list";
+    private String seed_edit = "monitor/seed/seed_edit";
+    private String buy_table = "monitor/seed/buy_table";
+    private String crop_table = "monitor/seed/crop_table";
+    private String seed_img = "monitor/seed/seed_img";
+
+    @RequestMapping(value="/toPage")
+    public ModelAndView toPage(Page e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(seed_list);
+        return mv;
+    }
+
+    /**
+     * 选择种子
+     * @param e
+     * @return
+     */
+    @RequestMapping(value="/buy")
+    public ModelAndView toTable(Seed e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(buy_table);
+        return mv;
+    }
+
+    /**
+     * 选择作物
+     * @param e
+     * @return
+     */
+    @RequestMapping(value="/crop")
+    public ModelAndView toTable2(Seed e){
+        ModelAndView mv = getModelAndViewToPage(e);
+        mv.setViewName(crop_table);
+        return mv;
+    }
+    /**
+     * 分页查询
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public String list(Seed e) throws Exception{
+        if(Const.PROVIDER_ADMIN.equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        // 当前页
+        int currPage = getThisPage(e.getPage());
+        // 每页显示条数
+        int limit = getThisLimit(e.getLimit());
+
+        e.setOffset((currPage-1)*limit);
+        e.setPageSize(limit);
+        Page page = seedService.findPage(e);
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     * 跳转
+     * @param e          参数
+     * @return           新增 or 保存页面
+     */
+    @RequestMapping(value="/toEdit")
+    public ModelAndView toAorU(Seed e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Seed seed = new Seed();
+        if(StringUtils.isNotEmpty(e.getS_id())){
+            seed = seedService.find(e);
+        }
+        seed.setCode(e.getCode());//判断：0查询 or 1 增加/修改
+        mv.addObject("seed",seed);
+        mv.setViewName(seed_edit);
+        return mv;
+    }
+
+    /**
+     * 保存
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/add")
+    @ResponseBody
+    public String add(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(Const.PROVIDER_ADMIN.equals(SessionManager.getUserType())){
+            e.setFarm_id(SessionManager.getFarmID());
+        }
+        if(!StringUtils.isNotEmpty(e.getS_id())){
+            String uid= UuidUtil.get32UUID();
+            e.setS_id(uid);
+            if(StringUtils.isNotEmpty(e.getBuy_id())&&StringUtils.isNotEmpty(e.getCrop_id())){
+                seedService.save(e);
+            }else{
+                setMsg(obj,"error","请从指定列表选择输入");
+            }
+
+        }else{
+            setMsg(obj,"error","新增失败");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/update")
+    @ResponseBody
+    public String update(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(StringUtils.isNotEmpty(e.getS_id())){
+            Seed seed=new Seed();
+            seed.setS_id(e.getS_id());
+            if(seedService.findCount(seed)>0){
+                seedService.update(e);
+            }else{
+                setMsg(obj,"error","对象不存在");
+            }
+
+        }else{
+            setMsg(obj,"error","ID不能为空");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 修改
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/updateDelet")
+    @ResponseBody
+    public String update2(Seed e) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(StringUtils.isNotEmpty(e.getS_id())){
+            String temp=e.getDes_temp();
+            Seed seed=new Seed();
+            seed.setS_id(e.getS_id());
+            seed=seedService.find(seed);
+            String descr=seed.getS_descr();
+            String newDesc=seedService.getNesStr(temp,descr);
+            if(StringUtils.isBlank(newDesc)){
+                e.setS_descr("");
+            }else{
+                e.setS_descr(newDesc);
+            }
+            seedService.update(e);
+        }else{
+            setMsg(obj,"error","ID不能为空");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public String delete(Seed e,HttpServletRequest request) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(StringUtils.isNotEmpty(e.getS_id())){
+
+            seedService.newDel(e,request);
+        }else{
+            setMsg(obj,"error","ID不能为空");
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 删除
+     * @param e          参数
+     * @return           json字符串
+     * */
+    @RequestMapping(value="/deletes")
+    @ResponseBody
+    public String deletes(Seed e,HttpServletRequest request) throws Exception {
+        JSONObject obj = getMsg();//返回信息
+        if(e.getData().size()>0){
+            seedService.newDelBatch(e,request);
+        }else{
+            setMsg(obj,"error","ID不能为空!");
+        }
+        return obj.toString();
+    }
+    /**
+     * 导出Excel
+     * @param seed
+     */
+    @RequestMapping(value="/doExport")
+    @ResponseBody
+    public void doExport(Seed seed) throws Exception {
+        if(Const.PROVIDER_ADMIN.equals(SessionManager.getUserType())){
+            seed.setFarm_id(SessionManager.getFarmID());
+        }
+        //导出工具
+        ExportExcelUtil<Seed> export =  new ExportExcelUtil<Seed>();
+        //文件名称
+        String filename = "Seed_list" + DateUtil.getTimes();
+        //导出数据信息
+        List list = seedService.findPage(seed).getData();
+        //执行导出
+        doExport(filename,list,export);
+    }
+
+    /**
+     * 检验报告图片
+     * @param e 学校信息
+     */
+    @RequestMapping(value="/toEditImgs")
+    public ModelAndView toEditImgs(Seed e) throws Exception{
+        ModelAndView mv = this.getModelAndView();
+        Seed seed = new Seed();
+        if(StringUtils.isNotEmpty(e.getS_id())){
+            seed = seedService.find(e);
+        }
+        mv.addObject("seed",seed);
+        mv.setViewName(seed_img);
+        return mv;
+    }
+
+
+}
